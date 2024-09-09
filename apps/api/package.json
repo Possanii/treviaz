@@ -1,0 +1,31 @@
+{
+  "name": "@treviaz/api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "dotenv -e .env -- nodemon -w src -r ts-node src/server/index.ts",
+    "prettier": "prettier --check '**/**/*.{js,jsx,ts,tsx,css}'",
+    "prettier:fix": "prettier --write '**/**/*.{js,jsx,ts,tsx,css}'",
+    "docker-compose": "docker compose --env-file .env up -d"
+  },
+  "devDependencies": {
+    "@treviaz/eslint-config": "workspace:*",
+    "@treviaz/prettier": "workspace:*",
+    "@treviaz/tsconfig": "workspace:*",
+    "@types/node": "^20",
+    "dotenv-cli": "^7.4.2",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "prettier": "@treviaz/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@treviaz/eslint-config/node"
+    ]
+  }
+}
