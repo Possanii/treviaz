@@ -1,0 +1,23 @@
+{
+  "name": "@treviaz/env",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "devDependencies": {
+    "@treviaz/eslint-config": "workspace:*",
+    "@treviaz/prettier": "workspace:*",
+    "@treviaz/tsconfig": "workspace:*",
+    "@types/node": "^20.14.9"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "^0.10.1",
+    "zod": "^3.23.8"
+  },
+  "prettier": "@treviaz/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@treviaz/eslint-config/library"
+    ]
+  }
+}

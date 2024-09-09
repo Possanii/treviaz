@@ -1,0 +1,4 @@
+{
+  "extends": "@treviaz/tsconfig/library.json",
+  "include": ["index.ts"]
+}
