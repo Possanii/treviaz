@@ -1,0 +1,18 @@
+{
+  "badRequest": {
+    "user": "USER_BAD_REQUEST"
+  },
+  "notFound": {
+    "user": "USER_NOT_FOUND"
+  },
+  "notActive": {
+    "user": "USER_NOT_ACTIVE"
+  },
+  "unprocessableEntity": {
+    "zod": "INVALID_DATA"
+  },
+  "unauthorized_jwt": "UNAUTHORIZED_ACCESS_TOKEN_ERROR",
+  "unauthorized": "UNAUTHORIZED_ERROR",
+  "forbidden": "FORBIDDEN_ERROR",
+  "internal": "INTERNAL_SERVER_ERROR"
+}

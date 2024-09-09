@@ -8,5 +8,6 @@
       "@/*": ["./src/*"]
     },
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   }
 }
