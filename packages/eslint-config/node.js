@@ -28,6 +28,7 @@ module.exports = {
       },
     ],
     'simple-import-sort/imports': 'error',
+    'no-useless-constructor': 'off',
   },
   settings: {
     'import/parsers': {

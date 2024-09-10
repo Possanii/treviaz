@@ -7,7 +7,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   }
 }

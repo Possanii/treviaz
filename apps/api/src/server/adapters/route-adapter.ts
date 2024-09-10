@@ -2,7 +2,7 @@ import { type NextFunction, Request, Response } from 'express'
 
 import { IController } from '@/application/interfaces/IController'
 
-export function routerAdapter(controller: IController) {
+export function routeAdapter(controller: IController) {
   return async (request: Request, response: Response, next: NextFunction) => {
     try {
       const { statusCode, message, body } = await controller.handle(request)
