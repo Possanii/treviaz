@@ -1,8 +1,3 @@
-/** @type {import('postcss-load-config').Config} */
-const config = {
-  plugins: {
-    tailwindcss: {},
-  },
-}
+// eslint-disable-next-line prettier/prettier
+export { default } from '@treviaz/ui/postcss.config';
 
-export default config

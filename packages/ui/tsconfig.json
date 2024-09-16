@@ -1,0 +1,11 @@
+{
+  "extends": "@treviaz/tsconfig/library.json",
+  "include": ["**/*.ts", "**/*.tsx", "postcss.config.mjs"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@": ["./src/*"]
+    }
+  }
+}

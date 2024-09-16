@@ -17,6 +17,7 @@
     "@treviaz/prettier": "workspace:*",
     "@treviaz/eslint-config": "workspace:*",
     "@treviaz/tsconfig": "workspace:*",
+    "@treviaz/ui": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

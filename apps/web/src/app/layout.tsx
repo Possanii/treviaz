@@ -1,4 +1,4 @@
-import './globals.css'
+import '@treviaz/ui/globals.css'
 
 import type { Metadata } from 'next'
 
