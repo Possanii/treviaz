@@ -1,1 +1,1 @@
-import './user-routes'
+import './auth-routes'

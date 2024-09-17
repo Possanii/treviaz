@@ -4,11 +4,18 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { CreateUserService } from '@/application/services/create-user-service'
+import { CreateUserService } from '@/application/services/auth/create-user-service'
 
 const createUserSchema = z.object({
-  email: z.string().email(),
-  name: z.string().nullable(),
+  email: z.string().email({
+    message: 'Please, provide a valid email address.',
+  }),
+  name: z.string({
+    message: 'Please, provide a valid name.',
+  }),
+  password: z.string().min(8, {
+    message: 'Password must be at least 8 characters.',
+  }),
 })
 
 export class CreateUserController implements IController {
@@ -25,13 +32,10 @@ export class CreateUserController implements IController {
 
     const data = result.data
 
-    const user = await this.createUserService.execute(data)
+    await this.createUserService.execute(data)
 
     return {
       statusCode: 201,
-      body: {
-        user,
-      },
     }
   }
 }
