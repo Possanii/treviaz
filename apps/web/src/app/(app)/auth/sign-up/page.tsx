@@ -4,7 +4,7 @@ import { Label } from '@treviaz/ui/components/ui/label'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-screen">
       <div className="bg-muted hidden lg:block">
