@@ -11,10 +11,10 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@treviaz/ui/components",
+    "components": "src/components",
     "ui": "src/components/ui",
-    "utils": "@treviaz/ui/lib/utils",
-    "lib": "@treviaz/ui/lib",
-    "hooks": "@treviaz/ui/hooks"
+    "utils": "src/lib/utils",
+    "lib": "src/lib",
+    "hooks": "src/hooks"
   }
 }

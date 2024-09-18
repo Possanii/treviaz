@@ -1,8 +1,7 @@
-import { Button } from '@treviaz/ui/components/ui/button'
-import { Input } from '@treviaz/ui/components/ui/input'
-import { Label } from '@treviaz/ui/components/ui/label'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import SignUpForm from './sign-up-form'
 
 export default function SignUpPage() {
   return (
@@ -24,28 +23,7 @@ export default function SignUpPage() {
               Entre com suas informações para criar sua conta
             </p>
           </div>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Senha</Label>
-              <Input id="password" type="password" required />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="confirm-password">Confirmar senha</Label>
-              <Input id="confirm-password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full">
-              Cadastrar
-            </Button>
-          </div>
+          <SignUpForm />
           <div className="mt-4 text-center text-sm">
             Já possui uma conta?{' '}
             <Link href="/auth/sign-in" className="underline">

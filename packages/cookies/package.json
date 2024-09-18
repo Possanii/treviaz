@@ -1,0 +1,19 @@
+{
+  "name": "@treviaz/cookies",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "devDependencies": {
+    "@treviaz/eslint-config": "workspace:*",
+    "@treviaz/prettier": "workspace:*",
+    "@treviaz/tsconfig": "workspace:*",
+    "@types/node": "^20.14.9"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@treviaz/eslint-config/library"
+    ]
+  },
+  "prettier": "@saas/prettier"
+}

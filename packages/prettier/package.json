@@ -4,7 +4,6 @@
   "main": "./index.mjs",
   "private": "true",
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.6.6"
+    "prettier": "^3.2.5"
   }
 }
