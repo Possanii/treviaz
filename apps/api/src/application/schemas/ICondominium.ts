@@ -14,6 +14,9 @@ export const condominiumSchema = z.object({
       message: 'Please, provide a valid photo URL.',
     })
     .optional(),
+  owner_id: z.string().uuid({
+    message: 'Please, provide a valid owner ID.',
+  }),
 })
 
 export type ICondominium = z.infer<typeof condominiumSchema>
