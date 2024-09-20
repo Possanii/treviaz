@@ -6,36 +6,39 @@ import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { CreateUserService } from '@/application/services/auth/create-user-service'
 
-const createUserSchema = z.object({
-  email: z.string().email({
-    message: 'Please, provide a valid email address.',
-  }),
-  name: z.string({
-    message: 'Please, provide a valid name.',
-  }),
-  password: z.string().min(8, {
-    message: 'Password must be at least 8 characters.',
-  }),
+import { userSchema } from '@/application/schemas/IUser'
+import { userCondominiumSchema } from '@/application/schemas/IUserCondominium'
+
+const createUserSchema = userSchema.omit({ id: true }).extend({
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long.' }),
+    condominium: userCondominiumSchema.omit({ id: true, user_id: true, joined_at: true })
 })
 
 export class CreateUserController implements IController {
-  constructor(private readonly createUserService: CreateUserService) {}
+    constructor(private createUserService: CreateUserService) {}
 
-  async handle({ body }: IRequest): Promise<IResponse> {
-    const result = createUserSchema.safeParse(body)
-
-    if (!result.success) {
-      const errors = result.error.flatten().fieldErrors
-
-      throw new UnprocessableEntityError('zod', 'Invalid user data.', errors)
+    async handle(request: IRequest): Promise<IResponse> {
+        try {
+            const validatedData = createUserSchema.parse(request.body)
+            const user = await this.createUserService.execute(validatedData)
+            return {
+                statusCode: 201,
+                body: null
+            }
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                return {
+                    statusCode: 400,
+                    body: { message: 'Validation failed', errors: error.errors }
+                }
+            }
+            if (error instanceof UnprocessableEntityError) {
+                return {
+                    statusCode: 422,
+                    body: { message: error.message }
+                }
+            }
+            throw error
+        }
     }
-
-    const data = result.data
-
-    await this.createUserService.execute(data)
-
-    return {
-      statusCode: 201,
-    }
-  }
 }
