@@ -14,15 +14,63 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id             String  @id @default(uuid())
-  name           String
-  email          String  @unique
-  passwordHashed String  @map("password_hashed")
-  avatar_url     String? @map("avatar_url")
+model Condominium {
+  id          String   @id @default(uuid())
+  name        String
+  address     String
+  photo_url   String?
+  owner_id    String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  users       UserCondominium[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("condominiums")
+}
+model User {
+  id              String   @id @default(uuid())
+  name            String
+  email           String   @unique
+  document_number String
+  avatar_url      String?
+  password_hashed String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  condominiums UserCondominium[]
 
   @@map("users")
 }
+
+model UserCondominium {
+  id              String   @id @default(uuid())
+  user_id         String
+  condominium_id  String
+  role            Role
+  joined_at       DateTime @default(now())
+
+  user        User        @relation(fields: [user_id], references: [id])
+  condominium Condominium @relation(fields: [condominium_id], references: [id])
+
+  @@map("user_condominiums")
+}
+
+model ServiceOwner {
+  id              String   @id @default(uuid())
+  name            String
+  document_number String
+  email           String
+  phone           String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@map("service_owners")
+}
+
+enum Role {
+  RESIDENT
+  ADMIN
+  SYNDIC
+  BILLING
+  SERVICES
+}
+

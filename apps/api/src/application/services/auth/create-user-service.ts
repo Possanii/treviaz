@@ -25,9 +25,9 @@ export class CreateUserService {
                 name: data.name,
                 email: data.email,
                 document_number: data.document_number,
-                photo_url: data.photo_url,
-                password: hashedPassword,
-                userCondominiums: {
+                avatar_url: data.avatar_url,
+                password_hashed: hashedPassword,
+                condominiums: {
                     create: {
                         condominium_id: data.condominium.condominium_id,
                         role: data.condominium.role,
@@ -42,7 +42,7 @@ export class CreateUserService {
             name: user.name,
             email: user.email,
             document_number: user.document_number,
-            photo_url: user.photo_url
+            avatar_url: user.avatar_url
         }
     }
 }
