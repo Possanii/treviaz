@@ -4,25 +4,22 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { CreateUserService } from '@/application/services/auth/create-user-service'
+import { DeleteServiceOwnerService } from '@/application/services/auth/serviceowner/delete-serviceowner-service'
+import { serviceOwnerSchema } from '@/application/schemas/IServiceOwner'
 
-import { userSchema } from '@/application/schemas/IUser'
-import { userCondominiumSchema } from '@/application/schemas/IUserCondominium'
-
-const createUserSchema = userSchema.omit({ id: true }).extend({
-    password: z.string().min(6, { message: 'Password must be at least 6 characters long.' }),
-    condominium: userCondominiumSchema.omit({ id: true, user_id: true, joined_at: true })
+const deleteServiceOwnerSchema = z.object({
+    id: serviceOwnerSchema.shape.id
 })
 
-export class CreateUserController implements IController {
-    constructor(private createUserService: CreateUserService) {}
+export class DeleteServiceOwnerController implements IController {
+    constructor(private deleteServiceOwnerService: DeleteServiceOwnerService) {}
 
     async handle(request: IRequest): Promise<IResponse> {
         try {
-            const validatedData = createUserSchema.parse(request.body)
-            const user = await this.createUserService.execute(validatedData)
+            const validatedData = deleteServiceOwnerSchema.parse(request.params)
+            await this.deleteServiceOwnerService.execute(validatedData.id)
             return {
-                statusCode: 201,
+                statusCode: 204,
                 body: null
             }
         } catch (error) {

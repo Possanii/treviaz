@@ -11,6 +11,9 @@ export const serviceOwnerSchema = z.object({
   phone: z.string({
     message: 'Please, provide a valid phone number.',
   }),
+  document_number: z.string({
+    message: 'Please, provide a valid document number.',
+  }),
 })
 
 export type IServiceOwner = z.infer<typeof serviceOwnerSchema>

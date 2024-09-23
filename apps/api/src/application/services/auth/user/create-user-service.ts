@@ -2,11 +2,11 @@ import { hash } from 'bcryptjs'
 
 import { BadRequestError } from '@/application/errors/bad-request-error'
 
-import { prisma } from '../../libs/prisma'
-import { IUser } from '../../schemas/IUser'
+import { prisma } from '../../../libs/prisma'
+import { IUser } from '../../../schemas/IUser'
 
 
-import { IUserCondominium } from '../../schemas/IUserCondominium'
+import { IUserCondominium } from '../../../schemas/IUserCondominium'
 
 export class CreateUserService {
     async execute(data: Omit<IUser, 'id'> & { password: string, condominium: Omit<IUserCondominium, 'id' | 'user_id' | 'joined_at'> }): Promise<IUser> {
