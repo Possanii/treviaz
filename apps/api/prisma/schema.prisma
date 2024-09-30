@@ -14,10 +14,13 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+// user condominium data
+
 model Condominium {
   id          String   @id @default(uuid())
   name        String
-  address     String
+  address     Address  @relation(fields: [address_id], references: [id])
+  address_id  String   @unique
   photo_url   String?
   owner_id    String
   created_at  DateTime @default(now())
@@ -25,6 +28,23 @@ model Condominium {
   users       UserCondominium[]
 
   @@map("condominiums")
+}
+
+model Address {
+  id           String   @id @default(uuid())
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String
+  country      String
+  zip_code     String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  condominium  Condominium?
+
+  @@map("addresses")
 }
 model User {
   id              String   @id @default(uuid())
@@ -34,9 +54,10 @@ model User {
   avatar_url      String?
   password_hashed String
   created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-
-  condominiums UserCondominium[]
+  updated_at      DateTime      @updatedAt
+  forumThreads    ForumThread[]
+  forumPosts      ForumPost[]
+  condominiums   UserCondominium[]
 
   @@map("users")
 }
@@ -74,4 +95,47 @@ enum Role {
   BILLING
   SERVICES
 }
+
+
+
+// Forum
+model ForumCategory {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  threads     ForumThread[]
+
+  @@map("forum_categories")
+}
+
+model ForumThread {
+  id          String        @id @default(uuid())
+  title       String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  category_id String
+  user_id     String
+  posts       ForumPost[]
+  category    ForumCategory @relation(fields: [category_id], references: [id])
+  user        User          @relation(fields: [user_id], references: [id])
+
+  @@map("forum_threads")
+}
+
+model ForumPost {
+  id         String      @id @default(uuid())
+  content    String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  thread_id  String
+  user_id    String
+  thread     ForumThread @relation(fields: [thread_id], references: [id])
+  user       User        @relation(fields: [user_id], references: [id])
+
+  @@map("forum_posts")
+}
+
+// Services
 
