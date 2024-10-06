@@ -11,6 +11,9 @@ import { makeEditUserController } from '@/factories/controllers/auth/user/make-e
 import { makeDeleteUserController } from '@/factories/controllers/auth/user/make-delete-user-controller'
 import { makeEditCondominiumController } from '@/factories/controllers/auth/condominium/make-edit-condominium-controller'
 import { makeDeleteCondominiumController } from '@/factories/controllers/auth/condominium/make-delete-condominium-controller'
+import { makeCreateUserCondominiumController } from '@/factories/controllers/auth/usercondominium/make-create-usercondominium-controller'
+import { makeDeleteUserCondominiumController } from '@/factories/controllers/auth/usercondominium/make-delete-usercondominium-controller'
+import { makeEditUserCondominiumController } from '@/factories/controllers/auth/usercondominium/make-edit-usercondominium-controller'
 
 // Condominium routes
 app.post('/condominium', routeAdapter(makeCreateCondominiumController()))
@@ -26,4 +29,9 @@ app.delete('/serviceowner/:id', routeAdapter(makeDeleteServiceOwnerController())
 app.post('/user', routeAdapter(makeCreateUserController()))
 app.put('/user/:id', routeAdapter(makeEditUserController()))
 app.delete('/user/:id', routeAdapter(makeDeleteUserController()))
+
+// UserCondominium routes
+app.post('/usercondominium', routeAdapter(makeCreateUserCondominiumController()))
+app.put('/usercondominium/:id', routeAdapter(makeEditUserCondominiumController()))
+app.delete('/usercondominium/:id', routeAdapter(makeDeleteUserCondominiumController()))
 
