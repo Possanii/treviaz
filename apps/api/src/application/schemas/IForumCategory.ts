@@ -3,7 +3,7 @@ import z from 'zod'
 export const forumCategorySchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
-  description: z.string().optional(),
+  description: z.string(),
   created_at: z.date(),
   updated_at: z.date(),
 })

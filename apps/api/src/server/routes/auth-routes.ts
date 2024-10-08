@@ -14,6 +14,9 @@ import { makeDeleteCondominiumController } from '@/factories/controllers/auth/co
 import { makeCreateUserCondominiumController } from '@/factories/controllers/auth/usercondominium/make-create-usercondominium-controller'
 import { makeDeleteUserCondominiumController } from '@/factories/controllers/auth/usercondominium/make-delete-usercondominium-controller'
 import { makeEditUserCondominiumController } from '@/factories/controllers/auth/usercondominium/make-edit-usercondominium-controller'
+import { makeCreateForumCategoryController } from '@/factories/controllers/auth/forumcategory/make-create-forumcategory-controller'
+import { makeEditForumCategoryController } from '@/factories/controllers/auth/forumcategory/make-edit-forumcategory-controller'
+import { makeDeleteForumCategoryController } from '@/factories/controllers/auth/forumcategory/make-delete-forumcategory-controller'
 
 // Condominium routes
 app.post('/condominium', routeAdapter(makeCreateCondominiumController()))
@@ -34,4 +37,9 @@ app.delete('/user/:id', routeAdapter(makeDeleteUserController()))
 app.post('/usercondominium', routeAdapter(makeCreateUserCondominiumController()))
 app.put('/usercondominium/:id', routeAdapter(makeEditUserCondominiumController()))
 app.delete('/usercondominium/:id', routeAdapter(makeDeleteUserCondominiumController()))
+
+// ForumCategory routes
+app.post('/forumcategory', routeAdapter(makeCreateForumCategoryController()))
+app.put('/forumcategory/:id', routeAdapter(makeEditForumCategoryController()))
+app.delete('/forumcategory/:id', routeAdapter(makeDeleteForumCategoryController()))
 

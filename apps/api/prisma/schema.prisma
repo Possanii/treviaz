@@ -101,8 +101,8 @@ enum Role {
 // Forum
 model ForumCategory {
   id          String        @id @default(uuid())
-  name        String
-  description String?
+  name        String        @unique
+  description String
   created_at  DateTime      @default(now())
   updated_at  DateTime      @updatedAt
   threads     ForumThread[]
