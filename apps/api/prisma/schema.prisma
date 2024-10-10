@@ -26,8 +26,20 @@ model Condominium {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   users       UserCondominium[]
+  reserves    Reserve[]
+  guests      Guest[]
+  units       Unit[]
 
   @@map("condominiums")
+}
+
+model Unit {
+  id              String   @id @default(uuid())
+  condominium_id  String
+  number          String
+  condominium     Condominium @relation(fields: [condominium_id], references: [id])
+
+  @@map("units")
 }
 
 model Address {
@@ -46,6 +58,8 @@ model Address {
 
   @@map("addresses")
 }
+
+
 model User {
   id              String   @id @default(uuid())
   name            String
@@ -54,10 +68,13 @@ model User {
   avatar_url      String?
   password_hashed String
   created_at      DateTime @default(now())
-  updated_at      DateTime      @updatedAt
+  updated_at      DateTime @updatedAt
   forumThreads    ForumThread[]
   forumPosts      ForumPost[]
-  condominiums   UserCondominium[]
+  condominiums    UserCondominium[]
+  reserves        Reserve[]
+  guests          Guest[]
+  notifications   Notification[]
 
   @@map("users")
 }
@@ -96,7 +113,12 @@ enum Role {
   SERVICES
 }
 
-
+enum ReserveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
 
 // Forum
 model ForumCategory {
@@ -137,5 +159,61 @@ model ForumPost {
   @@map("forum_posts")
 }
 
-// Services
+//services
 
+model Reserve {
+  id             String   @id @default(uuid())
+  user_id        String
+  condominium_id String
+  space_name     String
+  reserve_date   DateTime
+  start_time     DateTime
+  end_time       DateTime
+  status         ReserveStatus
+  created_at     DateTime @default(now())
+
+  user         User        @relation(fields: [user_id], references: [id])
+  condominium  Condominium @relation(fields: [condominium_id], references: [id])
+
+  @@map("reserves")
+}
+
+model Guest {
+  id              String   @id @default(uuid())
+  user_id         String
+  condominium_id  String
+  qr_code         String
+  valid_from      DateTime
+  valid_until     DateTime
+  created_at      DateTime @default(now())
+
+  user         User        @relation(fields: [user_id], references: [id])
+  condominium  Condominium @relation(fields: [condominium_id], references: [id])
+
+  @@map("guests")
+}
+
+model Invite {
+  id         String   @id @default(uuid())
+  email      String
+  token      String   @unique
+  sent_at    DateTime @default(now())
+  expires_at DateTime
+
+  @@map("invites")
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  user_id    String
+  title      String
+  message    String
+  created_at DateTime @default(now())
+  viewed     Boolean  @default(false)
+  type       String
+  data       Json
+
+  user       User     @relation(fields: [user_id], references: [id])
+
+  @@map("notifications")
+}
