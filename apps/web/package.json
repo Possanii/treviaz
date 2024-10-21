@@ -10,16 +10,20 @@
     "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@treviaz/supabase": "workspace:*",
     "@treviaz/cookies": "workspace:*",
     "@treviaz/env": "workspace:*",
+    "@treviaz/supabase": "workspace:*",
     "@treviaz/ui": "workspace:*",
+    "@types/validator": "^13.12.2",
     "cookies-next": "^4.2.1",
     "ky": "^1.7.2",
     "lucide-react": "^0.441.0",
     "next": "15.0.0-rc.0",
+    "next-themes": "^0.3.0",
     "react": "19.0.0-rc-a03254bc-20240905",
     "react-dom": "19.0.0-rc-a03254bc-20240905",
+    "sonner": "^1.5.0",
+    "validator": "^13.12.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

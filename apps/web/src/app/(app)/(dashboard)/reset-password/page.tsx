@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import { ForgotPasswordForm } from './forgot-password-form'
+import ResetPasswordForm from './reset-password-form'
 
 export default function ForgotPasswordPage() {
   return (
@@ -17,12 +17,12 @@ export default function ForgotPasswordPage() {
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Esqueceu a senha</h1>
+            <h1 className="text-3xl font-bold">Recuperar senha</h1>
             <p className="text-muted-foreground text-balance">
-              Entre com email abaixo para solicitar a recuperação de conta.
+              Por favor, insira sua nova senha
             </p>
           </div>
-          <ForgotPasswordForm />
+          <ResetPasswordForm />
         </div>
       </div>
     </div>

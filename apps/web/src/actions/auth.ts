@@ -5,10 +5,10 @@ import { createClient } from '@treviaz/supabase/server'
 import { HTTPError } from 'ky'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { isStrongPassword } from 'validator'
 import { z } from 'zod'
 
 import { IHttpBody } from '@/interfaces/IHttpBody'
-import { encodedRedirect } from '@/utils/utils'
 
 const signUpSchema = z
   .object({
@@ -18,12 +18,18 @@ const signUpSchema = z
     email: z
       .string()
       .email({ message: 'Por favor, forneça um e-mail válido.' }),
-    password: z.string().min(6, {
-      message: 'Por favor, sua senha deve ter pelo menos 6 caracteres.',
-    }),
-    password_confirmation: z.string().min(6, {
-      message: 'Por favor, sua senha deve ter pelo menos 6 caracteres.',
-    }),
+    password: z
+      .string({ message: 'Por favor, Insira sua senha' })
+      .min(8, 'Sua senha deve conter 8 caracteres.')
+      .refine((password) => isStrongPassword(password), {
+        message: 'Por favor, insira uma senha forte.',
+      }),
+    password_confirmation: z
+      .string({ message: 'Por favor, Insira sua senha' })
+      .min(8, 'Sua senha deve conter 8 caracteres.')
+      .refine((password) => isStrongPassword(password), {
+        message: 'Por favor, insira uma senha forte.',
+      }),
   })
   .refine((data) => data.password === data.password_confirmation, {
     message: 'A confirmação da senha não corresponde.',
@@ -85,7 +91,12 @@ export async function signUpAction(data: FormData) {
 
 const signInSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z
+    .string({ message: 'Por favor, Insira sua senha' })
+    .min(8, 'Sua senha deve conter 8 caracteres.')
+    .refine((password) => isStrongPassword(password), {
+      message: 'Por favor, insira uma senha forte.',
+    }),
 })
 
 export const signInAction = async (formData: FormData) => {
@@ -139,79 +150,132 @@ export const signInAction = async (formData: FormData) => {
   return { success: true, message: null, errors: null }
 }
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+})
+
 export const forgotPasswordAction = async (formData: FormData) => {
-  const email = formData.get('email')?.toString()
-  const supabase = createClient()
-  const origin = headers().get('origin')
-  const callbackUrl = formData.get('callbackUrl')?.toString()
+  const result = forgotPasswordSchema.safeParse(Object.fromEntries(formData))
 
-  if (!email) {
-    return encodedRedirect('error', '/forgot-password', 'Email is required')
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors
+
+    return {
+      success: false,
+      message: null,
+      errors,
+    }
   }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
-  })
+  try {
+    const supabase = createClient()
+    const origin = headers().get('origin')
 
-  if (error) {
-    console.error(error.message)
-    return encodedRedirect(
-      'error',
-      '/forgot-password',
-      'Could not reset password'
-    )
+    const { email } = result.data
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${origin}/api/auth/callback?redirect_to=/reset-password`,
+    })
+
+    if (error) {
+      return {
+        success: false,
+        message: error.message,
+        errors: null,
+      }
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message, body } = await err.response.json<IHttpBody>()
+
+      return {
+        success: false,
+        message: message.message,
+        errors: body ? (body.errors as Record<string, string[]>) : null,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Erro inesperado, tente novamente em alguns minutos.',
+      errors: null,
+    }
   }
 
-  if (callbackUrl) {
-    return redirect(callbackUrl)
-  }
-
-  return encodedRedirect(
-    'success',
-    '/forgot-password',
-    'Check your email for a link to reset your password.'
-  )
+  return { success: true, message: null, errors: null }
 }
 
-export const resetPasswordAction = async (formData: FormData) => {
-  const supabase = createClient()
-
-  const password = formData.get('password') as string
-  const confirmPassword = formData.get('confirmPassword') as string
-
-  if (!password || !confirmPassword) {
-    encodedRedirect(
-      'error',
-      '/protected/reset-password',
-      'Password and confirm password are required'
-    )
-  }
-
-  if (password !== confirmPassword) {
-    encodedRedirect(
-      'error',
-      '/protected/reset-password',
-      'Passwords do not match'
-    )
-  }
-
-  const { error } = await supabase.auth.updateUser({
-    password,
+const resetPasswordSchema = z
+  .object({
+    password: z
+      .string({ message: 'Por favor, Insira sua senha' })
+      .min(8, 'Sua senha deve conter 8 caracteres.')
+      .refine((password) => isStrongPassword(password), {
+        message: 'Por favor, insira uma senha forte.',
+      }),
+    confirm_password: z
+      .string({ message: 'Por favor, Insira sua senha' })
+      .min(8, 'Sua senha deve conter 8 caracteres.')
+      .refine((password) => isStrongPassword(password), {
+        message: 'Por favor, insira uma senha forte.',
+      }),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: 'A confirmação da senha não corresponde.',
+    path: ['confirm_password'],
   })
 
-  if (error) {
-    encodedRedirect(
-      'error',
-      '/protected/reset-password',
-      'Password update failed'
-    )
+export const resetPasswordAction = async (formData: FormData) => {
+  const result = resetPasswordSchema.safeParse(Object.fromEntries(formData))
+
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors
+
+    return {
+      success: false,
+      message: null,
+      errors,
+    }
   }
 
-  encodedRedirect('success', '/protected/reset-password', 'Password updated')
+  try {
+    const supabase = createClient()
+    const { password } = result.data
+
+    const { error } = await supabase.auth.updateUser({
+      password,
+    })
+
+    if (error) {
+      return {
+        success: false,
+        message: error.message,
+        errors: null,
+      }
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message, body } = await err.response.json<IHttpBody>()
+
+      return {
+        success: false,
+        message: message.message,
+        errors: body ? (body.errors as Record<string, string[]>) : null,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Erro inesperado, tente novamente em alguns minutos.',
+      errors: null,
+    }
+  }
+
+  return { success: true, message: null, errors: null }
 }
 
 export const signOutAction = async () => {
   const supabase = createClient()
   await supabase.auth.signOut()
-  return redirect('/sign-in')
+  return redirect('/auth/sign-in')
 }

@@ -8,7 +8,7 @@ import {
 import { Button } from '@treviaz/ui/components/ui/button'
 import { Input } from '@treviaz/ui/components/ui/input'
 import { Label } from '@treviaz/ui/components/ui/label'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -65,7 +65,7 @@ export function SignInForm() {
           />
         </div>
         <Button type="submit" className="w-full" disabled={isPending}>
-          Login
+          {isPending ? <Loader2 className="size-4 animate-spin" /> : 'Login'}
         </Button>
       </div>
       <div className="mt-4 text-center text-sm">

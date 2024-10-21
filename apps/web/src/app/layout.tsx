@@ -1,6 +1,9 @@
 import '@treviaz/ui/globals.css'
 
+import { env } from '@treviaz/env'
 import type { Metadata } from 'next'
+
+import { Providers } from './providers'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html
+      lang="en"
+      suppressHydrationWarning={env.NEXT_PUBLIC_NODE_ENV === 'development'}
+    >
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

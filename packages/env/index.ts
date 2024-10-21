@@ -9,12 +9,16 @@ export const env = createEnv({
   },
   client: {},
   shared: {
+    NEXT_PUBLIC_NODE_ENV: z
+      .enum(['development', 'production'])
+      .default('development'),
     NEXT_PUBLIC_API_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
     NEXT_PUBLIC_SUPABASE_AUTH_REDIRECT_URL: z.string().url(),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     SERVER_PORT: process.env.SERVER_PORT,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
