@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm env:load tsx watch src/server/server.ts",
+    "lint": "eslint --fix --ext .ts,.tsx",
     "dev:nodemon": "pnpm env:load nodemon -w src -r ts-node src/server/server.ts",
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
