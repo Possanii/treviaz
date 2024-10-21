@@ -1,4 +1,4 @@
-import { AuthProvider } from '@/contexts/auth-contex'
+import { AuthProvider } from '@/contexts/auth-context'
 
 export default async function BaseLayout({
   children,
