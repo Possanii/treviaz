@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks/use-auth'
 
-export default async function Home() {
+export default function Home() {
   const { user } = useAuth()
 
   return <pre>{JSON.stringify(user, null, 2)}</pre>

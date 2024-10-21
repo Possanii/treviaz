@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { User } from '@treviaz/supabase/types'
 import { createContext } from 'react'
 
+import { signOutAction } from '@/actions/auth'
 import { useQueryGetUser } from '@/hooks/react-query/queries/get-user'
 
 interface IAuthContextValue {
@@ -17,11 +18,18 @@ interface IAuthProviderProps {
 }
 
 export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
-  const { data: user, isPending } = useQuery(useQueryGetUser())
+  const { data: user, isLoading } = useQuery(useQueryGetUser())
+
+  if (isLoading) {
+    return <>Loading...</>
+  }
+
+  if (!user) {
+    signOutAction()
+    return null
+  }
 
   return (
-    <AuthContext.Provider value={{ user: user ?? null }}>
-      {isPending ? <>Loading...</> : children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   )
 }
