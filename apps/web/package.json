@@ -10,6 +10,7 @@
     "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.59.15",
     "@treviaz/cookies": "workspace:*",
     "@treviaz/env": "workspace:*",
     "@treviaz/supabase": "workspace:*",

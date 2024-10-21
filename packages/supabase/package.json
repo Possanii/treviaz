@@ -24,6 +24,7 @@
   "exports": {
     "./client": "./src/utils/supabase/client.ts",
     "./server": "./src/utils/supabase/server.ts",
-    "./middleware": "./src/utils/supabase/middleware.ts"
+    "./middleware": "./src/utils/supabase/middleware.ts",
+    "./types": "./src/utils/supabase/types.ts"
   }
 }

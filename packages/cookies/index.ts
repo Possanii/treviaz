@@ -1,3 +1,3 @@
 export const cookiesStorage = {
-  AUTH_TOKEN: 'treviaz:token',
+  AUTH_TOKEN: 'sb-dssudhvwrklurgrmvdzw-auth-token',
 }
