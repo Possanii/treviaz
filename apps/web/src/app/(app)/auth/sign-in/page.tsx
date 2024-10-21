@@ -1,8 +1,6 @@
-import { Button } from '@treviaz/ui/components/ui/button'
-import { Input } from '@treviaz/ui/components/ui/input'
-import { Label } from '@treviaz/ui/components/ui/label'
 import Image from 'next/image'
-import Link from 'next/link'
+
+import { SignInForm } from './sign-in-form'
 
 export default function SignInPage() {
   return (
@@ -15,38 +13,7 @@ export default function SignInPage() {
               Entre com seu email para acessar sua conta
             </p>
           </div>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Senha</Label>
-                <Link
-                  href="/auth/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Esqueceu sua senha?
-                </Link>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Não tem uma conta?{' '}
-            <Link href="/auth/sign-up" className="underline">
-              Cadastrar
-            </Link>
-          </div>
+          <SignInForm />
         </div>
       </div>
       <div className="bg-muted hidden lg:block">

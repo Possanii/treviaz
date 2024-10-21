@@ -44,7 +44,7 @@ export async function signUpAction(data: FormData) {
 
     const supabase = createClient()
 
-    const response = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -55,7 +55,13 @@ export async function signUpAction(data: FormData) {
       },
     })
 
-    console.log(response)
+    if (error) {
+      return {
+        success: false,
+        message: error.message,
+        errors: null,
+      }
+    }
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message, body } = await err.response.json<IHttpBody>()
@@ -77,21 +83,60 @@ export async function signUpAction(data: FormData) {
   return { success: true, message: null, errors: null }
 }
 
+const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+})
+
 export const signInAction = async (formData: FormData) => {
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-  const supabase = createClient()
+  const result = signInSchema.safeParse(Object.fromEntries(formData))
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors
 
-  if (error) {
-    return encodedRedirect('error', '/sign-in', error.message)
+    return {
+      success: false,
+      message: null,
+      errors,
+    }
   }
 
-  return redirect('/protected')
+  try {
+    const { email, password } = result.data
+
+    const supabase = createClient()
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      return {
+        success: false,
+        message: error.message,
+        errors: null,
+      }
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message, body } = await err.response.json<IHttpBody>()
+
+      return {
+        success: false,
+        message: message.message,
+        errors: body ? (body.errors as Record<string, string[]>) : null,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Erro inesperado, tente novamente em alguns minutos.',
+      errors: null,
+    }
+  }
+
+  return { success: true, message: null, errors: null }
 }
 
 export const forgotPasswordAction = async (formData: FormData) => {
