@@ -10,6 +10,7 @@
     "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@treviaz/supabase": "workspace:*",
     "@treviaz/cookies": "workspace:*",
     "@treviaz/env": "workspace:*",
     "@treviaz/ui": "workspace:*",

@@ -1,9 +1,10 @@
 'use server'
 
+import { env } from '@treviaz/env'
+import { createServerClient } from '@treviaz/supabase/server'
 import { HTTPError } from 'ky'
 import { z } from 'zod'
 
-import { signUp } from '@/actions/auth/sign-up'
 import { IHttpBody } from '@/interfaces/IHttpBody'
 
 const signUpSchema = z
@@ -38,11 +39,20 @@ export async function signUpAction(data: FormData) {
   try {
     const { name, email, password } = result.data
 
-    await signUp({
-      name,
+    const supabase = createServerClient()
+
+    const response = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${env.NEXT_PUBLIC_SUPABASE_AUTH_REDIRECT_URL}`,
+        data: {
+          name,
+        },
+      },
     })
+
+    console.log(response)
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message, body } = await err.response.json<IHttpBody>()
@@ -63,3 +73,41 @@ export async function signUpAction(data: FormData) {
 
   return { success: true, message: null, errors: null }
 }
+
+// export async function signUpAction(data: FormData) {
+//   const result = signUpSchema.safeParse(Object.fromEntries(data))
+
+//   if (!result.success) {
+//     const errors = result.error.flatten().fieldErrors
+
+//     return { success: false, message: null, errors }
+//   }
+
+//   try {
+//     const { name, email, password } = result.data
+
+//     await signUp({
+//       name,
+//       email,
+//       password,
+//     })
+//   } catch (err) {
+//     if (err instanceof HTTPError) {
+//       const { message, body } = await err.response.json<IHttpBody>()
+
+//       return {
+//         success: false,
+//         message: message.message,
+//         errors: body ? (body.errors as Record<string, string[]>) : null,
+//       }
+//     }
+
+//     return {
+//       success: false,
+//       message: 'Erro inesperado, tente novamente em alguns minutos.',
+//       errors: null,
+//     }
+//   }
+
+//   return { success: true, message: null, errors: null }
+// }
