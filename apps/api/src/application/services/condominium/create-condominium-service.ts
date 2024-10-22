@@ -24,27 +24,37 @@ export class CreateCondominiumService {
       )
     }
 
-    await prisma.condominium.create({
-      data: {
-        name: data.name,
-        slug: slugify(data.name, {
-          lower: true,
-        }),
-        address: {
-          create: {
-            street: data.address.street,
-            number: data.address.number,
-            complement: data.address.complement,
-            neighborhood: data.address.neighborhood,
-            city: data.address.city,
-            state: data.address.state,
-            country: data.address.country,
-            zip_code: data.address.zip_code,
+    await prisma.$transaction(async (tx) => {
+      const condominium = await tx.condominium.create({
+        data: {
+          name: data.name,
+          slug: slugify(data.name, {
+            lower: true,
+          }),
+          address: {
+            create: {
+              street: data.address.street,
+              number: data.address.number,
+              complement: data.address.complement,
+              neighborhood: data.address.neighborhood,
+              city: data.address.city,
+              state: data.address.state,
+              country: data.address.country,
+              zip_code: data.address.zip_code,
+            },
           },
+          photo_url: data.photo_url,
+          owner_id: data.owner_id,
         },
-        photo_url: data.photo_url,
-        owner_id: data.owner_id,
-      },
+      })
+
+      await tx.userCondominium.create({
+        data: {
+          condominium_id: condominium.id,
+          role: 'ADMIN',
+          user_id: data.owner_id,
+        },
+      })
     })
   }
 }
