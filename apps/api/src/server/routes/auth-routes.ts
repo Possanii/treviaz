@@ -1,6 +1,7 @@
 import { makeCreateCondominiumController } from '@/factories/controllers/condominium/make-create-condominium-controller'
 import { makeDeleteCondominiumController } from '@/factories/controllers/condominium/make-delete-condominium-controller'
 import { makeEditCondominiumController } from '@/factories/controllers/condominium/make-edit-condominium-controller'
+import { makeGetUserRelantionShipCondominiumsController } from '@/factories/controllers/condominium/make-get-user-relantion-ship-condominium-controller'
 import { makeCreateForumCategoryController } from '@/factories/controllers/forumcategory/make-create-forumcategory-controller'
 import { makeDeleteForumCategoryController } from '@/factories/controllers/forumcategory/make-delete-forumcategory-controller'
 import { makeEditForumCategoryController } from '@/factories/controllers/forumcategory/make-edit-forumcategory-controller'
@@ -44,6 +45,11 @@ app.delete(
 
 // User routes
 app.post('/user', routeAdapter(makeCreateUserController()))
+app.get(
+  '/user/condominiums',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetUserRelantionShipCondominiumsController())
+)
 app.put('/user/:id', routeAdapter(makeEditUserController()))
 app.delete('/user/:id', routeAdapter(makeDeleteUserController()))
 
