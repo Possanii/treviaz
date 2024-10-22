@@ -17,33 +17,34 @@ datasource db {
 // user condominium data
 
 model Condominium {
-  id          String   @id @default(uuid())
-  name        String
-  address     Address  @relation(fields: [address_id], references: [id])
-  address_id  String   @unique
-  photo_url   String?
-  owner_id    String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  users       UserCondominium[]
-  reserves    Reserve[]
-  guests      Guest[]
-  units       Unit[]
+  id         String            @id @default(uuid())
+  name       String
+  slug       String            @unique
+  address    Address           @relation(fields: [address_id], references: [id])
+  address_id String            @unique
+  photo_url  String?
+  owner_id   String
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt
+  users      UserCondominium[]
+  reserves   Reserve[]
+  guests     Guest[]
+  units      Unit[]
 
   @@map("condominiums")
 }
 
 model Unit {
-  id              String   @id @default(uuid())
-  condominium_id  String
-  number          String
-  condominium     Condominium @relation(fields: [condominium_id], references: [id])
+  id             String      @id @default(uuid())
+  condominium_id String
+  number         String
+  condominium    Condominium @relation(fields: [condominium_id], references: [id])
 
   @@map("units")
 }
 
 model Address {
-  id           String   @id @default(uuid())
+  id           String       @id @default(uuid())
   street       String
   number       String
   complement   String?
@@ -52,39 +53,36 @@ model Address {
   state        String
   country      String
   zip_code     String
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
   condominium  Condominium?
 
   @@map("addresses")
 }
 
-
 model User {
-  id              String   @id @default(uuid())
-  name            String
-  email           String   @unique
-  document_number String
-  avatar_url      String?
-  password_hashed String
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-  forumThreads    ForumThread[]
-  forumPosts      ForumPost[]
-  condominiums    UserCondominium[]
-  reserves        Reserve[]
-  guests          Guest[]
-  notifications   Notification[]
+  id            String            @id @unique @default(uuid())
+  name          String
+  email         String            @unique
+  avatar_url    String?
+  created_at    DateTime          @default(now())
+  updated_at    DateTime?         @updatedAt
+  forumThreads  ForumThread[]
+  forumPosts    ForumPost[]
+  condominiums  UserCondominium[]
+  reserves      Reserve[]
+  guests        Guest[]
+  notifications Notification[]
 
   @@map("users")
 }
 
 model UserCondominium {
-  id              String   @id @default(uuid())
-  user_id         String
-  condominium_id  String
-  role            Role
-  joined_at       DateTime @default(now())
+  id             String   @id @default(uuid())
+  user_id        String
+  condominium_id String
+  role           Role
+  joined_at      DateTime @default(now())
 
   user        User        @relation(fields: [user_id], references: [id])
   condominium Condominium @relation(fields: [condominium_id], references: [id])
@@ -96,7 +94,7 @@ model ServiceOwner {
   id              String   @id @default(uuid())
   name            String
   document_number String
-  email           String @unique
+  email           String   @unique
   phone           String
   password_hashed String
   created_at      DateTime @default(now())
@@ -162,7 +160,7 @@ model ForumPost {
 //services
 
 model Reserve {
-  id             String   @id @default(uuid())
+  id             String        @id @default(uuid())
   user_id        String
   condominium_id String
   space_name     String
@@ -170,25 +168,25 @@ model Reserve {
   start_time     DateTime
   end_time       DateTime
   status         ReserveStatus
-  created_at     DateTime @default(now())
+  created_at     DateTime      @default(now())
 
-  user         User        @relation(fields: [user_id], references: [id])
-  condominium  Condominium @relation(fields: [condominium_id], references: [id])
+  user        User        @relation(fields: [user_id], references: [id])
+  condominium Condominium @relation(fields: [condominium_id], references: [id])
 
   @@map("reserves")
 }
 
 model Guest {
-  id              String   @id @default(uuid())
-  user_id         String
-  condominium_id  String
-  qr_code         String
-  valid_from      DateTime
-  valid_until     DateTime
-  created_at      DateTime @default(now())
+  id             String   @id @default(uuid())
+  user_id        String
+  condominium_id String
+  qr_code        String
+  valid_from     DateTime
+  valid_until    DateTime
+  created_at     DateTime @default(now())
 
-  user         User        @relation(fields: [user_id], references: [id])
-  condominium  Condominium @relation(fields: [condominium_id], references: [id])
+  user        User        @relation(fields: [user_id], references: [id])
+  condominium Condominium @relation(fields: [condominium_id], references: [id])
 
   @@map("guests")
 }
@@ -213,7 +211,7 @@ model Notification {
   type       String
   data       Json
 
-  user       User     @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 
   @@map("notifications")
 }
