@@ -6,6 +6,7 @@ export const env = createEnv({
     SERVER_PORT: z.coerce.number().default(3333),
     DATABASE_URL: z.string().url(),
     DIRECT_URL: z.string().url(),
+    JWT_SECRET_KEY: z.string(),
   },
   client: {},
   shared: {
@@ -27,6 +28,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_SUPABASE_AUTH_REDIRECT_URL:
       process.env.NEXT_PUBLIC_SUPABASE_AUTH_REDIRECT_URL,
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   },
   emptyStringAsUndefined: true,
 })

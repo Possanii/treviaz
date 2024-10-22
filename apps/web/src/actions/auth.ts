@@ -1,9 +1,10 @@
 'use server'
 
+import { cookiesStorage } from '@treviaz/cookies'
 import { env } from '@treviaz/env'
 import { createClient } from '@treviaz/supabase/server'
 import { HTTPError } from 'ky'
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { isStrongPassword } from 'validator'
 import { z } from 'zod'
@@ -117,7 +118,10 @@ export const signInAction = async (formData: FormData) => {
 
     const supabase = createClient()
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const {
+      error,
+      data: { session },
+    } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -129,6 +133,14 @@ export const signInAction = async (formData: FormData) => {
         errors: null,
       }
     }
+
+    cookies().set(cookiesStorage.API_AUTH_TOKEN, session!.access_token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + session!.expires_in * 1000),
+      path: '/',
+      sameSite: 'strict',
+      secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
+    })
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message, body } = await err.response.json<IHttpBody>()
@@ -277,5 +289,7 @@ export const resetPasswordAction = async (formData: FormData) => {
 export const signOutAction = async () => {
   const supabase = createClient()
   await supabase.auth.signOut()
+  cookies().delete(cookiesStorage.API_AUTH_TOKEN)
+
   return redirect('/auth/sign-in')
 }
