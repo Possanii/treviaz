@@ -1,8 +1,23 @@
+import { cookiesStorage } from '@treviaz/cookies'
 import { updateSession } from '@treviaz/supabase/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 
-export async function middleware(request: NextRequest, response: NextResponse) {
-  return await updateSession(request, response)
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  const response = NextResponse.next()
+
+  if (pathname.startsWith('/condominium')) {
+    const [, , slug] = pathname.split('/')
+
+    response.cookies.set(cookiesStorage.CURRENT_CONDOMINIUM, slug)
+  } else {
+    response.cookies.delete(cookiesStorage.CURRENT_CONDOMINIUM)
+  }
+
+  await updateSession(request, response)
+
+  return response
 }
 
 export const config = {
