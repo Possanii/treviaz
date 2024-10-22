@@ -44,7 +44,11 @@ export class CreateCondominiumService {
             },
           },
           photo_url: data.photo_url,
-          owner_id: data.owner_id,
+          owner: {
+            connect: {
+              id: data.owner_id,
+            },
+          },
         },
       })
 
