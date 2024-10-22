@@ -1,0 +1,23 @@
+{
+  "name": "@treviaz/entities",
+  "version": "1.0.0",
+  "private": "true",
+  "devDependencies": {
+    "@treviaz/eslint-config": "workspace:*",
+    "@treviaz/prettier": "workspace:*",
+    "@treviaz/tsconfig": "workspace:*",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "prettier": "@treviaz/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@treviaz/eslint-config/node"
+    ]
+  },
+  "exports": {
+    "./schemas/*": "./src/*.ts"
+  }
+}
