@@ -51,7 +51,10 @@ export async function signUpAction(data: FormData) {
 
     const supabase = createClient()
 
-    const { error } = await supabase.auth.signUp({
+    const {
+      error,
+      data: { session },
+    } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -69,6 +72,14 @@ export async function signUpAction(data: FormData) {
         errors: null,
       }
     }
+
+    cookies().set(cookiesStorage.API_AUTH_TOKEN, session!.access_token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + session!.expires_in * 1000),
+      path: '/',
+      sameSite: 'strict',
+      secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
+    })
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message, body } = await err.response.json<IHttpBody>()
