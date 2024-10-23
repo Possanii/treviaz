@@ -1,5 +1,6 @@
 'use client'
 
+import { IRole } from '@treviaz/entities/schemas/IRole'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,17 +19,21 @@ import {
 import { ChevronsUpDown, Plus } from 'lucide-react'
 import * as React from 'react'
 
-export function TeamSwitcher({
-  teams,
+export function CondominiumSwitcher({
+  condominiums,
 }: {
-  teams: {
+  condominiums: {
+    id: string
     name: string
-    logo: React.ElementType
-    plan: string
+    slug: string
+    role: IRole
+    joined_at: Date
   }[]
 }) {
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const [activeCondominium, setActiveCondominium] = React.useState(
+    condominiums[0]
+  )
 
   return (
     <SidebarMenu>
@@ -39,14 +44,16 @@ export function TeamSwitcher({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <activeTeam.logo className="size-4" />
-              </div>
+              {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <activeCondominium.logo className="size-4" />
+              </div> */}
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {activeTeam.name}
+                  {activeCondominium.name}
                 </span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+                <span className="truncate text-xs">
+                  {activeCondominium.slug}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -58,18 +65,18 @@ export function TeamSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Teams
+              Condominiums
             </DropdownMenuLabel>
-            {teams.map((team, index) => (
+            {condominiums.map((condominium, index) => (
               <DropdownMenuItem
-                key={team.name}
-                onClick={() => setActiveTeam(team)}
+                key={condominium.name}
+                onClick={() => setActiveCondominium(condominium)}
                 className="gap-2 p-2"
               >
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <team.logo className="size-4 shrink-0" />
-                </div>
-                {team.name}
+                {/* <div className="flex size-6 items-center justify-center rounded-sm border">
+                  <condominium.logo className="size-4 shrink-0" />
+                </div> */}
+                {condominium.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
@@ -78,7 +85,9 @@ export function TeamSwitcher({
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">Add team</div>
+              <div className="font-medium text-muted-foreground">
+                Add condominium
+              </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

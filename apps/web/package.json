@@ -15,6 +15,7 @@
     "@treviaz/env": "workspace:*",
     "@treviaz/supabase": "workspace:*",
     "@treviaz/ui": "workspace:*",
+    "@treviaz/entities": "workspace:*",
     "cookies-next": "^4.2.1",
     "ky": "^1.7.2",
     "lucide-react": "^0.441.0",
