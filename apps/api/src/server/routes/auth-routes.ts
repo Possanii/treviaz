@@ -25,6 +25,8 @@ import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authen
 import { middlewareAdapter } from '../adapters/middleware-adapter'
 import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
+import { makeDenyForumThreadController } from '@/factories/controllers/forumthread/make-deny-forumthread-controller'
+import { makeApproveForumThreadController } from '@/factories/controllers/forumthread/make-approve-forumthread-controller'
 
 // Condominium routes
 app.post(
@@ -73,12 +75,15 @@ app.put('/forumcategory/:id', routeAdapter(makeEditForumCategoryController()))
 app.delete(
   '/forumcategory/:id',
   routeAdapter(makeDeleteForumCategoryController())
+  
 )
 
 // ForumThread routes
 app.post('/forumthread', routeAdapter(makeCreateForumThreadController()))
 app.put('/forumthread/:id', routeAdapter(makeEditForumThreadController()))
 app.delete('/forumthread/:id', routeAdapter(makeDeleteForumThreadController()))
+app.put('/forumthread/:id/approve', routeAdapter(makeApproveForumThreadController()))
+app.put('/forumthread/:id/deny', routeAdapter(makeDenyForumThreadController()))
 
 // ForumPost routes
 app.post('/forumpost', routeAdapter(makeCreateForumPostController()))
