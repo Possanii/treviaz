@@ -1,6 +1,6 @@
 'use client'
 
-import { IRole } from '@treviaz/entities/schemas/IRole'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,20 +19,16 @@ import {
 import { ChevronsUpDown, Plus } from 'lucide-react'
 import * as React from 'react'
 
-export function CondominiumSwitcher({
-  condominiums,
-}: {
-  condominiums: {
-    id: string
-    name: string
-    slug: string
-    role: IRole
-    joined_at: Date
-  }[]
-}) {
+import { useQueryGetRelationshipsWithCondominiums } from '@/hooks/react-query/queries/get-user-relationships-with-condominiums'
+
+export function CondominiumSwitcher() {
+  const {
+    data: { relantionships },
+  } = useSuspenseQuery(useQueryGetRelationshipsWithCondominiums())
+
   const { isMobile } = useSidebar()
   const [activeCondominium, setActiveCondominium] = React.useState(
-    condominiums[0]
+    relantionships[0]
   )
 
   return (
@@ -49,10 +45,10 @@ export function CondominiumSwitcher({
               </div> */}
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {activeCondominium.name}
+                  {activeCondominium.condominium.name}
                 </span>
                 <span className="truncate text-xs">
-                  {activeCondominium.slug}
+                  {activeCondominium.condominium.slug}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -67,16 +63,16 @@ export function CondominiumSwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Condominiums
             </DropdownMenuLabel>
-            {condominiums.map((condominium, index) => (
+            {relantionships.map((relantionship, index) => (
               <DropdownMenuItem
-                key={condominium.name}
-                onClick={() => setActiveCondominium(condominium)}
+                key={relantionship.condominium.name}
+                onClick={() => setActiveCondominium(relantionship)}
                 className="gap-2 p-2"
               >
                 {/* <div className="flex size-6 items-center justify-center rounded-sm border">
                   <condominium.logo className="size-4 shrink-0" />
                 </div> */}
-                {condominium.name}
+                {relantionship.condominium.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}

@@ -1,18 +1,12 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { cookiesStorage } from '@treviaz/cookies'
 import { getCookie } from 'cookies-next'
 import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
 
-import { useQueryGetRelationshipsWithCondominiums } from '@/hooks/react-query/queries/get-user-relationships-with-condominiums'
 import { useAuth } from '@/hooks/use-auth'
 
 export function sidebarData() {
   const { user } = useAuth()
   const currentCondominium = getCookie(cookiesStorage.CURRENT_CONDOMINIUM)
-
-  const {
-    data: { relantionships },
-  } = useSuspenseQuery(useQueryGetRelationshipsWithCondominiums())
 
   return {
     user: {
@@ -20,16 +14,6 @@ export function sidebarData() {
       email: user?.user_metadata.email,
       avatar: '/avatars/shadcn.jpg',
     },
-    condominium: relantionships.map((relantionship) => {
-      return {
-        id: relantionship.condominium.id,
-        name: relantionship.condominium.name,
-        slug: relantionship.condominium.slug,
-        role: relantionship.role,
-        joined_at: relantionship.joined_at,
-      }
-    }),
-
     navMain: [
       {
         title: 'Condominio',

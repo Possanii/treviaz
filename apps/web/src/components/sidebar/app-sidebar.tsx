@@ -15,6 +15,7 @@ import { queryClient } from '@/lib/query-client'
 import { sidebarData } from '@/utils/sidebar-data'
 
 import { CondominiumSwitcher } from './condominium-switcher'
+import { CondominionSwitcherSkeleton } from './condominium-switcher-skeleton'
 import { NavMain } from './nav-main'
 import { NavUser } from './nav-user'
 
@@ -29,8 +30,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <HydrationBoundary state={dehydratedState}>
-          <React.Suspense fallback={<>Loading...</>}>
-            <CondominiumSwitcher condominiums={data.condominium} />
+          <React.Suspense fallback={<CondominionSwitcherSkeleton />}>
+            <CondominiumSwitcher />
           </React.Suspense>
         </HydrationBoundary>
       </SidebarHeader>
