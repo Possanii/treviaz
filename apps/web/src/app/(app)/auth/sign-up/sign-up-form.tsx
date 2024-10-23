@@ -11,9 +11,8 @@ import { Label } from '@treviaz/ui/components/ui/label'
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+import { signUpAction } from '@/actions/auth'
 import { useFormState } from '@/hooks/use-form-state'
-
-import { signUpAction } from './action'
 
 export default function SignUpForm() {
   const router = useRouter()

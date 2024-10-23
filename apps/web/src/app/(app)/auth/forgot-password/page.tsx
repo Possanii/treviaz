@@ -1,51 +1,29 @@
-import { Button } from '@treviaz/ui/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@treviaz/ui/components/ui/card'
-import { Input } from '@treviaz/ui/components/ui/input'
-import { Label } from '@treviaz/ui/components/ui/label'
-import Link from 'next/link'
+import Image from 'next/image'
+
+import { ForgotPasswordForm } from './forgot-password-form'
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="w-full xl:min-h-screen">
-      <div className="flex min-h-screen items-center justify-center">
-        <Card className="mx-auto min-w-[400px]">
-          <CardHeader>
-            <CardTitle className="text-2xl">Esqueceu sua senha?</CardTitle>
-            <CardDescription>
-              Insira seu email abaixo para recuperar sua senha
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form action="" className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-
-              <Button type="submit" className="w-full">
-                Recuperar senha
-              </Button>
-            </form>
-
-            <div className="mt-4 text-center text-sm">
-              Voltar para{' '}
-              <Link href="/auth/sign-in" className="underline">
-                Login
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
+      <div className="hidden bg-muted lg:block">
+        <Image
+          src="/placeholder.svg"
+          alt="Image"
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div>
+      <div className="flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">Esqueceu a senha</h1>
+            <p className="text-muted-foreground text-balance">
+              Entre com email abaixo para solicitar a recuperação de conta.
+            </p>
+          </div>
+          <ForgotPasswordForm />
+        </div>
       </div>
     </div>
   )
