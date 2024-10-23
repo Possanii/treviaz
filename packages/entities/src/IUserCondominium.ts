@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import { condominiumSchema } from './ICondominium'
+import { roleSchema } from './IRole'
 import { userSchema } from './IUser'
 
 export const userCondominiumSchema = z.object({
@@ -9,7 +10,7 @@ export const userCondominiumSchema = z.object({
   user: userSchema,
   condominium_id: z.string().uuid(),
   condominium: condominiumSchema,
-  role: z.enum(['RESIDENT', 'ADMIN', 'SYNDIC', 'BILLING', 'SERVICES']),
+  role: roleSchema,
   joined_at: z.date(),
 })
 
