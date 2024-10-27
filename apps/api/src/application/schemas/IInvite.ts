@@ -7,6 +7,8 @@ export const inviteSchema = z.object({
   status: z.enum(['PENDING', 'ACCEPTED', 'DENIED', 'REVOKED']),
   sent_at: z.date(),
   expires_at: z.date(),
+  condominium_id: z.string().uuid(),
+  role: z.enum(['RESIDENT', 'ADMIN', 'SYNDIC', 'BILLING', 'SERVICES']),
 })
 
 export type IInvite = z.infer<typeof inviteSchema>

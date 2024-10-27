@@ -29,6 +29,7 @@ model Condominium {
   reserves   Reserve[]
   guests     Guest[]
   units      Unit[]
+  invites    Invite[]
 
   owner    User   @relation(fields: [owner_id], references: [id])
   owner_id String
@@ -210,12 +211,16 @@ model Guest {
 }
 
 model Invite {
-  id         String       @id @default(uuid())
-  email      String
-  token      String       @unique
-  status     InviteStatus @default(PENDING)
-  sent_at    DateTime     @default(now())
-  expires_at DateTime
+  id             String       @id @default(uuid())
+  email          String
+  token          String       @unique
+  status         InviteStatus @default(PENDING)
+  sent_at        DateTime     @default(now())
+  expires_at     DateTime
+  condominium_id String
+  role           Role
+
+  condominium Condominium @relation(fields: [condominium_id], references: [id])
 
   @@map("invites")
 }

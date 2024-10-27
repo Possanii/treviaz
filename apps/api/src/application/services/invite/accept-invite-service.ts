@@ -31,6 +31,8 @@ export class AcceptInviteService {
             status: updatedInvite.status,
             sent_at: updatedInvite.sent_at,
             expires_at: updatedInvite.expires_at,
+            condominium_id: updatedInvite.condominium_id,
+            role: updatedInvite.role,
         }
     }
 }

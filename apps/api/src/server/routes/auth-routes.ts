@@ -1,7 +1,7 @@
 import { makeCreateCondominiumController } from '@/factories/controllers/condominium/make-create-condominium-controller'
 import { makeDeleteCondominiumController } from '@/factories/controllers/condominium/make-delete-condominium-controller'
 import { makeEditCondominiumController } from '@/factories/controllers/condominium/make-edit-condominium-controller'
-import { makeGetUserRelantionShipCondominiumsController } from '@/factories/controllers/condominium/make-get-user-relantion-ship-condominium-controller'
+import { makeGetUserRelationshipCondominiumsController } from '@/factories/controllers/condominium/make-get-user-relationship-condominium-controller'
 import { makeCreateForumCategoryController } from '@/factories/controllers/forumcategory/make-create-forumcategory-controller'
 import { makeDeleteForumCategoryController } from '@/factories/controllers/forumcategory/make-delete-forumcategory-controller'
 import { makeEditForumCategoryController } from '@/factories/controllers/forumcategory/make-edit-forumcategory-controller'
@@ -27,6 +27,13 @@ import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
 import { makeDenyForumThreadController } from '@/factories/controllers/forumthread/make-deny-forumthread-controller'
 import { makeApproveForumThreadController } from '@/factories/controllers/forumthread/make-approve-forumthread-controller'
+import { makeAcceptInviteController } from '@/factories/controllers/invite/make-accept-invite-controller'
+import { makeCreateInviteController } from '@/factories/controllers/invite/make-create-invite-controller'
+import { makeDeleteInviteController } from '@/factories/controllers/invite/make-delete-invite-controller'
+import { makeDenyInviteController } from '@/factories/controllers/invite/make-deny-invite-controller'
+import { makeEditInviteController } from '@/factories/controllers/invite/make-edit-invite-controller'
+import { makeGetAllInviteController } from '@/factories/controllers/invite/make-get-all-invite-controller'
+import { makeRevokeInviteController } from '@/factories/controllers/invite/make-revoke-invite-controller'
 
 // Condominium routes
 app.post(
@@ -36,6 +43,12 @@ app.post(
 )
 app.put('/condominium/:id', routeAdapter(makeEditCondominiumController()))
 app.delete('/condominium/:id', routeAdapter(makeDeleteCondominiumController()))
+app.get(
+  '/user/condominiums/relationship',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetUserRelationshipCondominiumsController())
+)
+
 
 // ServiceOwner routes
 app.post('/serviceowner', routeAdapter(makeCreateServiceOwnerController()))
@@ -47,11 +60,6 @@ app.delete(
 
 // User routes
 app.post('/user', routeAdapter(makeCreateUserController()))
-app.get(
-  '/user/condominiums',
-  middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetUserRelantionShipCondominiumsController())
-)
 app.put('/user/:id', routeAdapter(makeEditUserController()))
 app.delete('/user/:id', routeAdapter(makeDeleteUserController()))
 
@@ -89,3 +97,13 @@ app.put('/forumthread/:id/deny', routeAdapter(makeDenyForumThreadController()))
 app.post('/forumpost', routeAdapter(makeCreateForumPostController()))
 app.put('/forumpost/:id', routeAdapter(makeEditForumPostController()))
 app.delete('/forumpost/:id', routeAdapter(makeDeleteForumPostController()))
+
+// Invite routes
+app.post('/invite', routeAdapter(makeCreateInviteController()))
+app.delete('/invite/:id', routeAdapter(makeDeleteInviteController()))
+app.put('/invite/:id', routeAdapter(makeEditInviteController()))
+app.get('/invite', routeAdapter(makeGetAllInviteController()))    
+app.put('/invite/:id/accept', routeAdapter(makeAcceptInviteController()))
+app.put('/invite/:id/deny', routeAdapter(makeDenyInviteController()))
+app.put('/invite/:id/revoke', routeAdapter(makeRevokeInviteController()))
+  

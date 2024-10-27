@@ -26,6 +26,8 @@ export class RevokeInviteService {
             status: revokedInvite.status,
             sent_at: revokedInvite.sent_at,
             expires_at: revokedInvite.expires_at,
+            condominium_id: revokedInvite.condominium_id,
+            role: revokedInvite.role,
         }
     }
 }

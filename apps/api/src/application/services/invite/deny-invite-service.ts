@@ -26,6 +26,8 @@ export class DenyInviteService {
             status: deniedInvite.status,
             sent_at: deniedInvite.sent_at,
             expires_at: deniedInvite.expires_at,
+            condominium_id: deniedInvite.condominium_id,
+            role: deniedInvite.role,
         }
     }
 }

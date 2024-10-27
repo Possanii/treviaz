@@ -3,15 +3,15 @@ import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { userSchema } from '@/application/schemas/IUser'
-import { GetUserRelantionShipCondominiumsService } from '@/application/services/condominium/get-user-relantion-ship-condominiums-service'
+import { GetUserRelationshipCondominiumsService } from '@/application/services/condominium/get-user-relationship-condominiums-service'
 
-export class GetUserRelantionShipCondominiumsController implements IController {
-  private readonly getUserRelantionShipCondominiumsService: GetUserRelantionShipCondominiumsService
+export class GetUserRelationshipCondominiumsController implements IController {
+  private readonly getUserRelationshipCondominiumsService: GetUserRelationshipCondominiumsService
 
   constructor(
-    getUserRelantionShipCondominiumsService: GetUserRelantionShipCondominiumsService
+    getUserRelantionShipCondominiumsService: GetUserRelationshipCondominiumsService
   ) {
-    this.getUserRelantionShipCondominiumsService =
+    this.getUserRelationshipCondominiumsService =
       getUserRelantionShipCondominiumsService
   }
 
@@ -31,7 +31,7 @@ export class GetUserRelantionShipCondominiumsController implements IController {
     const { id } = result.data
 
     const relantionships =
-      await this.getUserRelantionShipCondominiumsService.execute({ id })
+      await this.getUserRelationshipCondominiumsService.execute({ id })
 
     return {
       statusCode: 200,

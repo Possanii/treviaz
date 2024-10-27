@@ -17,6 +17,8 @@ export class EditInviteService {
             data: {
                 status: data.status,
                 expires_at: data.expires_at,
+                condominium_id: data.condominium_id,
+                role: data.role,
             }
         })
 
@@ -27,6 +29,8 @@ export class EditInviteService {
             status: updatedInvite.status,
             sent_at: updatedInvite.sent_at,
             expires_at: updatedInvite.expires_at,
+            condominium_id: updatedInvite.condominium_id,
+            role: updatedInvite.role,
         }
     }
 }

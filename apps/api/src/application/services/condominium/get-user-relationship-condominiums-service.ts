@@ -2,7 +2,7 @@ import { prisma } from '@/application/libs/prisma'
 import { ICondominium } from '@/application/schemas/ICondominium'
 import { IUserCondominium } from '@/application/schemas/IUserCondominium'
 
-export class GetUserRelantionShipCondominiumsService {
+export class GetUserRelationshipCondominiumsService {
   async execute({ id }: { id: string }): Promise<
     (Pick<IUserCondominium, 'id' | 'role' | 'joined_at'> & {
       condominium: Pick<ICondominium, 'id' | 'name' | 'slug'>

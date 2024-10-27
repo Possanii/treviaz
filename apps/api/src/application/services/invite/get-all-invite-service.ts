@@ -11,6 +11,8 @@ export class GetAllInvitesService {
                 status: true,
                 sent_at: true,
                 expires_at: true,
+                condominium_id: true,
+                role: true, 
             },
         })
 
