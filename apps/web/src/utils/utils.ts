@@ -1,6 +1,13 @@
 import { cookiesStorage } from '@treviaz/cookies'
-import { cookies } from 'next/headers'
+import { getCookie, setCookie } from 'cookies-next'
 
 export function getCurrentCondominium() {
-  return cookies().get(cookiesStorage.CURRENT_CONDOMINIUM)?.value
+  return getCookie(cookiesStorage.CURRENT_CONDOMINIUM)
+}
+
+export function setCurrentCondominium(condominium: string) {
+  return setCookie(cookiesStorage.CURRENT_CONDOMINIUM, condominium, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7,
+  })
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { cookiesStorage } from '@treviaz/cookies'
 import { Button } from '@treviaz/ui/components/ui/button'
 import {
   DropdownMenu,
@@ -17,22 +18,34 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@treviaz/ui/components/ui/sidebar'
+import { setCookie } from 'cookies-next'
 import { ChevronsUpDown, Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 import { useModalCreateCondominium } from '@/contexts/create-condominium-modal-context'
 import { useQueryGetRelationshipsWithCondominiums } from '@/hooks/react-query/queries/get-user-relationships-with-condominiums'
+import { setCurrentCondominium } from '@/utils/utils'
 
 export function CondominiumSwitcher() {
   const {
     data: { relantionships },
   } = useSuspenseQuery(useQueryGetRelationshipsWithCondominiums())
 
+  const router = useRouter()
   const { isMobile } = useSidebar()
   const { toggleModal } = useModalCreateCondominium()
   const [activeCondominium, setActiveCondominium] = React.useState(
     relantionships[0]
   )
+
+  React.useEffect(() => {
+    setCurrentCondominium(activeCondominium.condominium.slug)
+
+    router.replace(
+      `/condominium/${activeCondominium.condominium.slug}/dashboard`
+    )
+  }, [setCookie, cookiesStorage, activeCondominium])
 
   return (
     <SidebarMenu>
