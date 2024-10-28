@@ -1,24 +1,32 @@
-import { PrismaClient } from '@prisma/client'
-import { IInvite } from '@/application/schemas/IInvite'
+import { randomUUID } from 'node:crypto'
+
+import { PrismaClient, Role } from '@prisma/client'
+
 import { BadRequestError } from '@/application/errors/bad-request-error'
-import { v4 as uuidv4 } from 'uuid'
-import { Role } from '@prisma/client'
+import { IInvite } from '@/application/schemas/IInvite'
 
 const prisma = new PrismaClient()
 
 export class CreateInviteService {
-  async execute(email: string, condominium_id: string, role: Role): Promise<IInvite> {
+  async execute(
+    email: string,
+    condominium_id: string,
+    role: Role
+  ): Promise<IInvite> {
     const existingInvite = await prisma.invite.findFirst({
       where: { email, condominium_id },
     })
 
     if (existingInvite) {
-      throw new BadRequestError('invite', 'An invite for this email already exists in the specified condominium')
+      throw new BadRequestError(
+        'invite',
+        'An invite for this email already exists in the specified condominium'
+      )
     }
 
-    const token = uuidv4()
+    const token = randomUUID()
     const now = new Date()
-    const expiresAt = new Date(now.getTime() + 24*60*60*1000) // 24 horas
+    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000) // 24 horas
 
     const invite = await prisma.invite.create({
       data: {
