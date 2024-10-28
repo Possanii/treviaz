@@ -9,13 +9,10 @@ import { condominiumSchema } from '@/application/schemas/ICondominium'
 import { CreateCondominiumService } from '@/application/services/condominium/create-condominium-service'
 
 const createCondominiumSchema = condominiumSchema
-  .omit({
-    id: true,
-    slug: true,
-    address_id: true,
-    created_at: true,
-    updated_at: true,
-    address: true,
+  .pick({
+    name: true,
+    owner_id: true,
+    photo_url: true,
   })
   .merge(
     z.object({

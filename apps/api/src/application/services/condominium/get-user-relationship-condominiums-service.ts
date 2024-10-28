@@ -24,6 +24,9 @@ export class GetUserRelationshipCondominiumsService {
           },
         },
       },
+      orderBy: {
+        joined_at: 'desc',
+      },
     })
 
     return userCondominiums
