@@ -3,7 +3,7 @@
 import { cookiesStorage } from '@treviaz/cookies'
 import { env } from '@treviaz/env'
 import { createClient } from '@treviaz/supabase/server'
-import { HTTPError } from 'ky'
+import { AxiosError } from 'axios'
 import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { isStrongPassword } from 'validator'
@@ -81,8 +81,8 @@ export async function signUpAction(data: FormData) {
       secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
     })
   } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message, body } = await err.response.json<IHttpBody>()
+    if (err instanceof AxiosError) {
+      const { message, body } = err.response!.data as IHttpBody
 
       return {
         success: false,
@@ -153,8 +153,8 @@ export const signInAction = async (formData: FormData) => {
       secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
     })
   } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message, body } = await err.response.json<IHttpBody>()
+    if (err instanceof AxiosError) {
+      const { message, body } = err.response!.data as IHttpBody
 
       return {
         success: false,
@@ -208,8 +208,8 @@ export const forgotPasswordAction = async (formData: FormData) => {
       }
     }
   } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message, body } = await err.response.json<IHttpBody>()
+    if (err instanceof AxiosError) {
+      const { message, body } = err.response!.data as IHttpBody
 
       return {
         success: false,
@@ -277,8 +277,8 @@ export const resetPasswordAction = async (formData: FormData) => {
       }
     }
   } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message, body } = await err.response.json<IHttpBody>()
+    if (err instanceof AxiosError) {
+      const { message, body } = err.response!.data as IHttpBody
 
       return {
         success: false,

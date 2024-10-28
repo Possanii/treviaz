@@ -9,9 +9,9 @@ export interface IGetUserRelationshipsWithCondominiums
 }
 
 export async function getAllUsersRelantioshipsWithCondominiums() {
-  const result = await api.get('user/condominiums').json<{
+  const result = await api.get<{
     body: { relantionships: IGetUserRelationshipsWithCondominiums[] }
-  }>()
+  }>('/user/condominiums/relationship')
 
-  return { ...result.body }
+  return { ...result.data.body }
 }

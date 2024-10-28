@@ -43,14 +43,25 @@ export function CondominiumSwitcher() {
               {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <activeCondominium.logo className="size-4" />
               </div> */}
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {activeCondominium.condominium.name}
-                </span>
-                <span className="truncate text-xs">
-                  {activeCondominium.condominium.slug}
-                </span>
-              </div>
+              {activeCondominium ? (
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">
+                    {activeCondominium.condominium.name}
+                  </span>
+                  <span className="truncate text-xs">
+                    {activeCondominium.condominium.slug}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex gap-2 flex-1 items-center text-sm truncate text-left leading-tight">
+                  <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                    <Plus className="size-4" />
+                  </div>
+                  <span className="font-medium text-muted-foreground text-xs">
+                    Add condominium
+                  </span>
+                </div>
+              )}
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
