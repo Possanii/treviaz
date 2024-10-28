@@ -1,6 +1,7 @@
 'use client'
 
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { Button } from '@treviaz/ui/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,7 @@ import {
 import { ChevronsUpDown, Plus } from 'lucide-react'
 import * as React from 'react'
 
+import { useModalCreateCondominium } from '@/contexts/create-condominium-modal-context'
 import { useQueryGetRelationshipsWithCondominiums } from '@/hooks/react-query/queries/get-user-relationships-with-condominiums'
 
 export function CondominiumSwitcher() {
@@ -27,6 +29,7 @@ export function CondominiumSwitcher() {
   } = useSuspenseQuery(useQueryGetRelationshipsWithCondominiums())
 
   const { isMobile } = useSidebar()
+  const { toggleModal } = useModalCreateCondominium()
   const [activeCondominium, setActiveCondominium] = React.useState(
     relantionships[0]
   )
@@ -92,9 +95,11 @@ export function CondominiumSwitcher() {
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">
-                Add condominium
-              </div>
+              <Button onClick={toggleModal} asChild>
+                <div className="font-medium text-muted-foreground">
+                  Add condominium
+                </div>
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
