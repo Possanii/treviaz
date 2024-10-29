@@ -12,13 +12,15 @@ export default function Home() {
   const { user } = useAuth()
 
   return (
-    <div>
+    <>
       <AppHeader>
         <BreadcrumbItem className="hidden md:block">
           <BreadcrumbPage>Dashboard</BreadcrumbPage>
         </BreadcrumbItem>
       </AppHeader>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-    </div>
+      <section className="p-[--main-content-padding]">
+        <pre>{JSON.stringify(user, null, 2)}</pre>
+      </section>
+    </>
   )
 }

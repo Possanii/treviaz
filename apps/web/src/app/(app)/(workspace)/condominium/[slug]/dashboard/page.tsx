@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   const dehydratedState = dehydrate(queryClient)
 
   return (
-    <div>
+    <>
       <AppHeader>
         <BreadcrumbItem>
           <BreadcrumbLink href="/condominium">Condominio</BreadcrumbLink>
@@ -35,11 +35,13 @@ export default function Page({ params }: { params: { slug: string } }) {
           <BreadcrumbPage>Moradores</BreadcrumbPage>
         </BreadcrumbItem>
       </AppHeader>
-      <HydrationBoundary state={dehydratedState}>
-        <React.Suspense fallback={<>Loading...</>}>
-          <CondominiumDashboard />
-        </React.Suspense>
-      </HydrationBoundary>
-    </div>
+      <section className="p-[--main-content-padding]">
+        <HydrationBoundary state={dehydratedState}>
+          <React.Suspense fallback={<>Loading...</>}>
+            <CondominiumDashboard />
+          </React.Suspense>
+        </HydrationBoundary>
+      </section>
+    </>
   )
 }

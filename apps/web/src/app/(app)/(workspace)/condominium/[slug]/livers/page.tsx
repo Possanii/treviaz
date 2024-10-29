@@ -30,7 +30,7 @@ export default async function LiversPages({
   const dehydratedState = dehydrate(queryClient)
 
   return (
-    <div>
+    <>
       <AppHeader>
         <BreadcrumbItem>
           <BreadcrumbLink href="/condominium">Condominio</BreadcrumbLink>
@@ -44,11 +44,13 @@ export default async function LiversPages({
           <BreadcrumbPage>Moradores</BreadcrumbPage>
         </BreadcrumbItem>
       </AppHeader>
-      <HydrationBoundary state={dehydratedState}>
-        <React.Suspense fallback={<DataTableSkeleton />}>
-          <LiversTable searchParams={searchParams} />
-        </React.Suspense>
-      </HydrationBoundary>
-    </div>
+      <section className="p-[--main-content-padding]">
+        <HydrationBoundary state={dehydratedState}>
+          <React.Suspense fallback={<DataTableSkeleton />}>
+            <LiversTable searchParams={searchParams} />
+          </React.Suspense>
+        </HydrationBoundary>
+      </section>
+    </>
   )
 }
