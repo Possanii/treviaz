@@ -14,7 +14,7 @@ export class CreateInviteService {
     author_id,
   }: Pick<IInvite, 'email' | 'role' | 'author_id'> & {
     condominiumSlug: string
-  }): Promise<void> {
+  }): Promise<{ token: string }> {
     const condominium = await prisma.condominium.findUnique({
       where: {
         slug: condominiumSlug,
@@ -52,5 +52,7 @@ export class CreateInviteService {
         role,
       },
     })
+
+    return { token }
   }
 }

@@ -6,6 +6,7 @@ import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { CreateInviteService } from '@/application/services/invite/create-invite-service'
+import { SendCreateInviteMailService } from '@/application/services/mail/send-create-invite-mail-service'
 
 const createInviteSchema = z.object({
   email: z.string().email(),
@@ -14,7 +15,10 @@ const createInviteSchema = z.object({
 })
 
 export class CreateInviteController implements IController {
-  constructor(private createInviteService: CreateInviteService) {}
+  constructor(
+    private createInviteService: CreateInviteService,
+    private sendCreateInviteMailService: SendCreateInviteMailService
+  ) {}
 
   async handle({ body, metadata }: IRequest): Promise<IResponse> {
     const result = createInviteSchema.safeParse(body)
@@ -26,12 +30,15 @@ export class CreateInviteController implements IController {
 
     const { uid } = metadata!.user!
     const { email, slug, role } = result.data
-    await this.createInviteService.execute({
+
+    const { token } = await this.createInviteService.execute({
       email,
       role,
       condominiumSlug: slug,
       author_id: uid,
     })
+
+    this.sendCreateInviteMailService.execute({ token, emails: [email] })
 
     return {
       statusCode: 201,
