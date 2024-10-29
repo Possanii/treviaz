@@ -2,7 +2,6 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { cookiesStorage } from '@treviaz/cookies'
-import { Button } from '@treviaz/ui/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,11 +39,13 @@ export function CondominiumSwitcher() {
   )
 
   React.useEffect(() => {
-    setCurrentCondominium(activeCondominium.condominium.slug)
+    if (!window.location.pathname.startsWith('/condominium')) {
+      setCurrentCondominium(activeCondominium.condominium.slug)
 
-    router.replace(
-      `/condominium/${activeCondominium.condominium.slug}/dashboard`
-    )
+      router.replace(
+        `/condominium/${activeCondominium.condominium.slug}/dashboard`
+      )
+    }
   }, [setCookie, cookiesStorage, activeCondominium])
 
   return (
@@ -104,15 +105,13 @@ export function CondominiumSwitcher() {
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem onClick={toggleModal} className="gap-2 p-2">
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4" />
               </div>
-              <Button onClick={toggleModal} asChild>
-                <div className="font-medium text-muted-foreground">
-                  Add condominium
-                </div>
-              </Button>
+              <div className="font-medium text-muted-foreground">
+                Add condominium
+              </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

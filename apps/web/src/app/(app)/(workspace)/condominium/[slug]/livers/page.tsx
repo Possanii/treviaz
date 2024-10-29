@@ -6,10 +6,13 @@ import {
 } from '@treviaz/ui/components/ui/breadcrumb'
 
 import { AppHeader } from '@/components/sidebar/app-header'
-import { getCurrentCondominium } from '@/utils/utils'
 
-export default async function LiversPages() {
-  const slug = getCurrentCondominium()
+export default async function LiversPages({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  const { slug } = params
 
   return (
     <div>

@@ -1,18 +1,18 @@
-import { cookiesStorage } from '@treviaz/cookies'
-import { getCookie } from 'cookies-next'
 import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
 
 import { useAuth } from '@/hooks/use-auth'
 
+import { getCurrentCondominium } from './utils'
+
 export function sidebarData() {
   const { user } = useAuth()
-  const currentCondominium = getCookie(cookiesStorage.CURRENT_CONDOMINIUM)
+  const currentCondominium = getCurrentCondominium()
 
   return {
     user: {
       name: user?.user_metadata.name,
       email: user?.user_metadata.email,
-      avatar: '/avatars/shadcn.jpg',
+      avatar: '',
     },
     navMain: [
       {
