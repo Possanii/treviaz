@@ -2,21 +2,24 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@treviaz/ui/components/ui/dialog'
+} from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
 
-interface IModalCreateCondominiumHeader {
+interface IModalHeader extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode
   title?: string
   description?: string
 }
 
-export function ModalCreateCondominiumHeader({
+export function ModalHeader({
   children,
   title,
   description,
-}: IModalCreateCondominiumHeader) {
+  className,
+  ...props
+}: IModalHeader) {
   return (
-    <DialogHeader>
+    <DialogHeader className={cn('', className)} {...props}>
       {children || (
         <>
           <DialogTitle>{title}</DialogTitle>

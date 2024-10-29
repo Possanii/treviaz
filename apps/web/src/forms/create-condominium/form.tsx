@@ -1,5 +1,6 @@
 'use client'
 
+import { ModalFooter } from '@treviaz/ui/components/custom/modal/modal-footer'
 import {
   CardContent,
   CardDescription,
@@ -16,14 +17,10 @@ import {
 } from '@treviaz/ui/components/ui/form'
 import { Input } from '@treviaz/ui/components/ui/input'
 
-import { ModalCreateCondominiumFooter } from '@/components/modal-create-condominium/modal-footer'
-
 import { FormCreateCondominiumController } from './controller'
 
 export function FormCreateCondominium() {
   const { form, handleSubmit } = FormCreateCondominiumController()
-
-  console.log(form.formState.errors)
 
   return (
     <Form {...form}>
@@ -161,7 +158,7 @@ export function FormCreateCondominium() {
               )}
             />
           </div>
-          <ModalCreateCondominiumFooter className="mt-6" />
+          <ModalFooter className="mt-6" />
         </form>
       </CardContent>
     </Form>

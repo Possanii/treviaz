@@ -1,8 +1,9 @@
 'use client'
 
+import { Modal } from '@treviaz/ui/components/custom/modal/index'
 import * as React from 'react'
 
-import { ModalCreateCondominiumParts } from '@/components/modal-create-condominium'
+import { FormCreateCondominium } from '@/forms/create-condominium/form'
 
 type ICreateCondominiumModalContextValue = {
   open: boolean
@@ -69,12 +70,12 @@ export const CreateCondominiumModalProvider: React.FC<
   return (
     <CreateCondominiumModalContext.Provider value={contextValue}>
       {children}
-      <ModalCreateCondominiumParts.Root>
-        <ModalCreateCondominiumParts.Content>
-          <ModalCreateCondominiumParts.Header />
-          <ModalCreateCondominiumParts.Form />
-        </ModalCreateCondominiumParts.Content>
-      </ModalCreateCondominiumParts.Root>
+      <Modal.Root open={open} toggleModal={toggleModal}>
+        <Modal.Content>
+          <Modal.Header />
+          <FormCreateCondominium />
+        </Modal.Content>
+      </Modal.Root>
     </CreateCondominiumModalContext.Provider>
   )
 }

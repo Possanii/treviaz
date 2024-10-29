@@ -1,19 +1,14 @@
 'use client'
 
-import { Button } from '@treviaz/ui/components/ui/button'
-import { DialogClose, DialogFooter } from '@treviaz/ui/components/ui/dialog'
-import { cn } from '@treviaz/ui/lib/utils'
-import { HTMLAttributes } from 'react'
+import { Button } from '@/components/ui/button'
+import { DialogClose, DialogFooter } from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
 
-interface IModalCreateCondominiumFooter extends HTMLAttributes<HTMLDivElement> {
+interface IModalFooter extends React.HTMLAttributes<HTMLDivElement> {
   action?: React.ReactNode
 }
 
-export function ModalCreateCondominiumFooter({
-  action,
-  className,
-  ...props
-}: IModalCreateCondominiumFooter) {
+export function ModalFooter({ action, className, ...props }: IModalFooter) {
   return (
     <DialogFooter className={cn('sm:justify-end', className)} {...props}>
       <DialogClose asChild>
