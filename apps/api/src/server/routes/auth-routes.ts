@@ -2,6 +2,7 @@ import { makeCreateCondominiumController } from '@/factories/controllers/condomi
 import { makeDeleteCondominiumController } from '@/factories/controllers/condominium/make-delete-condominium-controller'
 import { makeEditCondominiumController } from '@/factories/controllers/condominium/make-edit-condominium-controller'
 import { makeGetCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-condominium-by-slug-controller'
+import { makeGetLiversFromCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-livers-from-condominium-by-slug-controller'
 import { makeGetUserRelationshipCondominiumsController } from '@/factories/controllers/condominium/make-get-user-relationship-condominium-controller'
 import { makeCreateForumCategoryController } from '@/factories/controllers/forumcategory/make-create-forumcategory-controller'
 import { makeDeleteForumCategoryController } from '@/factories/controllers/forumcategory/make-delete-forumcategory-controller'
@@ -53,6 +54,11 @@ app.get(
   '/condominium/slug/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetCondominiumBySlugController())
+)
+app.get(
+  '/condominium/slug/:slug/livers',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetLiversFromCondominiumBySlugController())
 )
 
 // ServiceOwner routes
