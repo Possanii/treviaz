@@ -20,7 +20,8 @@ import { Input } from '@treviaz/ui/components/ui/input'
 import { FormCreateCondominiumController } from './controller'
 
 export function FormCreateCondominium() {
-  const { form, handleSubmit } = FormCreateCondominiumController()
+  const { form, handleSubmit, createCondominiumIsPending } =
+    FormCreateCondominiumController()
 
   return (
     <Form {...form}>
@@ -158,7 +159,10 @@ export function FormCreateCondominium() {
               )}
             />
           </div>
-          <ModalFooter className="mt-6" />
+          <ModalFooter
+            className="mt-6"
+            isLoading={createCondominiumIsPending}
+          />
         </form>
       </CardContent>
     </Form>

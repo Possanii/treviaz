@@ -2,14 +2,14 @@ import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
 import { ErrorToast, SuccessToast, UnkownErrorToats } from '@/components/toasts'
-import { ICreateCondominium } from '@/forms/create-condominium/controller'
-import { createCondominium } from '@/http/condominium/create-condominium'
+import { IInviteUserCondominium } from '@/forms/invite-user-condominium/controller'
+import { createInvite } from '@/http/invite/create-invite'
 import { HttpErroResponse } from '@/interfaces/http-error-response'
 
-export function useCreateCondominiumMutation() {
+export function useCreateInviteMutation() {
   return useMutation({
-    mutationFn: async (params: ICreateCondominium) =>
-      await createCondominium(params),
+    mutationFn: async (params: IInviteUserCondominium & { slug: string }) =>
+      await createInvite(params),
     onError: async (err) => {
       if (err instanceof AxiosError) {
         const error = err.response!.data as HttpErroResponse
@@ -19,10 +19,7 @@ export function useCreateCondominiumMutation() {
       }
     },
     onSuccess: () => {
-      SuccessToast(
-        'Condominio criado!',
-        'Seu condominio foi criado com sucesso.'
-      )
+      SuccessToast('Convite enviado', 'Seu convite foi enviado com sucesso.')
     },
   })
 }

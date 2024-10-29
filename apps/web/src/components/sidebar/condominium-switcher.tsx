@@ -75,7 +75,7 @@ export function CondominiumSwitcher() {
                     <Plus className="size-4" />
                   </div>
                   <span className="font-medium text-muted-foreground text-xs">
-                    Add condominium
+                    Adicionar condominio
                   </span>
                 </div>
               )}
@@ -89,7 +89,7 @@ export function CondominiumSwitcher() {
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Condominiums
+              Condominios
             </DropdownMenuLabel>
             {relantionships.map((relantionship, index) => (
               <DropdownMenuItem
@@ -110,7 +110,7 @@ export function CondominiumSwitcher() {
                 <Plus className="size-4" />
               </div>
               <div className="font-medium text-muted-foreground">
-                Add condominium
+                Adicionar condominio
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
