@@ -1,5 +1,7 @@
 import Image from 'next/image'
 
+import LogoWithTextWhiteBg from '@/assets/logo/logo-with-text-white-bg.jpeg'
+
 import ResetPasswordForm from './reset-password-form'
 
 export default function ForgotPasswordPage() {
@@ -7,11 +9,11 @@ export default function ForgotPasswordPage() {
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
       <div className="hidden bg-muted lg:block">
         <Image
-          src="/placeholder.svg"
+          src={LogoWithTextWhiteBg}
           alt="Image"
           width="1920"
           height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="max-h-screen w-full object-cover"
         />
       </div>
       <div className="flex items-center justify-center py-12">

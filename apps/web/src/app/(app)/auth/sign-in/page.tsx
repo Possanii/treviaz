@@ -1,5 +1,7 @@
 import Image from 'next/image'
 
+import LogoWithTextWhiteBg from '@/assets/logo/logo-with-text-white-bg.jpeg'
+
 import { SignInForm } from './sign-in-form'
 
 export default function SignInPage() {
@@ -18,11 +20,11 @@ export default function SignInPage() {
       </div>
       <div className="bg-muted hidden lg:block">
         <Image
-          src="/placeholder.svg"
+          src={LogoWithTextWhiteBg}
           alt="Image"
           width="1920"
           height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="max-h-screen w-full object-cover "
         />
       </div>
     </div>
