@@ -77,6 +77,7 @@ model User {
   guests             Guest[]
   notifications      Notification[]
   owner_condominiums Condominium[]
+  Invite             Invite[]
 
   @@map("users")
 }
@@ -210,17 +211,21 @@ model Guest {
 }
 
 model Invite {
-  id             String       @id @default(uuid())
-  email          String
-  token          String       @unique
-  status         InviteStatus @default(PENDING)
-  sent_at        DateTime     @default(now())
-  expires_at     DateTime
+  id         String       @id @default(uuid())
+  email      String
+  role       Role
+  token      String       @unique
+  status     InviteStatus @default(PENDING)
+  sent_at    DateTime     @default(now())
+  expires_at DateTime
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  condominium    Condominium @relation(fields: [condominium_id], references: [id])
   condominium_id String
-  role           Role
 
-  condominium Condominium @relation(fields: [condominium_id], references: [id])
-
+  @@unique([email, condominium_id])
   @@map("invites")
 }
 

@@ -1,20 +1,32 @@
+/* eslint-disable camelcase */
 import { randomUUID } from 'node:crypto'
 
-import { PrismaClient, Role } from '@prisma/client'
-
 import { BadRequestError } from '@/application/errors/bad-request-error'
+import { NotFoundError } from '@/application/errors/not-found-error'
+import { prisma } from '@/application/libs/prisma'
 import { IInvite } from '@/application/schemas/IInvite'
 
-const prisma = new PrismaClient()
-
 export class CreateInviteService {
-  async execute(
-    email: string,
-    condominium_id: string,
-    role: Role
-  ): Promise<IInvite> {
+  async execute({
+    email,
+    role,
+    condominiumSlug,
+    author_id,
+  }: Pick<IInvite, 'email' | 'role' | 'author_id'> & {
+    condominiumSlug: string
+  }): Promise<void> {
+    const condominium = await prisma.condominium.findUnique({
+      where: {
+        slug: condominiumSlug,
+      },
+    })
+
+    if (!condominium) {
+      throw new NotFoundError('condominium', 'Condominium not found.')
+    }
+
     const existingInvite = await prisma.invite.findFirst({
-      where: { email, condominium_id },
+      where: { email, condominium_id: condominium.id },
     })
 
     if (existingInvite) {
@@ -28,27 +40,17 @@ export class CreateInviteService {
     const now = new Date()
     const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000) // 24 horas
 
-    const invite = await prisma.invite.create({
+    await prisma.invite.create({
       data: {
         email,
         token,
         status: 'PENDING',
         sent_at: now,
         expires_at: expiresAt,
-        condominium_id,
+        condominium_id: condominium.id,
+        authorId: author_id,
         role,
       },
     })
-
-    return {
-      id: invite.id,
-      email: invite.email,
-      token: invite.token,
-      status: invite.status,
-      sent_at: invite.sent_at,
-      expires_at: invite.expires_at,
-      condominium_id: invite.condominium_id,
-      role: invite.role,
-    }
   }
 }

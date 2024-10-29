@@ -112,7 +112,11 @@ app.put('/forumpost/:id', routeAdapter(makeEditForumPostController()))
 app.delete('/forumpost/:id', routeAdapter(makeDeleteForumPostController()))
 
 // Invite routes
-app.post('/invite', routeAdapter(makeCreateInviteController()))
+app.post(
+  '/invite',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeCreateInviteController())
+)
 app.delete('/invite/:id', routeAdapter(makeDeleteInviteController()))
 app.put('/invite/:id', routeAdapter(makeEditInviteController()))
 app.get('/invite', routeAdapter(makeGetAllInviteController()))

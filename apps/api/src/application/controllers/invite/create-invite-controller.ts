@@ -1,21 +1,22 @@
+import { roleSchema } from '@treviaz/entities/schemas/IRole'
+import z from 'zod'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { CreateInviteService } from '@/application/services/invite/create-invite-service'
-import { Role } from '@prisma/client'
-import z from 'zod'
 
 const createInviteSchema = z.object({
   email: z.string().email(),
-  condominium_id: z.string(),
-  role: z.nativeEnum(Role),
+  slug: z.string(),
+  role: roleSchema,
 })
 
 export class CreateInviteController implements IController {
   constructor(private createInviteService: CreateInviteService) {}
 
-  async handle({ body }: IRequest): Promise<IResponse> {
+  async handle({ body, metadata }: IRequest): Promise<IResponse> {
     const result = createInviteSchema.safeParse(body)
 
     if (!result.success) {
@@ -23,8 +24,14 @@ export class CreateInviteController implements IController {
       throw new UnprocessableEntityError('zod', 'Invalid invite data.', errors)
     }
 
-    const { email, condominium_id, role } = result.data
-    await this.createInviteService.execute(email, condominium_id, role)
+    const { uid } = metadata!.user!
+    const { email, slug, role } = result.data
+    await this.createInviteService.execute({
+      email,
+      role,
+      condominiumSlug: slug,
+      author_id: uid,
+    })
 
     return {
       statusCode: 201,
@@ -32,4 +39,3 @@ export class CreateInviteController implements IController {
     }
   }
 }
-
