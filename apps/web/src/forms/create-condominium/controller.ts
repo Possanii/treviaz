@@ -28,7 +28,7 @@ export function FormCreateCondominiumController() {
     resolver: zodResolver(createCondominiumSchema),
     defaultValues: {
       name: '',
-      photo_url: undefined,
+      photo_url: null,
       address: {
         city: '',
         complement: undefined,

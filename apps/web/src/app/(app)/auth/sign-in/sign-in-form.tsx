@@ -10,13 +10,14 @@ import { Input } from '@treviaz/ui/components/ui/input'
 import { Label } from '@treviaz/ui/components/ui/label'
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { signInAction } from '@/actions/auth'
 import { useFormState } from '@/hooks/use-form-state'
 
 export function SignInForm() {
   const router = useRouter()
+  const params = useSearchParams()
 
   const [{ success, message, errors }, handleSubmit, isPending] = useFormState({
     action: signInAction,
@@ -42,6 +43,7 @@ export function SignInForm() {
             name="email"
             type="email"
             placeholder="m@example.com"
+            defaultValue={params.get('email') ?? ''}
             required
             errors={errors?.email && errors.email[0]}
           />

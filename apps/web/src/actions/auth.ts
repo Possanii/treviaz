@@ -10,32 +10,7 @@ import { isStrongPassword } from 'validator'
 import { z } from 'zod'
 
 import { IHttpBody } from '@/interfaces/IHttpBody'
-
-const signUpSchema = z
-  .object({
-    name: z.string().refine((value) => value.split(' ').length > 1, {
-      message: 'Por favor, Insira seu nome completo.',
-    }),
-    email: z
-      .string()
-      .email({ message: 'Por favor, forneça um e-mail válido.' }),
-    password: z
-      .string({ message: 'Por favor, Insira sua senha' })
-      .min(8, 'Sua senha deve conter 8 caracteres.')
-      .refine((password) => isStrongPassword(password), {
-        message: 'Por favor, insira uma senha forte.',
-      }),
-    password_confirmation: z
-      .string({ message: 'Por favor, Insira sua senha' })
-      .min(8, 'Sua senha deve conter 8 caracteres.')
-      .refine((password) => isStrongPassword(password), {
-        message: 'Por favor, insira uma senha forte.',
-      }),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: 'A confirmação da senha não corresponde.',
-    path: ['password_confirmation'],
-  })
+import { signUpSchema } from '@/schemas/ISign-up'
 
 export async function signUpAction(data: FormData) {
   const result = signUpSchema.safeParse(Object.fromEntries(data))
@@ -51,10 +26,7 @@ export async function signUpAction(data: FormData) {
 
     const supabase = createClient()
 
-    const {
-      error,
-      data: { session },
-    } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -73,13 +45,13 @@ export async function signUpAction(data: FormData) {
       }
     }
 
-    cookies().set(cookiesStorage.API_AUTH_TOKEN, session!.access_token, {
-      httpOnly: true,
-      expires: new Date(Date.now() + session!.expires_in * 1000),
-      path: '/',
-      sameSite: 'strict',
-      secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
-    })
+    // cookies().set(cookiesStorage.API_AUTH_TOKEN, session!.access_token, {
+    //   httpOnly: true,
+    //   maxAge: session!.expires_in,
+    //   path: '/',
+    //   sameSite: 'strict',
+    //   secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
+    // })
   } catch (err) {
     if (err instanceof AxiosError) {
       const { message, body } = err.response!.data as IHttpBody
