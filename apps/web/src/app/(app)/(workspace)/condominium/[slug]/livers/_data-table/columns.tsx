@@ -3,7 +3,8 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@treviaz/ui/components/ui/badge'
 import { Button } from '@treviaz/ui/components/ui/button'
-import { formatDate, isSameDay } from 'date-fns'
+import { formatRelative, isSameDay } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
@@ -59,7 +60,13 @@ export const columns: ColumnDef<ColumnSchema>[] = [
     cell: ({ row }) => {
       const value = row.getValue('joined_at')
 
-      return <p>{formatDate(new Date(`${value}`), 'LLL dd, y HH:mm')}</p>
+      return (
+        <p>
+          {formatRelative(new Date(`${value}`), new Date(), {
+            locale: ptBR,
+          })}
+        </p>
+      )
     },
     filterFn: (row, id, value) => {
       const rowValue = row.getValue(id)
