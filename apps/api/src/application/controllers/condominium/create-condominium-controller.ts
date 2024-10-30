@@ -1,3 +1,4 @@
+import { condominiumSchema } from '@treviaz/entities/schemas/ICondominium'
 import z from 'zod'
 
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
@@ -5,7 +6,6 @@ import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { addressSchema } from '@/application/schemas/IAddress'
-import { condominiumSchema } from '@/application/schemas/ICondominium'
 import { CreateCondominiumService } from '@/application/services/condominium/create-condominium-service'
 
 const createCondominiumSchema = condominiumSchema

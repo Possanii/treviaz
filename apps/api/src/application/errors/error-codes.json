@@ -1,9 +1,12 @@
 {
   "badRequest": {
-    "user": "USER_BAD_REQUEST"
+    "user": "USER_BAD_REQUEST",
+    "condominium": "CONDOMINIUM_BAD_REQUEST"
   },
   "notFound": {
-    "user": "USER_NOT_FOUND"
+    "user": "USER_NOT_FOUND",
+    "condominium": "CONDOMINIUM_NOT_FOUND",
+    "invite": "INVITE_NOT_FOUND"
   },
   "notActive": {
     "user": "USER_NOT_ACTIVE"

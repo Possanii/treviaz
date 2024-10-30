@@ -1,10 +1,10 @@
+import { ICondominium } from '@treviaz/entities/schemas/ICondominium'
 import slugify from 'slugify'
 
 import { BadRequestError } from '@/application/errors/bad-request-error'
 import { IAddress } from '@/application/schemas/IAddress'
 
 import { prisma } from '../../libs/prisma'
-import { ICondominium } from '../../schemas/ICondominium'
 
 export class CreateCondominiumService {
   async execute(

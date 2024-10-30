@@ -8,9 +8,6 @@ export const userSchema = z.object({
   email: z.string().email({
     message: 'Please, provide a valid email address.',
   }),
-  document_number: z.string({
-    message: 'Please, provide a valid document number.',
-  }),
   avatar_url: z
     .string()
     .url({

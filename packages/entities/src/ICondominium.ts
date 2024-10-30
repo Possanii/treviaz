@@ -8,7 +8,7 @@ export const condominiumSchema = z.object({
   slug: z.string(),
   address: addressSchema,
   address_id: z.string().uuid(),
-  photo_url: z.string().url().optional(),
+  photo_url: z.string().url().nullable(),
   owner_id: z.string().uuid(),
   created_at: z.date(),
   updated_at: z.date(),

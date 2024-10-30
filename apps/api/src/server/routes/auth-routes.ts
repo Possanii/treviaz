@@ -21,6 +21,7 @@ import { makeDeleteInviteController } from '@/factories/controllers/invite/make-
 import { makeDenyInviteController } from '@/factories/controllers/invite/make-deny-invite-controller'
 import { makeEditInviteController } from '@/factories/controllers/invite/make-edit-invite-controller'
 import { makeGetAllInviteController } from '@/factories/controllers/invite/make-get-all-invite-controller'
+import { makeGetInviteByTokenController } from '@/factories/controllers/invite/make-get-invite-by-token-controller'
 import { makeRevokeInviteController } from '@/factories/controllers/invite/make-revoke-invite-controller'
 import { makeCreateServiceOwnerController } from '@/factories/controllers/serviceowner/make-create-serviceowner-controller'
 import { makeDeleteServiceOwnerController } from '@/factories/controllers/serviceowner/make-delete-serviceowner-controller'
@@ -120,6 +121,11 @@ app.post(
 app.delete('/invite/:id', routeAdapter(makeDeleteInviteController()))
 app.put('/invite/:id', routeAdapter(makeEditInviteController()))
 app.get('/invite', routeAdapter(makeGetAllInviteController()))
-app.put('/invite/:id/accept', routeAdapter(makeAcceptInviteController()))
+app.get('/invite/:token', routeAdapter(makeGetInviteByTokenController()))
+app.post(
+  '/invite/:token',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeAcceptInviteController())
+)
 app.put('/invite/:id/deny', routeAdapter(makeDenyInviteController()))
 app.put('/invite/:id/revoke', routeAdapter(makeRevokeInviteController()))
