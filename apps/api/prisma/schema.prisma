@@ -174,8 +174,8 @@ model ForumThread {
   created_by         User   @relation(fields: [created_by_user_id], references: [id], name: "created_forum_threads")
   created_by_user_id String
 
-  approved_by         User   @relation(fields: [approved_by_user_id], references: [id], name: "approved_forum_threads")
-  approved_by_user_id String
+  approved_by         User?   @relation(fields: [approved_by_user_id], references: [id], name: "approved_forum_threads")
+  approved_by_user_id String?
 
   posts ForumPost[]
 
