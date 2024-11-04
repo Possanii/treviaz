@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { useModalInviteUserCondominium } from '@/contexts/invite-user-condominio-modal-context'
 import { useCreateInviteMutation } from '@/hooks/react-query/mutations/invite/create-invite-mutation'
+import { useQueryGetAllInvitesBySlugCondominium } from '@/hooks/react-query/queries/invites/get-all-invites-by-slug-condominium'
 import { queryClient } from '@/lib/query-client'
 
 export const inviteUserCondominiumSchema = inviteSchema.pick({
@@ -35,8 +36,9 @@ export function FormInviteUserCondominiumController({
   useEffect(() => {
     if (isSuccess) {
       form.reset()
-      // TODO: invalidate invites
-      // queryClient.invalidateQueries()
+      queryClient.invalidateQueries(
+        useQueryGetAllInvitesBySlugCondominium({ slug })
+      )
       setOpen(false)
     }
   }, [isSuccess, queryClient, setOpen])
