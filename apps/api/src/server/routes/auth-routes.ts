@@ -7,6 +7,7 @@ import { makeGetUserRelationshipCondominiumsController } from '@/factories/contr
 import { makeCreateForumCategoryController } from '@/factories/controllers/forumcategory/make-create-forumcategory-controller'
 import { makeDeleteForumCategoryController } from '@/factories/controllers/forumcategory/make-delete-forumcategory-controller'
 import { makeEditForumCategoryController } from '@/factories/controllers/forumcategory/make-edit-forumcategory-controller'
+import { makeGetForumCategoriesFromCondominiumController } from '@/factories/controllers/forumcategory/make-get-forum-categories-from-condominium-controller'
 import { makeCreateForumPostController } from '@/factories/controllers/forumpost/make-create-forumpost-controller'
 import { makeDeleteForumPostController } from '@/factories/controllers/forumpost/make-delete-forumpost-controller'
 import { makeEditForumPostController } from '@/factories/controllers/forumpost/make-edit-forumpost-controller'
@@ -104,6 +105,12 @@ app.delete(
   '/forumcategory/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteForumCategoryController())
+)
+
+app.get(
+  '/forumcategory/:slug/categories',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetForumCategoriesFromCondominiumController())
 )
 
 // ForumThread routes
