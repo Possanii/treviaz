@@ -90,27 +90,65 @@ app.delete(
 )
 
 // ForumCategory routes
-app.post('/forumcategory', routeAdapter(makeCreateForumCategoryController()))
-app.put('/forumcategory/:id', routeAdapter(makeEditForumCategoryController()))
+app.post(
+  '/forumcategory',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeCreateForumCategoryController())
+)
+app.put(
+  '/forumcategory/:slug',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeEditForumCategoryController())
+)
 app.delete(
-  '/forumcategory/:id',
+  '/forumcategory/:slug',
+  middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteForumCategoryController())
 )
 
 // ForumThread routes
-app.post('/forumthread', routeAdapter(makeCreateForumThreadController()))
-app.put('/forumthread/:id', routeAdapter(makeEditForumThreadController()))
-app.delete('/forumthread/:id', routeAdapter(makeDeleteForumThreadController()))
+app.post(
+  '/forumthread',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeCreateForumThreadController())
+)
 app.put(
-  '/forumthread/:id/approve',
+  '/forumthread/:slug',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeEditForumThreadController())
+)
+app.delete(
+  '/forumthread/:slug',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeDeleteForumThreadController())
+)
+app.put(
+  '/forumthread/:slug/approve',
+  middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeApproveForumThreadController())
 )
-app.put('/forumthread/:id/deny', routeAdapter(makeDenyForumThreadController()))
+app.put(
+  '/forumthread/:slug/deny',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeDenyForumThreadController())
+)
 
 // ForumPost routes
-app.post('/forumpost', routeAdapter(makeCreateForumPostController()))
-app.put('/forumpost/:id', routeAdapter(makeEditForumPostController()))
-app.delete('/forumpost/:id', routeAdapter(makeDeleteForumPostController()))
+app.post(
+  '/forumpost',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeCreateForumPostController())
+)
+app.put(
+  '/forumpost/:id',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeEditForumPostController())
+)
+app.delete(
+  '/forumpost/:id',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeDeleteForumPostController())
+)
 
 // Invite routes
 app.post(
