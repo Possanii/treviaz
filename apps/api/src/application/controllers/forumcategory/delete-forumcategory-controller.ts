@@ -10,7 +10,7 @@ export class DeleteForumCategoryController implements IController {
   constructor(private deleteForumCategoryService: DeleteForumCategoryService) {}
 
   async handle({ params }: IRequest): Promise<IResponse> {
-    const result = forumCategorySchema.pick({ id: true }).safeParse(params)
+    const result = forumCategorySchema.pick({ slug: true }).safeParse(params)
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
@@ -22,9 +22,9 @@ export class DeleteForumCategoryController implements IController {
       )
     }
 
-    const { id } = result.data
+    const { slug } = result.data
 
-    await this.deleteForumCategoryService.execute(id)
+    await this.deleteForumCategoryService.execute({ slug })
 
     return {
       statusCode: 204,

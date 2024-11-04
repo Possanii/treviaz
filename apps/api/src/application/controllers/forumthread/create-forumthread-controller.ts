@@ -1,31 +1,43 @@
+import { forumCategorySchema } from '@treviaz/entities/schemas/forum/IForumCategory'
+import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
+
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { CreateForumThreadService } from '@/application/services/forumthread/create-forumthread-service'
-import { forumThreadSchema } from '@/application/schemas/IForumThread'
-
-const createForumThreadSchema = forumThreadSchema.omit({ id: true, created_at: true, updated_at: true })
 
 export class CreateForumThreadController implements IController {
-    constructor(private createForumThreadService: CreateForumThreadService) {}
+  constructor(private createForumThreadService: CreateForumThreadService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const validatedData = createForumThreadSchema.parse(request.body)
-        const userId = request.metadata?.user?.sub
+  async handle({ body, params, metadata }: IRequest): Promise<IResponse> {
+    const result = forumThreadSchema
+      .pick({
+        title: true,
+      })
+      .merge(
+        forumCategorySchema.pick({
+          slug: true,
+        })
+      )
+      .safeParse({ ...body, ...params })
 
-        if (!userId) {
-            return {
-                statusCode: 403,
-                body: { error: 'User not authenticated' }
-            }
-        }
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
 
-        validatedData.user_id = userId
-
-        const forumThread = await this.createForumThreadService.execute(validatedData)
-        return {
-            statusCode: 201,
-            body: forumThread
-        }
+      throw new UnprocessableEntityError('zod', 'invalid thread data', errors)
     }
+
+    const thread = result.data
+
+    const { uid } = metadata!.user!
+
+    await this.createForumThreadService.execute({
+      ...thread,
+      id: uid,
+    })
+    return {
+      statusCode: 204,
+    }
+  }
 }

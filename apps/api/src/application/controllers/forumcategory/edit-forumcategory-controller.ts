@@ -12,8 +12,8 @@ export class EditForumCategoryController implements IController {
   async handle({ body, params }: IRequest): Promise<IResponse> {
     const result = forumCategorySchema
       .pick({
-        id: true,
         name: true,
+        slug: true,
         description: true,
       })
       .safeParse({ ...body, ...params })

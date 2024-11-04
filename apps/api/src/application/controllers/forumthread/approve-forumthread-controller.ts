@@ -1,26 +1,37 @@
+import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
+
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { ApproveForumThreadService } from '@/application/services/forumthread/approve-forumthread-service'
 
 export class ApproveForumThreadController implements IController {
-    constructor(private approveForumThreadService: ApproveForumThreadService) {}
+  constructor(private approveForumThreadService: ApproveForumThreadService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const { id } = request.params
-        const userId = request.metadata?.user?.sub
+  async handle({ params, metadata }: IRequest): Promise<IResponse> {
+    const result = forumThreadSchema
+      .pick({
+        slug: true,
+      })
+      .safeParse(params)
 
-        if (!userId) {
-            return {
-                statusCode: 403,
-                body: { error: 'User not authenticated' }
-            }
-        }
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
 
-        const forumThread = await this.approveForumThreadService.execute(id)
-        return {
-            statusCode: 200,
-            body: forumThread
-        }
+      throw new UnprocessableEntityError('zod', 'invalid thread data', errors)
     }
+
+    const { slug } = result.data
+
+    const { uid } = metadata!.user!
+
+    await this.approveForumThreadService.execute({
+      slug,
+      id: uid,
+    })
+    return {
+      statusCode: 204,
+    }
+  }
 }

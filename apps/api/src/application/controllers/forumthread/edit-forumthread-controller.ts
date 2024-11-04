@@ -1,31 +1,36 @@
+import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
+
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { EditForumThreadService } from '@/application/services/forumthread/edit-forumthread-service'
-import { forumThreadSchema } from '@/application/schemas/IForumThread'
-
-const editForumThreadSchema = forumThreadSchema.omit({ id: true, created_at: true, updated_at: true })
 
 export class EditForumThreadController implements IController {
-    constructor(private editForumThreadService: EditForumThreadService) {}
+  constructor(private editForumThreadService: EditForumThreadService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const { id } = request.params
-        const userId = request.metadata?.user?.sub
+  async handle({ body, params }: IRequest): Promise<IResponse> {
+    const result = forumThreadSchema
+      .pick({
+        title: true,
+        slug: true,
+      })
+      .safeParse({ ...body, ...params })
 
-        if (!userId) {
-            return {
-                statusCode: 403,
-                body: { error: 'User not authenticated' }
-            }
-        }
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
 
-        const validatedData = editForumThreadSchema.parse(request.body)
-        const forumThread = await this.editForumThreadService.execute(id, userId, validatedData)
-        return {
-            statusCode: 200,
-            body: forumThread
-        }
+      throw new UnprocessableEntityError('zod', 'invalid thread data', errors)
     }
-}
 
+    const { title, slug } = result.data
+
+    await this.editForumThreadService.execute({
+      title,
+      slug,
+    })
+    return {
+      statusCode: 204,
+    }
+  }
+}

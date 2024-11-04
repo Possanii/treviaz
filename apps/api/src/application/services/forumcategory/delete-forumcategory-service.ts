@@ -1,13 +1,10 @@
-import { PrismaClient } from '@prisma/client'
-
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/application/libs/prisma'
 
 export class DeleteForumCategoryService {
-  async execute(id: string): Promise<void> {
-    const forumCategory = await prisma.forumCategory.findUnique({
-      where: { id },
+  async execute({ slug }: { slug: string }): Promise<void> {
+    const forumCategory = await prisma.forumCategory.findFirst({
+      where: { slug },
     })
 
     if (!forumCategory) {
@@ -33,10 +30,10 @@ export class DeleteForumCategoryService {
     //     where: { category_id: id },
     //   })
 
-    //   // Finally, delete the forum category itself
-    //   await prisma.forumCategory.delete({
-    //     where: { id },
-    //   })
+    // Finally, delete the forum category itself
+    await prisma.forumCategory.delete({
+      where: { id: forumCategory.id },
+    })
     // })
   }
 }

@@ -1,26 +1,32 @@
+import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
+
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { DeleteForumThreadService } from '@/application/services/forumthread/delete-forumthread-service'
 
 export class DeleteForumThreadController implements IController {
-    constructor(private deleteForumThreadService: DeleteForumThreadService) {}
+  constructor(private deleteForumThreadService: DeleteForumThreadService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const { id } = request.params
-        const userId = request.metadata?.user?.sub
+  async handle({ params }: IRequest): Promise<IResponse> {
+    const result = forumThreadSchema
+      .pick({
+        slug: true,
+      })
+      .safeParse(params)
 
-        if (!userId) {
-            return {
-                statusCode: 403,
-                body: { error: 'User not authenticated' }
-            }
-        }
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
 
-        await this.deleteForumThreadService.execute(id, userId)
-        return {
-            statusCode: 204,
-            body: {}
-        }
+      throw new UnprocessableEntityError('zod', 'invalid thread data', errors)
     }
+
+    const { slug } = result.data
+
+    await this.deleteForumThreadService.execute(slug)
+    return {
+      statusCode: 204,
+    }
+  }
 }

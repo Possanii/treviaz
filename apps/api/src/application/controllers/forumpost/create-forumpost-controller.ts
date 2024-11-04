@@ -1,23 +1,39 @@
-import z from 'zod'
+import { forumCategorySchema } from '@treviaz/entities/schemas/forum/IForumCategory'
+import { forumPostSchema } from '@treviaz/entities/schemas/forum/IForumPost'
 
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { CreateForumPostService } from '@/application/services/forumpost/create-forumpost-service'
 
-import { forumPostSchema } from '@/application/schemas/IForumPost'
-
-const createForumPostSchema = forumPostSchema.omit({ id: true, created_at: true, updated_at: true })
-
 export class CreateForumPostController implements IController {
-    constructor(private createForumPostService: CreateForumPostService) {}
+  constructor(private createForumPostService: CreateForumPostService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const validatedData = createForumPostSchema.parse(request.body)
-        const forumPost = await this.createForumPostService.execute(validatedData)
-        return {
-            statusCode: 201,
-            body: forumPost
-        }
+  async handle({ body, params }: IRequest): Promise<IResponse> {
+    const result = forumPostSchema
+      .pick({
+        content: true,
+      })
+      .merge(
+        forumCategorySchema.pick({
+          id: true,
+        })
+      )
+      .safeParse(body)
+
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
+
+      throw new UnprocessableEntityError('zod', 'invalid post data', errors)
     }
+
+    const post = result.data
+
+    const forumPost = await this.createForumPostService.execute(post)
+    return {
+      statusCode: 201,
+      body: forumPost,
+    }
+  }
 }
