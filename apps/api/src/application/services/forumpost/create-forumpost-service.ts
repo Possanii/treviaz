@@ -1,38 +1,32 @@
-import { PrismaClient } from '@prisma/client'
 import { IForumPost } from '@treviaz/entities/schemas/forum/IForumPost'
+import { IForumThread } from '@treviaz/entities/schemas/forum/IForumThread'
 
 import { BadRequestError } from '@/application/errors/bad-request-error'
+import { prisma } from '@/application/libs/prisma'
 import { IUser } from '@/application/schemas/IUser'
 
-const prisma = new PrismaClient()
-
 export class CreateForumPostService {
-  async execute(
-    data: Pick<IForumPost, 'content' & Pick<IUser, 'id'>>
-  ): Promise<IForumPost> {
-    const existingThread = await prisma.forumThread.findUnique({
-      where: { id: data.thread_id },
+  async execute({
+    content,
+    slug,
+    id: userId,
+  }: Pick<IForumPost, 'content'> &
+    Pick<IForumThread, 'slug'> &
+    Pick<IUser, 'id'>): Promise<void> {
+    const existingThread = await prisma.forumThread.findFirst({
+      where: { slug },
     })
 
     if (!existingThread) {
       throw new BadRequestError('forumThread', 'Forum Thread does not exist')
     }
 
-    const forumPost = await prisma.forumPost.create({
+    await prisma.forumPost.create({
       data: {
-        content: data.content,
-        thread_id: data.thread_id,
-        user_id: data.user_id,
+        content,
+        thread_id: existingThread.id,
+        user_id: userId,
       },
     })
-
-    return {
-      id: forumPost.id,
-      content: forumPost.content,
-      created_at: forumPost.created_at,
-      updated_at: forumPost.updated_at,
-      thread_id: forumPost.thread_id,
-      user_id: forumPost.user_id,
-    }
   }
 }

@@ -1,5 +1,5 @@
-import { forumCategorySchema } from '@treviaz/entities/schemas/forum/IForumCategory'
 import { forumPostSchema } from '@treviaz/entities/schemas/forum/IForumPost'
+import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
 
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
@@ -10,17 +10,17 @@ import { CreateForumPostService } from '@/application/services/forumpost/create-
 export class CreateForumPostController implements IController {
   constructor(private createForumPostService: CreateForumPostService) {}
 
-  async handle({ body, params }: IRequest): Promise<IResponse> {
+  async handle({ body, params, metadata }: IRequest): Promise<IResponse> {
     const result = forumPostSchema
       .pick({
         content: true,
       })
       .merge(
-        forumCategorySchema.pick({
-          id: true,
+        forumThreadSchema.pick({
+          slug: true,
         })
       )
-      .safeParse(body)
+      .safeParse({ ...body, ...params })
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
@@ -30,10 +30,14 @@ export class CreateForumPostController implements IController {
 
     const post = result.data
 
-    const forumPost = await this.createForumPostService.execute(post)
+    const { uid } = metadata!.user!
+
+    await this.createForumPostService.execute({
+      ...post,
+      id: uid,
+    })
     return {
       statusCode: 201,
-      body: forumPost,
     }
   }
 }
