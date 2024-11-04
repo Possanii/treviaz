@@ -168,7 +168,7 @@ model ForumThread {
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
 
-  related_to_category    ForumCategory @relation(fields: [related_to_category_id], references: [id])
+  related_to_category    ForumCategory @relation(fields: [related_to_category_id], references: [id], onDelete: Cascade)
   related_to_category_id String
 
   created_by         User   @relation(fields: [created_by_user_id], references: [id], name: "created_forum_threads")
@@ -192,7 +192,7 @@ model ForumPost {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  thread    ForumThread @relation(fields: [thread_id], references: [id])
+  thread    ForumThread @relation(fields: [thread_id], references: [id], onDelete: Cascade)
   thread_id String
 
   @@map("forum_posts")
