@@ -31,8 +31,9 @@ model Condominium {
   units      Unit[]
   invites    Invite[]
 
-  owner    User   @relation(fields: [owner_id], references: [id])
-  owner_id String
+  owner         User            @relation(fields: [owner_id], references: [id])
+  owner_id      String
+  ForumCategory ForumCategory[]
 
   @@map("condominiums")
 }
@@ -64,20 +65,22 @@ model Address {
 }
 
 model User {
-  id                 String            @id @unique @default(uuid())
-  name               String
-  email              String            @unique
-  avatar_url         String?
-  created_at         DateTime          @default(now())
-  updated_at         DateTime?         @updatedAt
-  forumThreads       ForumThread[]
-  forumPosts         ForumPost[]
-  condominiums       UserCondominium[]
-  reserves           Reserve[]
-  guests             Guest[]
-  notifications      Notification[]
-  owner_condominiums Condominium[]
-  Invite             Invite[]
+  id                     String            @id @unique @default(uuid())
+  name                   String
+  email                  String            @unique
+  avatar_url             String?
+  created_at             DateTime          @default(now())
+  updated_at             DateTime?         @updatedAt
+  forumPosts             ForumPost[]
+  condominiums           UserCondominium[]
+  reserves               Reserve[]
+  guests                 Guest[]
+  notifications          Notification[]
+  owner_condominiums     Condominium[]
+  invites_created        Invite[]
+  forum_category_created ForumCategory[]
+  forum_threads_created  ForumThread[]     @relation("created_forum_threads")
+  forum_threads_approved ForumThread[]     @relation("approved_forum_threads")
 
   @@map("users")
 }
@@ -138,40 +141,59 @@ enum InviteStatus {
 
 // Forum
 model ForumCategory {
-  id          String        @id @default(uuid())
-  name        String        @unique
+  id          String   @id @default(uuid())
+  name        String
+  slug        String
   description String
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-  threads     ForumThread[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
+  condominium    Condominium @relation(fields: [condominium_id], references: [id])
+  condominium_id String
+
+  created_by         User   @relation(fields: [created_by_user_id], references: [id])
+  created_by_user_id String
+
+  threads ForumThread[]
+
+  @@unique([condominium_id, slug])
   @@map("forum_categories")
 }
 
 model ForumThread {
-  id          String        @id @default(uuid())
-  title       String
-  status      ForumStatus   @default(PENDING)
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-  category_id String
-  user_id     String
-  posts       ForumPost[]
-  category    ForumCategory @relation(fields: [category_id], references: [id])
-  user        User          @relation(fields: [user_id], references: [id])
+  id         String      @id @default(uuid())
+  title      String
+  slug       String
+  status     ForumStatus @default(PENDING)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
 
+  related_to_category    ForumCategory @relation(fields: [related_to_category_id], references: [id])
+  related_to_category_id String
+
+  created_by         User   @relation(fields: [created_by_user_id], references: [id], name: "created_forum_threads")
+  created_by_user_id String
+
+  approved_by         User   @relation(fields: [approved_by_user_id], references: [id], name: "approved_forum_threads")
+  approved_by_user_id String
+
+  posts ForumPost[]
+
+  @@unique([related_to_category_id, slug])
   @@map("forum_threads")
 }
 
 model ForumPost {
-  id         String      @id @default(uuid())
+  id         String   @id @default(uuid())
   content    String
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  thread_id  String
-  user_id    String
-  thread     ForumThread @relation(fields: [thread_id], references: [id])
-  user       User        @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  thread    ForumThread @relation(fields: [thread_id], references: [id])
+  thread_id String
 
   @@map("forum_posts")
 }
