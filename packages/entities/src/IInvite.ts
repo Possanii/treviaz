@@ -1,14 +1,23 @@
 import z from 'zod'
 
+import { roleSchema } from './IRole'
+
+export const inviteStatusSchema = z.enum([
+  'PENDING',
+  'ACCEPTED',
+  'DENIED',
+  'REVOKED',
+])
+
 export const inviteSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
   token: z.string(),
-  status: z.enum(['PENDING', 'ACCEPTED', 'DENIED', 'REVOKED']),
+  status: inviteStatusSchema,
   sent_at: z.date(),
   expires_at: z.date(),
   condominium_id: z.string().uuid(),
-  role: z.enum(['RESIDENT', 'ADMIN', 'SYNDIC', 'BILLING', 'SERVICES']),
+  role: roleSchema,
   authorId: z.string().uuid(),
 })
 

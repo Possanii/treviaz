@@ -120,7 +120,11 @@ app.post(
 )
 app.delete('/invite/:id', routeAdapter(makeDeleteInviteController()))
 app.put('/invite/:id', routeAdapter(makeEditInviteController()))
-app.get('/invite', routeAdapter(makeGetAllInviteController()))
+app.get(
+  '/condominium/slug/:slug/invites',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetAllInviteController())
+)
 app.get('/invite/:token', routeAdapter(makeGetInviteByTokenController()))
 app.post(
   '/invite/:token',

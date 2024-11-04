@@ -18,6 +18,9 @@
     ]
   },
   "exports": {
-    "./schemas/*": "./src/*.ts"
+    "./schemas/*": [
+      "./src/*.ts",
+      "./src/**/*.ts"
+    ]
   }
 }
