@@ -1,33 +1,44 @@
 import { PrismaClient } from '@prisma/client'
-import { IForumCategory } from '@/application/schemas/IForumCategory'
-import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
+import { IForumCategory } from '@treviaz/entities/schemas/forum/IForumCategory'
+
+import { NotFoundError } from '@/application/errors/not-found-error'
+import { createSlug } from '@/application/utils/create-slug'
 
 const prisma = new PrismaClient()
 
 export class EditForumCategoryService {
-    async execute(id: string, data: Partial<IForumCategory>): Promise<IForumCategory> {
-        const existingForumCategory = await prisma.forumCategory.findUnique({
-            where: { id }
-        })
+  async execute({
+    id,
+    name,
+    description,
+  }: Pick<IForumCategory, 'id' | 'name' | 'description'>): Promise<void> {
+    const existingForumCategory = await prisma.forumCategory.findFirst({
+      where: {
+        OR: [
+          {
+            id,
+          },
+          {
+            slug: createSlug(name),
+          },
+        ],
+      },
+    })
 
-        if (!existingForumCategory) {
-            throw new UnprocessableEntityError('forumCategory', 'Forum Category not found')
-        }
-
-        const updatedForumCategory = await prisma.forumCategory.update({
-            where: { id },
-            data: {
-                name: data.name,
-                description: data.description,
-            },
-        })
-
-        return {
-            id: updatedForumCategory.id,
-            name: updatedForumCategory.name,
-            description: updatedForumCategory.description,
-            created_at: updatedForumCategory.created_at,
-            updated_at: updatedForumCategory.updated_at,
-        }
+    if (!existingForumCategory) {
+      throw new NotFoundError(
+        'forumCategory',
+        'Forum Category not found or slug already exists.'
+      )
     }
+
+    await prisma.forumCategory.update({
+      where: { id },
+      data: {
+        name,
+        slug: createSlug(name),
+        description,
+      },
+    })
+  }
 }

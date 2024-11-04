@@ -53,7 +53,7 @@ export function sidebarData() {
         items: [
           {
             title: 'Tópicos',
-            url: `/condominium/${currentCondominium}/topics`,
+            url: `/condominium/${currentCondominium}/threads`,
           },
           {
             title: 'Aguardando aprovações',
@@ -61,7 +61,7 @@ export function sidebarData() {
           },
           {
             title: 'Configurações',
-            url: `/condominium/${currentCondominium}/topics/settings`,
+            url: `/condominium/${currentCondominium}/threads/settings`,
           },
         ],
       },

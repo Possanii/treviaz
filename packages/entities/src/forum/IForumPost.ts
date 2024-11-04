@@ -5,8 +5,6 @@ export const forumPostSchema = z.object({
   content: z.string(),
   created_at: z.date(),
   updated_at: z.date(),
-  thread_id: z.string().uuid(),
-  user_id: z.string().uuid(),
 })
 
 export type IForumPost = z.infer<typeof forumPostSchema>

@@ -1,23 +1,42 @@
-import z from 'zod'
+import { forumCategorySchema } from '@treviaz/entities/schemas/forum/IForumCategory'
+import { condominiumSchema } from '@treviaz/entities/schemas/ICondominium'
 
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { CreateForumCategoryService } from '@/application/services/forumcategory/create-forumcategory-service'
 
-import { forumCategorySchema } from '@/application/schemas/IForumCategory'
-
-const createForumCategorySchema = forumCategorySchema.omit({ id: true, created_at: true, updated_at: true })
+const createForumCategorySchema = forumCategorySchema
+  .pick({
+    name: true,
+    description: true,
+  })
+  .merge(
+    condominiumSchema.pick({
+      slug: true,
+    })
+  )
 
 export class CreateForumCategoryController implements IController {
-    constructor(private createForumCategoryService: CreateForumCategoryService) {}
+  constructor(private createForumCategoryService: CreateForumCategoryService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const validatedData = createForumCategorySchema.parse(request.body)
-        const forumCategory = await this.createForumCategoryService.execute(validatedData)
-        return {
-            statusCode: 201,
-            body: forumCategory
-        }
+  async handle({ body, params, metadata }: IRequest): Promise<IResponse> {
+    const result = createForumCategorySchema.safeParse({ ...body, ...params })
+
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
+
+      throw new UnprocessableEntityError('zod', 'invalid category data', errors)
     }
+
+    await this.createForumCategoryService.execute({
+      ...result.data,
+      id: metadata!.user!.uid,
+    })
+
+    return {
+      statusCode: 204,
+    }
+  }
 }

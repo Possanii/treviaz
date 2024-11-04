@@ -1,8 +1,8 @@
 import { ICondominium } from '@treviaz/entities/schemas/ICondominium'
-import slugify from 'slugify'
 
 import { BadRequestError } from '@/application/errors/bad-request-error'
 import { IAddress } from '@/application/schemas/IAddress'
+import { createSlug } from '@/application/utils/create-slug'
 
 import { prisma } from '../../libs/prisma'
 
@@ -28,9 +28,7 @@ export class CreateCondominiumService {
       const condominium = await tx.condominium.create({
         data: {
           name: data.name,
-          slug: slugify(data.name, {
-            lower: true,
-          }),
+          slug: createSlug(data.name),
           address: {
             create: {
               street: data.address.street,

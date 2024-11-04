@@ -14,7 +14,7 @@ import { queryClient } from '@/lib/query-client'
 
 import { InvitesTable } from './invites-table'
 
-export default async function LiversPages({
+export default async function InvitesPages({
   searchParams,
   params,
 }: {
