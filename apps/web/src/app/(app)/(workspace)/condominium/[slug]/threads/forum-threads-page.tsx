@@ -1,14 +1,24 @@
 'use client'
 
-import { useSuspenseQuery } from '@tanstack/react-query'
+import {
+  dehydrate,
+  HydrationBoundary,
+  useSuspenseQuery,
+} from '@tanstack/react-query'
+import { ForumThreadsSkeleton } from '@treviaz/ui/components/custom/blog-skeleton'
 import { Button } from '@treviaz/ui/components/ui/button'
 import { CirclePlus } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import React from 'react'
 
 import { useModalCreateForumCategory } from '@/contexts/create-forum-category-modal-context'
 import { useQueryGetAllCategoriesCondominium } from '@/hooks/react-query/queries/forum/get-all-categories-from-condominium'
+import { useQueryGetAllForumThreads } from '@/hooks/react-query/queries/forum/get-all-forum-threads'
+import { queryClient } from '@/lib/query-client'
 
-export function ThreadsBlog() {
+import { ForumThreadsBlog } from './forum-threads-blog'
+
+export function ForumThreadsPage() {
   const { slug } = useParams<{ slug: string }>()
 
   const {
@@ -17,8 +27,11 @@ export function ThreadsBlog() {
 
   const { toggleModal } = useModalCreateForumCategory()
 
+  queryClient.prefetchQuery(useQueryGetAllForumThreads({ slug: 'all' }))
+  const dehydratedState = dehydrate(queryClient)
+
   return (
-    <main className="p-[--main-content-padding]">
+    <main className="container py-[--main-content-padding]">
       <div className="space-y-2 text-center">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">
           Notícias, insights e muito mais
@@ -41,30 +54,11 @@ export function ThreadsBlog() {
           Criar categoria
         </Button>
       </div>
-      <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {/* {posts.map((post) => (
-          <Card key={post.id} className="overflow-hidden">
-            <Image
-              src={post.image}
-              alt={post.title}
-              width={600}
-              height={400}
-              className="aspect-[3/2] object-cover"
-            />
-            <CardContent className="grid gap-4 p-6">
-              <div className="space-y-3">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {post.date}
-                </p>
-                <h2 className="font-bold tracking-tight">{post.title}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {post.description}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        ))} */}
-      </div>
+      <HydrationBoundary state={dehydratedState}>
+        <React.Suspense fallback={<ForumThreadsSkeleton />}>
+          <ForumThreadsBlog />
+        </React.Suspense>
+      </HydrationBoundary>
     </main>
   )
 }

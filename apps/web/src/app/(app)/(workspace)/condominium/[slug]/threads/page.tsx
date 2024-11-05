@@ -1,4 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { ForumCategoriesSkeleton } from '@treviaz/ui/components/custom/forum-categories-skeleton'
 import {
   BreadcrumbItem,
   BreadcrumbLink,
@@ -7,12 +8,11 @@ import {
 } from '@treviaz/ui/components/ui/breadcrumb'
 import React from 'react'
 
-import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton'
 import { AppHeader } from '@/components/sidebar/app-header'
 import { useQueryGetAllCategoriesCondominium } from '@/hooks/react-query/queries/forum/get-all-categories-from-condominium'
 import { queryClient } from '@/lib/query-client'
 
-import { ThreadsBlog } from './threads-grid'
+import { ForumThreadsPage } from './forum-threads-page'
 
 export default async function ThreadsPage({
   params,
@@ -43,8 +43,8 @@ export default async function ThreadsPage({
         </BreadcrumbItem>
       </AppHeader>
       <HydrationBoundary state={dehydratedState}>
-        <React.Suspense fallback={<DataTableSkeleton />}>
-          <ThreadsBlog />
+        <React.Suspense fallback={<ForumCategoriesSkeleton />}>
+          <ForumThreadsPage />
         </React.Suspense>
       </HydrationBoundary>
     </>
