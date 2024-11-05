@@ -15,9 +15,9 @@ import {
 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { toast } from 'sonner'
 
 import { useMutationApproveForumThread } from '@/hooks/react-query/mutations/forum/approve-forum-thread-mutation'
+import { useMutationDenyForumThread } from '@/hooks/react-query/mutations/forum/deny-forum-thread-mutation'
 import { useQueryGetForumThreadsToApprove } from '@/hooks/react-query/queries/forum/get-forum-threads-to-approve'
 import { queryClient } from '@/lib/query-client'
 
@@ -41,13 +41,19 @@ export function DropdownForumThreadApproveActions({
     isPending: approveForumThreadIsPending,
   } = useMutationApproveForumThread()
 
+  const {
+    mutateAsync: denyForumThreadMutateAsync,
+    isSuccess: denyForumThreadIsSuccess,
+    isPending: denyForumThreadIsPending,
+  } = useMutationDenyForumThread()
+
   useEffect(() => {
-    if (approveForumThreadIsSuccess) {
+    if (approveForumThreadIsSuccess || denyForumThreadIsSuccess) {
       queryClient.invalidateQueries(
         useQueryGetForumThreadsToApprove({ condominiumSlug: slug })
       )
     }
-  }, [queryClient, slug, approveForumThreadIsSuccess])
+  }, [queryClient, slug, approveForumThreadIsSuccess, denyForumThreadIsSuccess])
 
   const data: IDropdownForumThreadApproveActionsProps[] = [
     {
@@ -64,7 +70,7 @@ export function DropdownForumThreadApproveActions({
     {
       label: 'Reprovar',
       Icon: CircleX,
-      onClick: () => toast('denied'),
+      onClick: () => denyForumThreadMutateAsync({ threadSlug }),
     },
   ]
 
@@ -83,7 +89,7 @@ export function DropdownForumThreadApproveActions({
               variant={'ghost'}
               onClick={onClick}
               className="w-full cursor-pointer justify-start"
-              disabled={approveForumThreadIsPending}
+              disabled={approveForumThreadIsPending || denyForumThreadIsPending}
             >
               <div className="flex items-center">
                 <span className="mr-4">

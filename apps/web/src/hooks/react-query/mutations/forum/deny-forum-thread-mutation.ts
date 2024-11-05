@@ -2,13 +2,13 @@ import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
 import { ErrorToast, SuccessToast, UnkownErrorToats } from '@/components/toasts'
-import { approveForumThread } from '@/http/forum/approve-forum-thread'
+import { denyForumThread } from '@/http/forum/deny-forum-thread'
 import { HttpErroResponse } from '@/interfaces/http-error-response'
 
-export function useMutationApproveForumThread() {
+export function useMutationDenyForumThread() {
   return useMutation({
     mutationFn: async (params: { threadSlug: string }) =>
-      await approveForumThread(params),
+      await denyForumThread(params),
     onError: async (err) => {
       if (err instanceof AxiosError) {
         const error = err.response!.data as HttpErroResponse
@@ -19,8 +19,8 @@ export function useMutationApproveForumThread() {
     },
     onSuccess: () => {
       SuccessToast(
-        'Tópico aprovado!',
-        'O tópico está no ar! As pessoas já podem visualizar e interagir com ele.'
+        'Tópico reprovado!',
+        'O tópico foi reprovado. Uma notificação foi enviada para o criador informando o acontecido.'
       )
     },
   })
