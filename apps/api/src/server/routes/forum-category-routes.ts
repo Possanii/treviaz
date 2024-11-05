@@ -9,7 +9,7 @@ import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
 
 app.post(
-  '/forumcategory',
+  '/forumcategory/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateForumCategoryController())
 )
@@ -25,7 +25,7 @@ app.delete(
 )
 
 app.get(
-  '/forumcategory/:slug/categories',
+  '/forumcategory/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetForumCategoriesFromCondominiumController())
 )
