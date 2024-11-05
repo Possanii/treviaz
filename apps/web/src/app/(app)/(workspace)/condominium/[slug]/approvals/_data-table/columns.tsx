@@ -1,43 +1,45 @@
 'use client'
 
 import { type ColumnDef } from '@tanstack/react-table'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@treviaz/ui/components/ui/avatar'
 import { Badge } from '@treviaz/ui/components/ui/badge'
-import { Button } from '@treviaz/ui/components/ui/button'
 import { formatRelative, isSameDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
 
+import { BlogCardPost } from '@/components/blog-card-post'
 import { isArrayOfDates } from '@/components/data-table/utils'
 
+import { DropdownForumThreadApproveActions } from './_components/dropdown-forum-thread-approve-actions'
+import { statusColor } from './constants'
 import type { ColumnSchema } from './schema'
 
 export const columns: ColumnDef<ColumnSchema>[] = [
   {
-    accessorKey: 'name',
-    header: 'Morador',
-    enableHiding: false,
-    accessorFn: (row) => row.user.name,
-  },
-  {
-    accessorKey: 'email',
-    header: 'Email',
+    accessorKey: 'title',
+    header: 'Post',
     cell: ({ row }) => {
-      const value = row.getValue('email') as string
+      const post = row.original
 
-      return <div className="max-w-[200px] truncate">{value}</div>
+      return (
+        <div className="max-w-[320px]">
+          <BlogCardPost {...post} />
+        </div>
+      )
     },
-    accessorFn: (row) => row.user.email,
     meta: {
-      label: 'Email',
+      label: 'Post',
     },
   },
   {
-    accessorKey: 'role',
-    header: 'Cargo',
+    accessorKey: 'status',
+    header: 'Status',
     cell: ({ row }) => {
-      const value = row.getValue('role') as string
-      return <Badge>{value}</Badge>
+      const value = row.getValue('status') as string
+      return <Badge className={statusColor[value].badge}>{value}</Badge>
     },
     filterFn: (row, id, value) => {
       const rowValue = row.getValue(id) as string
@@ -51,14 +53,14 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       return false
     },
     meta: {
-      label: 'Cargo',
+      label: 'Status',
     },
   },
   {
-    accessorKey: 'joined_at',
-    header: 'Entrou em',
+    accessorKey: 'created_at',
+    header: 'Criado em',
     cell: ({ row }) => {
-      const value = row.getValue('joined_at')
+      const value = row.getValue('created_at')
 
       return (
         <p>
@@ -86,20 +88,40 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       return false
     },
     meta: {
-      label: 'Entrou em',
+      label: 'Criado em',
+    },
+  },
+  {
+    accessorKey: 'created_by',
+    header: 'Autor',
+    accessorFn: (row) => row.created_by.name,
+    cell: ({ row }) => {
+      const author = row.original.created_by
+
+      return (
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-10 w-10">
+            <AvatarImage
+              src={author.avatar_url ?? undefined}
+              alt={author.name}
+            />
+            <AvatarFallback>
+              {author.name
+                .split(' ')
+                .map((name) => name[0])
+                .join('')}
+            </AvatarFallback>
+          </Avatar>
+          <span className="text-lg">{author.name}</span>
+        </div>
+      )
     },
   },
   {
     header: 'More',
     cell: ({ row }) => {
-      const { slug } = useParams<{ slug: string }>()
-
       return (
-        <Button size={'sm'} asChild>
-          <Link href={`/condominium/${slug}/livers/${row.original.user.id}`}>
-            Ver
-          </Link>
-        </Button>
+        <DropdownForumThreadApproveActions threadSlug={row.original.slug} />
       )
     },
     enableHiding: false,

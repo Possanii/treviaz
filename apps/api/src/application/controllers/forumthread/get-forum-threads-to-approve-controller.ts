@@ -4,27 +4,29 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { GetAllForumThreadsService } from '@/application/services/forumthread/get-all-forum-threads-service'
+import { GetForumThreadsToApproveService } from '@/application/services/forumthread/get-forum-threads-to-approve-service'
 
-export class GetAllForumThreadsController implements IController {
+export class GetForumThreadsToApproveController implements IController {
   constructor(
-    private readonly getAllForumThreadsService: GetAllForumThreadsService
+    private readonly getForumThreadsToApproveService: GetForumThreadsToApproveService
   ) {}
 
   async handle({ params }: IRequest): Promise<IResponse> {
-    const result = condominiumSchema
-      .pick({ slug: true })
-      .safeParse({ slug: params.categorySlug })
+    const result = condominiumSchema.pick({ slug: true }).safeParse(params)
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
 
-      throw new UnprocessableEntityError('zod', 'invalid category slug', errors)
+      throw new UnprocessableEntityError(
+        'zod',
+        'invalid condominium slug',
+        errors
+      )
     }
 
     const { slug } = result.data
 
-    const threads = await this.getAllForumThreadsService.execute({
+    const threads = await this.getForumThreadsToApproveService.execute({
       slug,
     })
 
