@@ -14,7 +14,12 @@ import {
   LucideIcon,
 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
+
+import { useMutationApproveForumThread } from '@/hooks/react-query/mutations/forum/approve-forum-thread-mutation'
+import { useQueryGetForumThreadsToApprove } from '@/hooks/react-query/queries/forum/get-forum-threads-to-approve'
+import { queryClient } from '@/lib/query-client'
 
 interface IDropdownForumThreadApproveActionsProps {
   label: string
@@ -30,6 +35,20 @@ export function DropdownForumThreadApproveActions({
   const { slug } = useParams<{ slug: string }>()
   const router = useRouter()
 
+  const {
+    mutateAsync: approveForumThreadMutateAsync,
+    isSuccess: approveForumThreadIsSuccess,
+    isPending: approveForumThreadIsPending,
+  } = useMutationApproveForumThread()
+
+  useEffect(() => {
+    if (approveForumThreadIsSuccess) {
+      queryClient.invalidateQueries(
+        useQueryGetForumThreadsToApprove({ condominiumSlug: slug })
+      )
+    }
+  }, [queryClient, slug, approveForumThreadIsSuccess])
+
   const data: IDropdownForumThreadApproveActionsProps[] = [
     {
       label: 'Ver',
@@ -40,7 +59,7 @@ export function DropdownForumThreadApproveActions({
     {
       label: 'Aprovar',
       Icon: CircleCheck,
-      onClick: () => toast('approve'),
+      onClick: () => approveForumThreadMutateAsync({ threadSlug }),
     },
     {
       label: 'Reprovar',
@@ -64,6 +83,7 @@ export function DropdownForumThreadApproveActions({
               variant={'ghost'}
               onClick={onClick}
               className="w-full cursor-pointer justify-start"
+              disabled={approveForumThreadIsPending}
             >
               <div className="flex items-center">
                 <span className="mr-4">
