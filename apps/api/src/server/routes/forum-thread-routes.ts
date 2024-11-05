@@ -3,6 +3,7 @@ import { makeCreateForumThreadController } from '@/factories/controllers/forumth
 import { makeDeleteForumThreadController } from '@/factories/controllers/forumthread/make-delete-forumthread-controller'
 import { makeDenyForumThreadController } from '@/factories/controllers/forumthread/make-deny-forumthread-controller'
 import { makeEditForumThreadController } from '@/factories/controllers/forumthread/make-edit-forumthread-controller'
+import { makeGetAllForumThreadsController } from '@/factories/controllers/forumthread/make-get-all-forum-threads-controller'
 import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authentication-middleware'
 
 import { middlewareAdapter } from '../adapters/middleware-adapter'
@@ -14,6 +15,13 @@ app.post(
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateForumThreadController())
 )
+
+app.get(
+  '/forumthread/:slug',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetAllForumThreadsController())
+)
+
 app.put(
   '/forumthread/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
