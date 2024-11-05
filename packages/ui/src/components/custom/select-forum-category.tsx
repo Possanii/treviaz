@@ -3,6 +3,8 @@
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 import { Control, FieldValues, Path } from 'react-hook-form'
+import { IUser } from '@treviaz/entities/schemas/IUser'
+import { IForumCategory } from '@treviaz/entities/schemas/forum/IForumCategory'
 
 import { cn } from '@/lib/utils'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
@@ -15,7 +17,6 @@ import {
   CommandItem,
   CommandList,
 } from '../ui/command'
-import { roleSchema } from '@treviaz/entities/schemas/IRole'
 import {
   FormControl,
   FormField,
@@ -24,16 +25,25 @@ import {
   FormMessage,
 } from '../ui/form'
 
-interface ISelectRoleProps<TData extends FieldValues> {
+interface IGetAllCategoriesFromCondominium
+  extends Array<
+    IForumCategory & { created_by: Pick<IUser, 'id' | 'name' | 'avatar_url'> }
+  > {}
+
+interface ISelectForumCategoryProps<TData extends FieldValues> {
   control: Control<TData>
   fieldName: Path<TData>
+  categories: IGetAllCategoriesFromCondominium
 }
 
-export function SelectRole<TData extends FieldValues>({
+export function SelectForumCategory<TData extends FieldValues>({
   fieldName,
   control,
-}: ISelectRoleProps<TData>) {
+  categories,
+}: ISelectForumCategoryProps<TData>) {
   const [open, setOpen] = useState(false)
+
+  categories.map
 
   return (
     <FormField
@@ -41,7 +51,7 @@ export function SelectRole<TData extends FieldValues>({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Cargo</FormLabel>
+          <FormLabel>Categoria</FormLabel>
           <FormControl>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -52,32 +62,35 @@ export function SelectRole<TData extends FieldValues>({
                   className="w-full justify-between"
                   defaultValue={field.value}
                 >
-                  {field.value || 'Selecione o cargo...'}
+                  {categories.find((category) => category.slug === field.value)
+                    ?.name || 'Selecione a categoria...'}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-full p-0">
                 <Command {...field}>
-                  <CommandInput placeholder="Procurar cargo..." />
+                  <CommandInput placeholder="Procurar categoria..." />
                   <CommandList>
-                    <CommandEmpty>Nenhum cargo encontrado.</CommandEmpty>
+                    <CommandEmpty>Nenhuma categoria encontrada.</CommandEmpty>
                     <CommandGroup>
-                      {roleSchema.options.map((role, index) => (
+                      {categories.map((forumcategory, index) => (
                         <CommandItem
                           key={index}
-                          value={role}
+                          value={forumcategory.slug}
                           defaultValue={field.value}
                           onSelect={() => {
-                            field.onChange(role)
+                            field.onChange(forumcategory.slug)
                           }}
                         >
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              field.value === role ? 'opacity-100' : 'opacity-0'
+                              field.value === forumcategory.slug
+                                ? 'opacity-100'
+                                : 'opacity-0'
                             )}
                           />
-                          {role}
+                          {forumcategory.name}
                         </CommandItem>
                       ))}
                     </CommandGroup>

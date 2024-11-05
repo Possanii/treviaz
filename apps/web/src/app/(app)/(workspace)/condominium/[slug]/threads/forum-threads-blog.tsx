@@ -4,13 +4,24 @@ import { Card, CardContent } from '@treviaz/ui/components/ui/card'
 import { formatRelative } from 'date-fns'
 import { PlusCircle } from 'lucide-react'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
+import { useModalCreateForumThread } from '@/contexts/create-forum-thread-modal-context'
+import { useQueryGetAllCategoriesCondominium } from '@/hooks/react-query/queries/forum/get-all-categories-from-condominium'
 import { useQueryGetAllForumThreads } from '@/hooks/react-query/queries/forum/get-all-forum-threads'
 
 export function ForumThreadsBlog() {
+  const { slug } = useParams<{ slug: string }>()
+
   const {
     data: { threads },
   } = useSuspenseQuery(useQueryGetAllForumThreads({ slug: 'all' }))
+
+  const {
+    data: { categories },
+  } = useSuspenseQuery(useQueryGetAllCategoriesCondominium({ slug }))
+
+  const { toggleModal } = useModalCreateForumThread()
 
   return threads.length > 0 ? (
     <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -44,7 +55,7 @@ export function ForumThreadsBlog() {
       </div>
       <h2 className="text-2xl font-bold">Nenhum post ainda</h2>
       <p className="text-muted-foreground">Comece criando o primeiro post.</p>
-      <Button>
+      <Button onClick={() => toggleModal({ categories })}>
         <PlusCircle className="mr-2 h-4 w-4" />
         Criar um post
       </Button>

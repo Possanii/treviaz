@@ -22,5 +22,5 @@ export async function getAllCategoriesFromCondominium({
   // WARNING: I ONLY ADDED IT TO SHOW SKELETON, PLEASE REMOVE IT.
   await sleep()
 
-  return result.data.body
+  return { ...result.data.body }
 }

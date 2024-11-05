@@ -11,7 +11,7 @@ import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
 
 app.post(
-  '/forumthread',
+  '/forumthread/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateForumThreadController())
 )

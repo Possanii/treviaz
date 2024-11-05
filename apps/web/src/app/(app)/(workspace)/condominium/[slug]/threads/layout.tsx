@@ -1,4 +1,5 @@
 import { CreateForumCategoryModalProvider } from '@/contexts/create-forum-category-modal-context'
+import { CreateForumThreadModalProvider } from '@/contexts/create-forum-thread-modal-context'
 
 export default async function Layout({
   children,
@@ -7,7 +8,9 @@ export default async function Layout({
 }) {
   return (
     <CreateForumCategoryModalProvider>
-      {children}
+      <CreateForumThreadModalProvider>
+        {children}
+      </CreateForumThreadModalProvider>
     </CreateForumCategoryModalProvider>
   )
 }
