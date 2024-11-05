@@ -42,13 +42,11 @@ export default async function ThreadsPage({
           <BreadcrumbPage>Forum</BreadcrumbPage>
         </BreadcrumbItem>
       </AppHeader>
-      <section className="p-[--main-content-padding]">
-        <HydrationBoundary state={dehydratedState}>
-          <React.Suspense fallback={<DataTableSkeleton />}>
-            <ThreadsBlog />
-          </React.Suspense>
-        </HydrationBoundary>
-      </section>
+      <HydrationBoundary state={dehydratedState}>
+        <React.Suspense fallback={<DataTableSkeleton />}>
+          <ThreadsBlog />
+        </React.Suspense>
+      </HydrationBoundary>
     </>
   )
 }
