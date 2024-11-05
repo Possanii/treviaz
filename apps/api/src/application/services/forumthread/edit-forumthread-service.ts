@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { IForumThread } from '@treviaz/entities/schemas/forum/IForumThread'
 
 import { NotFoundError } from '@/application/errors/not-found-error'
@@ -7,8 +8,13 @@ import { createSlug } from '@/application/utils/create-slug'
 export class EditForumThreadService {
   async execute({
     title,
+    description,
+    thumbnail_url,
     slug,
-  }: Pick<IForumThread, 'title' | 'slug'>): Promise<void> {
+  }: Pick<
+    IForumThread,
+    'title' | 'description' | 'thumbnail_url' | 'slug'
+  >): Promise<void> {
     const thread = await prisma.forumThread.findFirst({
       where: {
         slug,
@@ -23,6 +29,8 @@ export class EditForumThreadService {
       where: { id: thread.id },
       data: {
         title,
+        description,
+        thumbnail_url,
         slug: createSlug(title),
       },
     })

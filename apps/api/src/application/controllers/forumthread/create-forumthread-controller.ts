@@ -14,6 +14,8 @@ export class CreateForumThreadController implements IController {
     const result = forumThreadSchema
       .pick({
         title: true,
+        description: true,
+        thumbnail_url: true,
       })
       .merge(
         forumCategorySchema.pick({

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
 
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
@@ -14,6 +15,8 @@ export class EditForumThreadController implements IController {
       .pick({
         title: true,
         slug: true,
+        description: true,
+        thumbnail_url: true,
       })
       .safeParse({ ...body, ...params })
 
@@ -23,10 +26,12 @@ export class EditForumThreadController implements IController {
       throw new UnprocessableEntityError('zod', 'invalid thread data', errors)
     }
 
-    const { title, slug } = result.data
+    const { title, description, thumbnail_url, slug } = result.data
 
     await this.editForumThreadService.execute({
       title,
+      description,
+      thumbnail_url,
       slug,
     })
     return {

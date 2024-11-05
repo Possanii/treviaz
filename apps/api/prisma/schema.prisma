@@ -161,12 +161,14 @@ model ForumCategory {
 }
 
 model ForumThread {
-  id         String      @id @default(uuid())
-  title      String
-  slug       String
-  status     ForumStatus @default(PENDING)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  id            String      @id @default(uuid())
+  title         String
+  description   String
+  thumbnail_url String
+  slug          String
+  status        ForumStatus @default(PENDING)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
 
   related_to_category    ForumCategory @relation(fields: [related_to_category_id], references: [id], onDelete: Cascade)
   related_to_category_id String

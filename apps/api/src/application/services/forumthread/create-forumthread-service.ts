@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { IForumThread } from '@treviaz/entities/schemas/forum/IForumThread'
 import { ICondominium } from '@treviaz/entities/schemas/ICondominium'
 import { IUser } from '@treviaz/entities/schemas/IUser'
@@ -10,9 +11,11 @@ import { createSlug } from '@/application/utils/create-slug'
 export class CreateForumThreadService {
   async execute({
     title,
+    description,
+    thumbnail_url,
     slug,
     id,
-  }: Pick<IForumThread, 'title'> &
+  }: Pick<IForumThread, 'title' | 'description' | 'thumbnail_url'> &
     Pick<ICondominium, 'slug'> &
     Pick<IUser, 'id'>): Promise<void> {
     const existingForumThread = await prisma.forumThread.findFirst({
@@ -49,6 +52,8 @@ export class CreateForumThreadService {
     await prisma.forumThread.create({
       data: {
         title,
+        description,
+        thumbnail_url,
         slug: createSlug(title),
         status: 'PENDING',
         related_to_category_id: category.id,
