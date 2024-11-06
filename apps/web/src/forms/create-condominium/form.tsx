@@ -54,7 +54,7 @@ export function FormCreateCondominium() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Logadouro</FormLabel>
+                    <FormLabel>Logradouro</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
