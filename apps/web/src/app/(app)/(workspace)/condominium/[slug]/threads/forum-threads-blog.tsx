@@ -15,7 +15,9 @@ export function ForumThreadsBlog() {
 
   const {
     data: { threads },
-  } = useSuspenseQuery(useQueryGetAllForumThreads({ slug: 'all' }))
+  } = useSuspenseQuery(
+    useQueryGetAllForumThreads({ condSlug: slug, categorySlug: 'all' })
+  )
 
   const {
     data: { categories },
