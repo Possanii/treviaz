@@ -39,7 +39,6 @@ export function AddCommentInput() {
   const { mutateAsync, isPending, isSuccess } = useMutationCreateCommentPost()
 
   const handleSubmit = form.handleSubmit(async (form) => {
-    console.log(form)
     await mutateAsync(form)
   })
 
@@ -51,6 +50,8 @@ export function AddCommentInput() {
           threadSlug,
         })
       )
+
+      form.resetField('content')
     }
   }, [isSuccess, queryClient])
 
