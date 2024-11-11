@@ -38,7 +38,7 @@ export function sidebarData() {
         items: [
           {
             title: 'Dashboard',
-            url: `/condominium/${currentCondominium}/finance`,
+            url: `/condominium/${currentCondominium}/overview`,
           },
           {
             title: 'Pagamentos',
