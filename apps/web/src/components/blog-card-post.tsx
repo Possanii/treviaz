@@ -4,14 +4,21 @@ import { formatRelative } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import Image from 'next/image'
 
-export function BlogCardPost(
+interface IBlogCardPost {
   thread: Pick<
     IForumThread,
     'id' | 'thumbnail_url' | 'title' | 'created_at' | 'description'
   >
-) {
+  onClick?: () => void
+}
+
+export function BlogCardPost({ thread, onClick }: IBlogCardPost) {
   return (
-    <Card key={thread.id} className="overflow-hidden">
+    <Card
+      key={thread.id}
+      className="overflow-hidden cursor-pointer"
+      onClick={onClick}
+    >
       <Image
         src={thread.thumbnail_url}
         alt={thread.title}

@@ -31,7 +31,7 @@ export function BlogThreadDetails() {
     data: { thread },
   } = useSuspenseQuery(
     useQueryGetForumThreadBySlug({
-      condominiumSlug: slug,
+      condSlug: slug,
       threadSlug,
     })
   )

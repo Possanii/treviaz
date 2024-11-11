@@ -6,16 +6,16 @@ import {
 } from '@/http/forum/get-forum-thread-by-slug'
 
 export function useQueryGetForumThreadBySlug({
-  condominiumSlug,
+  condSlug,
   threadSlug,
 }: {
-  condominiumSlug: string
+  condSlug: string
   threadSlug: string
 }) {
   return queryOptions({
-    queryKey: ['condominium', condominiumSlug, 'thread', threadSlug],
+    queryKey: ['condominium', condSlug, 'thread', threadSlug],
     queryFn: async (): Promise<{ thread: IGetForumThreadBySlug }> =>
-      await getForumThreadBySlug({ threadSlug }),
+      await getForumThreadBySlug({ condSlug, threadSlug }),
     refetchOnMount: false,
   })
 }

@@ -25,7 +25,7 @@ app.get(
 )
 
 app.get(
-  '/thread/:condSlug/:categorySlug',
+  '/thread/:condSlug/:threadSlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetForumThreadBySlugController())
 )

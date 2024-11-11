@@ -25,13 +25,15 @@ export const getForumThreadBySlugSchema = forumThreadSchema.extend({
 export type IGetForumThreadBySlug = z.infer<typeof getForumThreadBySlugSchema>
 
 export async function getForumThreadBySlug({
+  condSlug,
   threadSlug,
 }: {
+  condSlug: string
   threadSlug: string
 }): Promise<{ thread: IGetForumThreadBySlug }> {
   const result = await api.get<{
     body: { thread: IGetForumThreadBySlug }
-  }>(`/thread/${threadSlug}`)
+  }>(`/thread/${condSlug}/${threadSlug}`)
 
   return { ...result.data.body }
 }

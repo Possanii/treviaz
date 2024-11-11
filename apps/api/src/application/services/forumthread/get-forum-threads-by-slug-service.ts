@@ -6,7 +6,13 @@ import { NotFoundError } from '@/application/errors/not-found-error'
 import { prisma } from '@/application/libs/prisma'
 
 export class GetForumThreadBySlugService {
-  async execute({ slug }: { slug: string }): Promise<{
+  async execute({
+    slug,
+    threadSlug,
+  }: {
+    slug: string
+    threadSlug: string
+  }): Promise<{
     thread: IForumThread & {
       created_by: Pick<IUser, 'id' | 'name' | 'avatar_url'>
       posts: (IForumPost & {
@@ -16,7 +22,12 @@ export class GetForumThreadBySlugService {
   }> {
     const thread = await prisma.forumThread.findFirst({
       where: {
-        slug,
+        related_to_category: {
+          condominium: {
+            slug,
+          },
+        },
+        slug: threadSlug,
       },
       select: {
         id: true,

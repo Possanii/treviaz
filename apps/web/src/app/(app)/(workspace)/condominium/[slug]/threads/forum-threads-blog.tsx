@@ -1,17 +1,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Button } from '@treviaz/ui/components/ui/button'
-import { Card, CardContent } from '@treviaz/ui/components/ui/card'
-import { formatRelative } from 'date-fns'
 import { PlusCircle } from 'lucide-react'
-import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
+import { BlogCardPost } from '@/components/blog-card-post'
 import { useModalCreateForumThread } from '@/contexts/create-forum-thread-modal-context'
 import { useQueryGetAllCategoriesCondominium } from '@/hooks/react-query/queries/forum/get-all-categories-from-condominium'
 import { useQueryGetAllForumThreads } from '@/hooks/react-query/queries/forum/get-all-forum-threads'
 
 export function ForumThreadsBlog() {
   const { slug } = useParams<{ slug: string }>()
+  const router = useRouter()
 
   const {
     data: { threads },
@@ -28,26 +27,11 @@ export function ForumThreadsBlog() {
   return threads.length > 0 ? (
     <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {threads.map((thread) => (
-        <Card key={thread.id} className="overflow-hidden">
-          <Image
-            src={thread.thumbnail_url}
-            alt={thread.title}
-            width={600}
-            height={400}
-            className="aspect-[3/2] object-cover"
-          />
-          <CardContent className="grid gap-4 p-6">
-            <div className="space-y-3">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {formatRelative(thread.created_at, new Date())}
-              </p>
-              <h2 className="font-bold tracking-tight">{thread.title}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {thread.description}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <BlogCardPost
+          key={thread.id}
+          thread={thread}
+          onClick={() => router.push(`threads/${thread.slug}`)}
+        />
       ))}
     </div>
   ) : (

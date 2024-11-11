@@ -1,4 +1,5 @@
 import { condominiumSchema } from '@treviaz/entities/schemas/ICondominium'
+import z from 'zod'
 
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
@@ -12,7 +13,12 @@ export class GetForumThreadBySlugController implements IController {
   ) {}
 
   async handle({ params }: IRequest): Promise<IResponse> {
-    const result = condominiumSchema.pick({ slug: true }).safeParse(params)
+    const result = condominiumSchema
+      .pick({ slug: true })
+      .extend({
+        threadSlug: z.string().min(1),
+      })
+      .safeParse({ slug: params.condSlug, threadSlug: params.threadSlug })
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
@@ -24,10 +30,11 @@ export class GetForumThreadBySlugController implements IController {
       )
     }
 
-    const { slug } = result.data
+    const { slug, threadSlug } = result.data
 
     const thread = await this.getForumThreadBySlugService.execute({
       slug,
+      threadSlug,
     })
 
     return {
