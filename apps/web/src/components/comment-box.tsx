@@ -10,7 +10,7 @@ import { ptBR } from 'date-fns/locale'
 import { getNameInitial } from '@/utils/get-name-initials'
 
 interface ICommentBox {
-  key: string
+  id: string
   avatarUrl?: string | null
   userName: string
   createdAt: Date | string | number
@@ -18,14 +18,14 @@ interface ICommentBox {
 }
 
 export function CommentBox({
-  key,
+  id,
   avatarUrl,
   userName,
   createdAt,
   comment,
 }: ICommentBox) {
   return (
-    <Card key={key} className="mb-4">
+    <Card key={id} className="mb-4">
       <CardHeader>
         <div className="flex items-center space-x-4">
           <Avatar>

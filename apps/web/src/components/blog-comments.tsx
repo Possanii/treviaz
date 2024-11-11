@@ -39,7 +39,7 @@ function BlogCommentsComments({
 }) {
   return posts.map((comment) => (
     <CommentBox
-      key={comment.id}
+      id={comment.id}
       avatarUrl={comment.user.avatar_url}
       userName={comment.user.name}
       comment={comment.content}
