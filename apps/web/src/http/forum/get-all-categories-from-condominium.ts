@@ -2,7 +2,6 @@ import { IForumCategory } from '@treviaz/entities/schemas/forum/IForumCategory'
 import { IUser } from '@treviaz/entities/schemas/IUser'
 
 import { api } from '@/lib/api-client'
-import { sleep } from '@/utils/sleep'
 
 export interface IGetAllCategoriesFromCondominium {
   categories: (IForumCategory & {
@@ -18,9 +17,6 @@ export async function getAllCategoriesFromCondominium({
   const result = await api.get<{ body: IGetAllCategoriesFromCondominium }>(
     `/forumcategory/${slug}`
   )
-
-  // WARNING: I ONLY ADDED IT TO SHOW SKELETON, PLEASE REMOVE IT.
-  await sleep()
 
   return { ...result.data.body }
 }
