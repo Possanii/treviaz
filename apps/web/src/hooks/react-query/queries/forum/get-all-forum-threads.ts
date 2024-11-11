@@ -5,11 +5,17 @@ import {
   IGetAllForumThreads,
 } from '@/http/forum/get-all-forum-threads'
 
-export function useQueryGetAllForumThreads({ slug }: { slug?: string }) {
+export function useQueryGetAllForumThreads({
+  condSlug,
+  categorySlug,
+}: {
+  condSlug: string
+  categorySlug?: string
+}) {
   return queryOptions({
-    queryKey: ['condominium', slug, 'threads'],
+    queryKey: ['condominium', condSlug, categorySlug, 'threads'],
     queryFn: async (): Promise<IGetAllForumThreads> =>
-      await getAllForumThreads({ slug }),
+      await getAllForumThreads({ condSlug, categorySlug }),
     refetchOnMount: false,
   })
 }

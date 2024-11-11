@@ -19,13 +19,13 @@ app.post(
 )
 
 app.get(
-  '/forumthread/:categorySlug',
+  '/forumthread/:condSlug/:categorySlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetAllForumThreadsController())
 )
 
 app.get(
-  '/thread/:slug',
+  '/thread/:condSlug/:categorySlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetForumThreadBySlugController())
 )

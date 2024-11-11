@@ -5,7 +5,7 @@ import { addressSchema } from './IAddress'
 export const condominiumSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1, 'Condominium name is required'),
-  slug: z.string(),
+  slug: z.string().min(1),
   address: addressSchema,
   address_id: z.string().uuid(),
   photo_url: z.string().url().nullable(),

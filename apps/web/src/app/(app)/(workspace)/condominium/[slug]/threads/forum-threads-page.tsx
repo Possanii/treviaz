@@ -30,7 +30,9 @@ export function ForumThreadsPage() {
   const { toggleModal: creteaForumThreadToggleModal } =
     useModalCreateForumThread()
 
-  queryClient.prefetchQuery(useQueryGetAllForumThreads({ slug: 'all' }))
+  queryClient.prefetchQuery(
+    useQueryGetAllForumThreads({ condSlug: slug, categorySlug: 'all' })
+  )
   const dehydratedState = dehydrate(queryClient)
 
   return (

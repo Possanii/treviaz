@@ -10,12 +10,14 @@ export interface IGetAllForumThreads {
 }
 
 export async function getAllForumThreads({
-  slug = 'all',
+  condSlug,
+  categorySlug = 'all',
 }: {
-  slug?: string
+  condSlug: string
+  categorySlug?: string
 }): Promise<IGetAllForumThreads> {
   const result = await api.get<{ body: IGetAllForumThreads }>(
-    `/forumthread/${slug}`
+    `/forumthread/${condSlug}/${categorySlug}`
   )
 
   return { ...result.data.body }
