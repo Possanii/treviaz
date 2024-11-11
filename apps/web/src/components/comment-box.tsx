@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader } from '@treviaz/ui/components/ui/card'
 import { formatRelative } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+import { getNameInitial } from '@/utils/get-name-initials'
+
 interface ICommentBox {
   key: string
   avatarUrl?: string | null
@@ -28,10 +30,10 @@ export function CommentBox({
         <div className="flex items-center space-x-4">
           <Avatar>
             <AvatarImage src={avatarUrl || undefined} alt={userName} />
-            <AvatarFallback>{userName}</AvatarFallback>
+            <AvatarFallback>{getNameInitial(userName)}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-sm font-medium">{[0]}</p>
+            <p className="text-sm font-medium">{userName}</p>
             <p className="text-xs text-muted-foreground">
               {formatRelative(createdAt, new Date(), {
                 locale: ptBR,

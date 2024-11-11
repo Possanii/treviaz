@@ -9,12 +9,22 @@ export class CreateForumPostService {
   async execute({
     content,
     slug,
+    threadSlug,
     id: userId,
   }: Pick<IForumPost, 'content'> &
-    Pick<IForumThread, 'slug'> &
-    Pick<IUser, 'id'>): Promise<void> {
+    Pick<IForumThread, 'slug'> & { threadSlug: string } & Pick<
+      IUser,
+      'id'
+    >): Promise<void> {
     const existingThread = await prisma.forumThread.findFirst({
-      where: { slug },
+      where: {
+        slug: threadSlug,
+        related_to_category: {
+          condominium: {
+            slug,
+          },
+        },
+      },
     })
 
     if (!existingThread) {

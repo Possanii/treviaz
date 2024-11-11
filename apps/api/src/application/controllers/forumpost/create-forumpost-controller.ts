@@ -1,5 +1,6 @@
 import { forumPostSchema } from '@treviaz/entities/schemas/forum/IForumPost'
-import { forumThreadSchema } from '@treviaz/entities/schemas/forum/IForumThread'
+import { condominiumSchema } from '@treviaz/entities/schemas/ICondominium'
+import z from 'zod'
 
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
@@ -16,11 +17,18 @@ export class CreateForumPostController implements IController {
         content: true,
       })
       .merge(
-        forumThreadSchema.pick({
+        condominiumSchema.pick({
           slug: true,
         })
       )
-      .safeParse({ ...body, ...params })
+      .extend({
+        threadSlug: z.string().min(1),
+      })
+      .safeParse({
+        ...body,
+        slug: params.condSlug,
+        threadSlug: params.threadSlug,
+      })
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
