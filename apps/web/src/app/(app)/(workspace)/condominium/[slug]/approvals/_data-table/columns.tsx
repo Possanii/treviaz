@@ -9,6 +9,7 @@ import {
 import { Badge } from '@treviaz/ui/components/ui/badge'
 import { formatRelative, isSameDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { useRouter } from 'next/navigation'
 
 import { BlogCardPost } from '@/components/blog-card-post'
 import { isArrayOfDates } from '@/components/data-table/utils'
@@ -23,10 +24,15 @@ export const columns: ColumnDef<ColumnSchema>[] = [
     header: 'Post',
     cell: ({ row }) => {
       const post = row.original
+      const router = useRouter()
 
       return (
         <div className="max-w-[320px]">
-          <BlogCardPost {...post} />
+          <BlogCardPost
+            key={post.id}
+            thread={post}
+            onClick={() => router.push(`approvals/${post.slug}`)}
+          />
         </div>
       )
     },
