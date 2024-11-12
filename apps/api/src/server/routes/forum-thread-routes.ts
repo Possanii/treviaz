@@ -19,6 +19,12 @@ app.post(
 )
 
 app.get(
+  '/forumthread/:slug/approve',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetForumThreadsToApproveController())
+)
+
+app.get(
   '/forumthread/:condSlug/:categorySlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetAllForumThreadsController())
@@ -28,12 +34,6 @@ app.get(
   '/thread/:condSlug/:threadSlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetForumThreadBySlugController())
-)
-
-app.get(
-  '/forumthread/:slug/approve',
-  middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetForumThreadsToApproveController())
 )
 
 app.put(
