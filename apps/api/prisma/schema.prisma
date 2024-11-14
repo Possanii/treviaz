@@ -31,9 +31,10 @@ model Condominium {
   units      Unit[]
   invites    Invite[]
 
-  owner         User            @relation(fields: [owner_id], references: [id])
-  owner_id      String
-  ForumCategory ForumCategory[]
+  owner                User                   @relation(fields: [owner_id], references: [id])
+  owner_id             String
+  ForumCategory        ForumCategory[]
+  FinancialTransaction FinancialTransaction[]
 
   @@map("condominiums")
 }
@@ -65,12 +66,12 @@ model Address {
 }
 
 model User {
-  id                     String            @id @unique @default(uuid())
+  id                     String                 @id @unique @default(uuid())
   name                   String
-  email                  String            @unique
+  email                  String                 @unique
   avatar_url             String?
-  created_at             DateTime          @default(now())
-  updated_at             DateTime?         @updatedAt
+  created_at             DateTime               @default(now())
+  updated_at             DateTime?              @updatedAt
   forumPosts             ForumPost[]
   condominiums           UserCondominium[]
   reserves               Reserve[]
@@ -79,8 +80,10 @@ model User {
   owner_condominiums     Condominium[]
   invites_created        Invite[]
   forum_category_created ForumCategory[]
-  forum_threads_created  ForumThread[]     @relation("created_forum_threads")
-  forum_threads_approved ForumThread[]     @relation("approved_forum_threads")
+  forum_threads_created  ForumThread[]          @relation("created_forum_threads")
+  forum_threads_approved ForumThread[]          @relation("approved_forum_threads")
+  FinancialTransaction   FinancialTransaction[]
+  Invoice                Invoice[]
 
   @@map("users")
 }
@@ -266,4 +269,76 @@ model Notification {
   user User @relation(fields: [user_id], references: [id])
 
   @@map("notifications")
+}
+
+enum FinancialType {
+  INCOME
+  EXPENSE
+}
+
+model FinancialCategory {
+  id          String        @id @default(uuid())
+  name        String
+  type        FinancialType
+  description String?
+
+  transactions FinancialTransaction[]
+
+  @@unique([name, type])
+  @@map("financial_categories")
+}
+
+model FinancialTransaction {
+  id          String          @id @default(uuid())
+  amount      Decimal
+  dueDate     DateTime
+  paymentDate DateTime?
+  status      FinancialStatus @default(PENDING)
+  description String?
+  createdAt   DateTime        @default(now())
+
+  condominium   Condominium @relation(fields: [condominiumId], references: [id])
+  condominiumId String
+
+  category   FinancialCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  resident   User?   @relation(fields: [residentId], references: [id])
+  residentId String?
+
+  @@map("financial_transactions")
+}
+
+enum FinancialStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model Invoice {
+  id             String          @id @default(uuid())
+  referenceMonth DateTime
+  totalAmount    Decimal
+  status         FinancialStatus @default(PENDING)
+  createdAt      DateTime        @default(now())
+
+  payments Payment[]
+
+  resident   User   @relation(fields: [residentId], references: [id])
+  residentId String
+
+  @@map("invoices")
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  amountPaid    Decimal
+  paymentDate   DateTime
+  paymentMethod String
+  createdAt     DateTime @default(now())
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String
+
+  @@map("payments")
 }
