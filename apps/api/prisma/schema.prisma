@@ -31,8 +31,9 @@ model Condominium {
   units      Unit[]
   invites    Invite[]
 
-  owner                User                   @relation(fields: [owner_id], references: [id])
-  owner_id             String
+  owner    User   @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id String
+
   ForumCategory        ForumCategory[]
   FinancialTransaction FinancialTransaction[]
 
@@ -95,8 +96,8 @@ model UserCondominium {
   role           Role
   joined_at      DateTime @default(now())
 
-  user        User        @relation(fields: [user_id], references: [id])
-  condominium Condominium @relation(fields: [condominium_id], references: [id])
+  user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  condominium Condominium @relation(fields: [condominium_id], references: [id], onDelete: Cascade)
 
   @@map("user_condominiums")
 }
@@ -290,7 +291,7 @@ model FinancialCategory {
 
 model FinancialTransaction {
   id          String          @id @default(uuid())
-  amount      Decimal
+  amount      Int
   dueDate     DateTime
   paymentDate DateTime?
   status      FinancialStatus @default(PENDING)
@@ -318,7 +319,7 @@ enum FinancialStatus {
 model Invoice {
   id             String          @id @default(uuid())
   referenceMonth DateTime
-  totalAmount    Decimal
+  totalAmount    Int
   status         FinancialStatus @default(PENDING)
   createdAt      DateTime        @default(now())
 
@@ -332,7 +333,7 @@ model Invoice {
 
 model Payment {
   id            String   @id @default(uuid())
-  amountPaid    Decimal
+  amountPaid    Int
   paymentDate   DateTime
   paymentMethod String
   createdAt     DateTime @default(now())
