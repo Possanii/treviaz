@@ -1,3 +1,4 @@
+import { makeGetTotalCategorySummaryController } from '@/factories/controllers/financial/make-get-total-category-summary-controller'
 import { makeGetTotalExpenseByMonthController } from '@/factories/controllers/financial/make-get-total-expense-by-month-controller'
 import { makeGetTotalIncomeByMonthController } from '@/factories/controllers/financial/make-get-total-income-by-month-controller'
 import { makeGetTotalOutstandingController } from '@/factories/controllers/financial/make-get-total-outstanding-controller'
@@ -23,4 +24,10 @@ app.get(
   '/financial/total-outstanding',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetTotalOutstandingController())
+)
+
+app.get(
+  '/financial/total-category-summary',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetTotalCategorySummaryController())
 )
