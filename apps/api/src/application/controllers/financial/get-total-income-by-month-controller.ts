@@ -1,3 +1,6 @@
+import { condominiumSchema } from '@treviaz/entities/schemas/ICondominium'
+
+import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
@@ -10,8 +13,24 @@ export class GetTotalIncomeByMonthController implements IController {
     this.getTotalIncomeByMonthService = getTotalIncomeByMonthService
   }
 
-  async handle(request: IRequest): Promise<IResponse> {
-    const totalIncome = await this.getTotalIncomeByMonthService.execute()
+  async handle({ params }: IRequest): Promise<IResponse> {
+    const result = condominiumSchema.pick({ slug: true }).safeParse(params)
+
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
+
+      throw new UnprocessableEntityError(
+        'condominium',
+        'Invalid condominium slug',
+        errors
+      )
+    }
+
+    const { slug } = result.data
+
+    const totalIncome = await this.getTotalIncomeByMonthService.execute({
+      slug,
+    })
 
     return {
       statusCode: 200,

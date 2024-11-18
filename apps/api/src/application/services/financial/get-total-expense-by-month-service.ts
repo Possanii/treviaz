@@ -1,11 +1,20 @@
 import { prisma } from '@/application/libs/prisma'
 
 export class GetTotalExpenseByMonthService {
-  async execute() {
+  async execute({ slug }: { slug: string }) {
     const expense = await prisma.financialTransaction.aggregate({
       _sum: { amount: true },
       where: {
-        category: { type: 'EXPENSE' },
+        category: {
+          transactions: {
+            every: {
+              condominium: {
+                slug,
+              },
+            },
+          },
+          type: 'EXPENSE',
+        },
         dueDate: {
           gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
           lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),

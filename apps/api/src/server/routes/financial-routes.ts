@@ -9,25 +9,25 @@ import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
 
 app.get(
-  '/financial/total-income',
+  '/financial/:slug/total-income',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetTotalIncomeByMonthController())
 )
 
 app.get(
-  '/financial/total-expense',
+  '/financial/:slug/total-expense',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetTotalExpenseByMonthController())
 )
 
 app.get(
-  '/financial/total-outstanding',
+  '/financial/:slug/total-outstanding',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetTotalOutstandingController())
 )
 
 app.get(
-  '/financial/total-category-summary',
+  '/financial/:slug/total-category-summary',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetTotalCategorySummaryController())
 )

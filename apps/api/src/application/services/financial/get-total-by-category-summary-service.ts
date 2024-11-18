@@ -1,8 +1,17 @@
 import { prisma } from '@/application/libs/prisma'
 
 export class GetTotalCategorySummaryService {
-  async execute() {
+  async execute({ slug }: { slug: string }) {
     const categories = await prisma.financialCategory.findMany({
+      where: {
+        transactions: {
+          every: {
+            condominium: {
+              slug,
+            },
+          },
+        },
+      },
       include: {
         transactions: {
           select: { amount: true },
