@@ -11,6 +11,9 @@
     "db:studio": "pnpm env:load prisma studio",
     "env:load": "dotenv -e ../../.env --"
   },
+  "prisma": {
+    "seed": "pnpm env:load tsx prisma/seed.ts"
+  },
   "devDependencies": {
     "@treviaz/eslint-config": "workspace:*",
     "@treviaz/prettier": "workspace:*",
