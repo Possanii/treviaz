@@ -18,6 +18,7 @@ import { useEffect } from 'react'
 
 import { useMutationApproveForumThread } from '@/hooks/react-query/mutations/forum/approve-forum-thread-mutation'
 import { useMutationDenyForumThread } from '@/hooks/react-query/mutations/forum/deny-forum-thread-mutation'
+import { useQueryGetAllForumThreads } from '@/hooks/react-query/queries/forum/get-all-forum-threads'
 import { useQueryGetForumThreadsToApprove } from '@/hooks/react-query/queries/forum/get-forum-threads-to-approve'
 import { queryClient } from '@/lib/query-client'
 
@@ -51,6 +52,9 @@ export function DropdownForumThreadApproveActions({
     if (approveForumThreadIsSuccess || denyForumThreadIsSuccess) {
       queryClient.invalidateQueries(
         useQueryGetForumThreadsToApprove({ condominiumSlug: slug })
+      )
+      queryClient.invalidateQueries(
+        useQueryGetAllForumThreads({ condSlug: slug })
       )
     }
   }, [queryClient, slug, approveForumThreadIsSuccess, denyForumThreadIsSuccess])
