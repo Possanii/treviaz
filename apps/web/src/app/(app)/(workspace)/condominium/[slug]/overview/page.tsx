@@ -13,7 +13,7 @@ export const metadata = {
   title: 'Dashboard : Overview',
 }
 
-export default function page({ params }: { params: { slug: string } }) {
+export default async function page({ params }: { params: { slug: string } }) {
   return (
     <>
       <AppHeader>
@@ -32,7 +32,7 @@ export default function page({ params }: { params: { slug: string } }) {
         </BreadcrumbItem>
       </AppHeader>
       <section className="p-[--main-content-padding]">
-        <OverViewPage />
+        <OverViewPage params={params} />
       </section>
     </>
   )
