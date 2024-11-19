@@ -1,5 +1,6 @@
 'use client'
 
+import { useSuspenseQuery } from '@tanstack/react-query'
 import {
   Card,
   CardContent,
@@ -14,54 +15,65 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@treviaz/ui/components/ui/chart'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { TrendingUp } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import * as React from 'react'
 import { Label, Pie, PieChart } from 'recharts'
 
-const chartData = [
-  { browser: 'chrome', visitors: 275, fill: 'var(--color-chrome)' },
-  { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
-  { browser: 'firefox', visitors: 287, fill: 'var(--color-firefox)' },
-  { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
-  { browser: 'other', visitors: 190, fill: 'var(--color-other)' },
-]
-
-const chartConfig = {
-  visitors: {
-    label: 'Visitors',
-  },
-  chrome: {
-    label: 'Chrome',
-    color: 'hsl(var(--chart-1))',
-  },
-  safari: {
-    label: 'Safari',
-    color: 'hsl(var(--chart-2))',
-  },
-  firefox: {
-    label: 'Firefox',
-    color: 'hsl(var(--chart-3))',
-  },
-  edge: {
-    label: 'Edge',
-    color: 'hsl(var(--chart-4))',
-  },
-  other: {
-    label: 'Other',
-    color: 'hsl(var(--chart-5))',
-  },
-} satisfies ChartConfig
+import { useQueryGetTotalCategorySummaryByMonth } from '@/hooks/react-query/queries/financial/get-total-category-summary-query'
+import { formatCurrency } from '@/utils/format-currency'
+import { randomGraphColor } from '@/utils/random-pie-graph-color'
 
 export function PieGraph() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+  const { slug } = useParams<{ slug: string }>()
+
+  const { data } = useSuspenseQuery(
+    useQueryGetTotalCategorySummaryByMonth({ condSlug: slug })
+  )
+
+  const chartData = React.useMemo(
+    () =>
+      data.totalCategorySummary.map((category) => ({
+        category: category.name,
+        type: category.type,
+        total: category.total,
+        fill: `var(--color-${category.name})`,
+      })),
+    [data]
+  )
+
+  const chartConfig = {
+    total: {
+      label: 'Receita',
+    },
+    ...Object.fromEntries(
+      data.totalCategorySummary.map((category) => [
+        category.name,
+        {
+          label: category.name,
+          color: randomGraphColor(),
+        },
+      ])
+    ),
+  } satisfies ChartConfig
+
+  const totalRevenue = React.useMemo(() => {
+    return chartData.reduce(
+      (acc, curr) =>
+        curr.type === 'INCOME' ? acc + curr.total : acc - curr.total,
+      0
+    )
   }, [])
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Movimentação financeira</CardTitle>
+        <CardDescription>
+          {format(new Date(), 'LLLL', { locale: ptBR })} 2024
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -75,8 +87,8 @@ export function PieGraph() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="total"
+              nameKey="category"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -95,14 +107,14 @@ export function PieGraph() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {formatCurrency(totalRevenue)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Reais
                         </tspan>
                       </text>
                     )
@@ -115,10 +127,10 @@ export function PieGraph() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Tendência de alta de 5,2% este mês <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Mostrando a movimentação total do último mês{' '}
         </div>
       </CardFooter>
     </Card>
