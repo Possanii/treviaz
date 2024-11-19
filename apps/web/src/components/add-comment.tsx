@@ -68,7 +68,10 @@ export function AddCommentInput() {
                   <FormItem>
                     <FormLabel>Comentário</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Add a comment..." {...field} />
+                      <Textarea
+                        placeholder="Adicionar comentário..."
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -78,7 +81,7 @@ export function AddCommentInput() {
           </CardHeader>
           <CardFooter>
             <Button disabled={isPending} type="submit">
-              Thread Comment
+              Comentar
             </Button>
           </CardFooter>
         </form>

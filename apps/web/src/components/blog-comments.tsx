@@ -25,7 +25,7 @@ function BlogCommentsTitle({
 }: HTMLAttributes<HTMLHeadElement>) {
   return (
     <h2 className={cn('mb-4 text-2xl font-bold', className)} {...rest}>
-      {children ?? 'Comments'}
+      {children ?? 'Comentários'}
     </h2>
   )
 }
