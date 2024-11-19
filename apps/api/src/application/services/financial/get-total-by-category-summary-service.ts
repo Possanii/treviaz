@@ -31,6 +31,7 @@ export class GetTotalCategorySummaryService {
 
     return categories.map((category) => ({
       name: category.name,
+      type: category.type,
       total: category.transactions.reduce(
         (sum, transaction) => sum + transaction.amount,
         0
