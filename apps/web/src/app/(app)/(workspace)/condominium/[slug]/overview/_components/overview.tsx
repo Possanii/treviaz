@@ -22,8 +22,6 @@ import { useQueryGetTotalNewThreads } from '@/hooks/react-query/queries/dashboar
 import { useQueryGetTotalIncomeByMonth } from '@/hooks/react-query/queries/financial/get-total-income-query'
 import { queryClient } from '@/lib/query-client'
 
-import { AreaGraph } from './area-graph'
-import { BarGraph } from './bar-graph'
 import { DashboardInfoCards } from './dashboard-info-cards'
 import { PieGraph } from './pie-graph'
 import { RecentSales } from './recent-sales'
@@ -67,10 +65,7 @@ export async function OverViewPage({ params }: { params: { slug: string } }) {
               </React.Suspense>
             </HydrationBoundary>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <div className="col-span-4">
-                <BarGraph />
-              </div>
-              <Card className="col-span-4 md:col-span-3">
+              <Card className="col-span-4 md:col-span-4">
                 <CardHeader>
                   <CardTitle>Recent Sales</CardTitle>
                   <CardDescription>
@@ -81,9 +76,6 @@ export async function OverViewPage({ params }: { params: { slug: string } }) {
                   <RecentSales />
                 </CardContent>
               </Card>
-              <div className="col-span-4">
-                <AreaGraph />
-              </div>
               <div className="col-span-4 md:col-span-3">
                 <PieGraph />
               </div>
