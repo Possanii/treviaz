@@ -56,7 +56,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const value = row.getValue('status') as string
-      return <Badge className={statusColor[value].badge}>{value}</Badge>
+      return <Badge className={statusColor[value]?.badge ?? ''}>{value}</Badge>
     },
     filterFn: (row, id, value) => {
       const rowValue = row.getValue(id) as string

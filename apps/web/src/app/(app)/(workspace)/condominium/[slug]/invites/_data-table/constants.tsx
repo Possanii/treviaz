@@ -63,7 +63,7 @@ export function createFilterFields(data: ICondominiumInvitesTable[]) {
           <div className="flex w-full items-center justify-between gap-2">
             <span className="truncate font-normal">{props.value}</span>
             <span
-              className={`h-2 w-2 rounded-full ${statusColor[props.value]?.dot}`}
+              className={`h-2 w-2 rounded-full ${statusColor[props.value]?.dot ?? ''}`}
             />
           </div>
         )
