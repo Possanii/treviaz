@@ -9,12 +9,14 @@
     "dev:nodemon": "pnpm env:load nodemon -w src -r ts-node src/server/server.ts",
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
-    "env:load": "dotenv -e ../../.env --"
+    "env:load": "dotenv -e ../../.env --",
+    "db:seed:livers": "pnpm env:load tsx prisma/seed-livers.ts"
   },
   "prisma": {
     "seed": "pnpm env:load tsx prisma/seed.ts"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@treviaz/eslint-config": "workspace:*",
     "@treviaz/prettier": "workspace:*",
     "@treviaz/tsconfig": "workspace:*",
