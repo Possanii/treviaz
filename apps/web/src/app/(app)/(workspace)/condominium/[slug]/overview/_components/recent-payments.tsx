@@ -36,8 +36,8 @@ export function RecentPayments() {
       <CardContent>
         <div className="space-y-8">
           {data.recentPayments.length > 0 ? (
-            data.recentPayments.map((payment) => (
-              <div className="flex items-center">
+            data.recentPayments.slice(0, 10).map((payment) => (
+              <div key={payment.id} className="flex items-center">
                 <Avatar className="h-9 w-9">
                   <AvatarImage
                     src={payment.payer.avatar_url || undefined}

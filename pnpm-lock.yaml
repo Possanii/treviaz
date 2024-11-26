@@ -57,6 +57,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^9.2.0
+        version: 9.2.0
       '@treviaz/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -654,6 +657,10 @@ packages:
   '@eslint/js@8.57.0':
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@faker-js/faker@9.2.0':
+    resolution: {integrity: sha512-ulqQu4KMr1/sTFIYvqSdegHT8NIkt66tFAkugGnHA+1WAfEn6hMzNR+svjXGFRVLnapxvej67Z/LwchFrnLBUg==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@floating-ui/core@1.6.8':
     resolution: {integrity: sha512-7XJ9cPU+yI2QeLS+FCSlqNFZJq8arvswefkZrYI1yQBbftw6FyrZOxYSh+9S7z7TpeWlRt9zJ5IhM1WIL334jA==}
@@ -3965,6 +3972,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.0': {}
+
+  '@faker-js/faker@9.2.0': {}
 
   '@floating-ui/core@1.6.8':
     dependencies:
