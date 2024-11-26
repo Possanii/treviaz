@@ -105,7 +105,7 @@ export function PieGraph() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-lg max-w-[110px] font-bold"
                         >
                           {formatCurrency(totalRevenue)}
                         </tspan>
