@@ -28,17 +28,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="bg-gray-200">
         <HydrationBoundary state={dehydratedState}>
           <React.Suspense fallback={<CondominionSwitcherSkeleton />}>
             <CondominiumSwitcher />
           </React.Suspense>
         </HydrationBoundary>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-gray-200">
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-gray-200">
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />

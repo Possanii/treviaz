@@ -36,7 +36,7 @@ export function RecentPayments() {
       <CardContent>
         <div className="space-y-8">
           {data.recentPayments.length > 0 ? (
-            data.recentPayments.slice(0, 10).map((payment) => (
+            data.recentPayments.slice(0, 6).map((payment) => (
               <div key={payment.id} className="flex items-center">
                 <Avatar className="h-9 w-9">
                   <AvatarImage

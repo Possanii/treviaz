@@ -68,7 +68,7 @@ export function PieGraph() {
   }, [])
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex p-2 flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Movimentação financeira</CardTitle>
         <CardDescription>
