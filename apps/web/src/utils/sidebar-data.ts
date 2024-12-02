@@ -8,6 +8,16 @@ export function sidebarData() {
   const { user } = useAuth()
   const currentCondominium = getCurrentCondominium()
 
+  if (!currentCondominium)
+    return {
+      user: {
+        name: user?.user_metadata.name,
+        email: user?.user_metadata.email,
+        avatar: '',
+      },
+      navMain: [],
+    }
+
   return {
     user: {
       name: user?.user_metadata.name,

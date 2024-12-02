@@ -44,7 +44,7 @@ export function CondominiumSwitcher() {
         setCurrentCondominium(activeCondominium.condominium.slug)
 
         router.replace(
-          `/condominium/${activeCondominium.condominium.slug}/dashboard`
+          `/condominium/${activeCondominium.condominium.slug}/overview`
         )
       }
     }

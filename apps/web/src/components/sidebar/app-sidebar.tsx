@@ -13,6 +13,7 @@ import * as React from 'react'
 import { useQueryGetRelationshipsWithCondominiums } from '@/hooks/react-query/queries/get-user-relationships-with-condominiums'
 import { queryClient } from '@/lib/query-client'
 import { sidebarData } from '@/utils/sidebar-data'
+import { getCurrentCondominium } from '@/utils/utils'
 
 import { CondominiumSwitcher } from './condominium-switcher'
 import { CondominionSwitcherSkeleton } from './condominium-switcher-skeleton'
@@ -20,11 +21,18 @@ import { NavMain } from './nav-main'
 import { NavUser } from './nav-user'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const data = sidebarData()
+  const currentCondominium = getCurrentCondominium()
+
+  const [sidebarItems, setSidebarItems] = React.useState<typeof data>(data)
+
   queryClient.prefetchQuery(useQueryGetRelationshipsWithCondominiums())
 
   const dehydratedState = dehydrate(queryClient)
 
-  const data = sidebarData()
+  React.useEffect(() => {
+    setSidebarItems(data)
+  }, [currentCondominium])
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -36,10 +44,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </HydrationBoundary>
       </SidebarHeader>
       <SidebarContent className="bg-gray-200">
-        <NavMain items={data.navMain} />
+        <NavMain items={sidebarItems.navMain} />
       </SidebarContent>
       <SidebarFooter className="bg-gray-200">
-        <NavUser user={data.user} />
+        <NavUser user={sidebarItems.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -4,13 +4,12 @@ import {
   BreadcrumbItem,
   BreadcrumbPage,
 } from '@treviaz/ui/components/ui/breadcrumb'
+import Image from 'next/image'
 
+import Background from '@/assets/background.jpg'
 import { AppHeader } from '@/components/sidebar/app-header'
-import { useAuth } from '@/hooks/use-auth'
 
 export default function Home() {
-  const { user } = useAuth()
-
   return (
     <>
       <AppHeader>
@@ -18,9 +17,12 @@ export default function Home() {
           <BreadcrumbPage>Dashboard</BreadcrumbPage>
         </BreadcrumbItem>
       </AppHeader>
-      <section className="p-[--main-content-padding]">
-        <pre>{JSON.stringify(user, null, 2)}</pre>
-      </section>
+      <Image
+        src={Background}
+        alt="Um homem de terno com a mão aberta, segurando alguns prédios"
+        width={1920}
+        height={1080}
+      />
     </>
   )
 }
