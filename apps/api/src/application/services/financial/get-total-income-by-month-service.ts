@@ -9,10 +9,10 @@ export class GetTotalIncomeByMonthService {
           slug,
         },
         category: { type: 'INCOME' },
-        dueDate: {
-          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-          lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-        },
+        // dueDate: {
+        //   gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        //   lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        // },
       },
     })
     return income._sum.amount || 0

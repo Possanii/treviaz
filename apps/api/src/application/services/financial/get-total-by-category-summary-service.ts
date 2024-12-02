@@ -15,16 +15,16 @@ export class GetTotalCategorySummaryService {
       include: {
         transactions: {
           select: { amount: true },
-          where: {
-            dueDate: {
-              gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-              lt: new Date(
-                new Date().getFullYear(),
-                new Date().getMonth() + 1,
-                1
-              ),
-            },
-          },
+          // where: {
+          //   dueDate: {
+          //     gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+          //     lt: new Date(
+          //       new Date().getFullYear(),
+          //       new Date().getMonth() + 1,
+          //       1
+          //     ),
+          //   },
+          // },
         },
       },
     })

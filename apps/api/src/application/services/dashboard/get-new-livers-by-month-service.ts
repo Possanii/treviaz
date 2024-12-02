@@ -9,10 +9,10 @@ export class GetNewLiversByMonthService {
           slug,
         },
         role: 'RESIDENT',
-        joined_at: {
-          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-          lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-        },
+        // joined_at: {
+        //   gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        //   lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        // },
       },
     })
 

@@ -10,10 +10,10 @@ export class GetNewThreadsByMonthService {
             slug,
           },
         },
-        created_at: {
-          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-          lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-        },
+        // created_at: {
+        //   gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        //   lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        // },
       },
     })
 

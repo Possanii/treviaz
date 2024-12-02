@@ -15,10 +15,10 @@ export class GetRecentPaymentsService {
             },
           },
         },
-        paymentDate: {
-          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-          lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-        },
+        // paymentDate: {
+        //   gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        //   lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        // },
       },
       select: {
         id: true,

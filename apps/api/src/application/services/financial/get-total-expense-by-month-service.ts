@@ -15,10 +15,10 @@ export class GetTotalExpenseByMonthService {
           },
           type: 'EXPENSE',
         },
-        dueDate: {
-          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-          lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-        },
+        // dueDate: {
+        //   gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        //   lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        // },
       },
     })
     return expense._sum.amount || 0
