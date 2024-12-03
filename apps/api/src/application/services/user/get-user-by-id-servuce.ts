@@ -1,3 +1,4 @@
+import { ICondominium } from '@treviaz/entities/schemas/ICondominium'
 import { IUser } from '@treviaz/entities/schemas/IUser'
 import { IUserCondominium } from '@treviaz/entities/schemas/IUserCondominium'
 
@@ -7,7 +8,9 @@ import { prisma } from '@/application/libs/prisma'
 interface IGetUserById {
   user: IUser & {
     created_at: Date
-    condominiums: Pick<IUserCondominium, 'id' | 'role' | 'joined_at'>[]
+    condominiums: (Pick<IUserCondominium, 'id' | 'role' | 'joined_at'> & {
+      condominium: Pick<ICondominium, 'id' | 'name' | 'slug' | 'photo_url'>
+    })[]
   }
 }
 
@@ -39,6 +42,14 @@ export class GetUserByIdService {
             id: true,
             role: true,
             joined_at: true,
+            condominium: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                photo_url: true,
+              },
+            },
           },
         },
       },
