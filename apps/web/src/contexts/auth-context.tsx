@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { User } from '@treviaz/supabase/types'
-import { redirect } from 'next/navigation'
 import { createContext } from 'react'
 
 import { signOutAction } from '@/actions/auth'
@@ -27,7 +26,6 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
 
   if (!user) {
     signOutAction()
-    redirect('/overview')
     return null
   }
 
