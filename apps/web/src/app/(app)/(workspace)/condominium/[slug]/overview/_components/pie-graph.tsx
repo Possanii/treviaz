@@ -15,6 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@treviaz/ui/components/ui/chart'
+import { cn } from '@treviaz/ui/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { TrendingUp } from 'lucide-react'
@@ -84,6 +85,33 @@ export function PieGraph() {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              formatter={(value, name, item) => {
+                return (
+                  <div className="flex flex-1 items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="aspect-square size-3"
+                        style={{ backgroundColor: item.payload.fill }}
+                      />
+                      <span>{name}</span>
+                    </div>
+                    <span
+                      className={
+                        (cn('ml-2'),
+                        item.payload.payload.type === 'INCOME'
+                          ? 'text-green-500'
+                          : 'text-red-500')
+                      }
+                    >
+                      {item.payload.payload.type === 'INCOME' ? '+' : '-'}{' '}
+                      {Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      }).format(Number(value))}
+                    </span>
+                  </div>
+                )
+              }}
             />
             <Pie
               data={chartData}

@@ -40,13 +40,11 @@ export function CondominiumSwitcher() {
 
   React.useEffect(() => {
     if (activeCondominium) {
-      if (!window.location.pathname.startsWith('/condominium')) {
-        setCurrentCondominium(activeCondominium.condominium.slug)
+      setCurrentCondominium(activeCondominium.condominium.slug)
 
-        router.replace(
-          `/condominium/${activeCondominium.condominium.slug}/overview`
-        )
-      }
+      router.replace(
+        `/condominium/${activeCondominium.condominium.slug}/overview`
+      )
     }
   }, [setCookie, cookiesStorage, activeCondominium])
 
