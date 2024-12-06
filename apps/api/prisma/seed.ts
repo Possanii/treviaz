@@ -1,8 +1,8 @@
 import { prisma } from '../src/application/libs/prisma'
 
 async function seed() {
-  const condominiumId = 'cd18c1ff-0f02-4056-9828-dc01eb8c8d23'
-  const residentId = '04737ae5-b496-4342-af41-cd68acb9d65b'
+  const condominiumId = 'cb9f4abf-841b-4bc4-8690-55736167c258'
+  const residentId = '2d4ae054-76f6-45e0-953f-f8ad08cf1f0f'
 
   // prisma.$transaction([
   //   prisma.financialCategory.deleteMany(),

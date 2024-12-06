@@ -285,7 +285,6 @@ model FinancialCategory {
 
   transactions FinancialTransaction[]
 
-  @@unique([name, type])
   @@map("financial_categories")
 }
 

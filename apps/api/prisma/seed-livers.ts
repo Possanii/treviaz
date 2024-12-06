@@ -4,7 +4,7 @@ import { prisma } from '../src/application/libs/prisma'
 
 async function seed() {
   const condominiumId = 'cd18c1ff-0f02-4056-9828-dc01eb8c8d23'
-  const categoryId = 'bcea0958-7315-4877-a99b-2aa87ed9acb9'
+  const categoryId = 'd0d074f6-9db0-4f3b-8562-a00fb50e60c5'
 
   const resident = await prisma.user.create({
     data: {

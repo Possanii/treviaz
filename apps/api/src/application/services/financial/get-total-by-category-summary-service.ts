@@ -5,7 +5,7 @@ export class GetTotalCategorySummaryService {
     const categories = await prisma.financialCategory.findMany({
       where: {
         transactions: {
-          every: {
+          some: {
             condominium: {
               slug,
             },

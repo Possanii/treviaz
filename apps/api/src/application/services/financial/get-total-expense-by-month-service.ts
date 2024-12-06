@@ -7,7 +7,7 @@ export class GetTotalExpenseByMonthService {
       where: {
         category: {
           transactions: {
-            every: {
+            some: {
               condominium: {
                 slug,
               },
