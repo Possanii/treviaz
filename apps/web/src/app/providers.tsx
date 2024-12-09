@@ -5,13 +5,17 @@ import { Toaster } from '@treviaz/ui/components/ui/sonner'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/next'
 
+import SmoothScroll from '@/components/smooth-scroll'
 import { queryClient } from '@/lib/query-client'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <NextThemesProvider attribute="class" defaultTheme="light" enableSystem>
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>
+          <SmoothScroll />
+          {children}
+        </NuqsAdapter>
         <Toaster position="top-right" />
       </NextThemesProvider>
     </QueryClientProvider>

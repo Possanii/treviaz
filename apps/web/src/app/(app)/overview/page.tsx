@@ -18,6 +18,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import Logo from '@/assets/logo/logo.png'
+import TreviazDashboard from '@/assets/treviaz-dashboard.png'
 
 export default function LandingPage() {
   return (
@@ -48,7 +49,7 @@ export default function LandingPage() {
               Preços
             </Link>
             <Link
-              className="text-sm font-medium hover:text-green-600 hover:underline underline-offset-4"
+              className="text-sm font-medium hover:text-green-600 hover:underline underline-offset-4 "
               href="#faq"
             >
               FAQ
@@ -70,11 +71,11 @@ export default function LandingPage() {
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-green-500 to-green-900">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_700px]">
               <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
+                src={TreviazDashboard}
+                width={700}
+                height={500}
                 alt="Dashboard do Treviaz"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
               />

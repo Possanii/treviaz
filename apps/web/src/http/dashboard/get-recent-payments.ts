@@ -3,11 +3,16 @@ import { IUser } from '@treviaz/entities/schemas/IUser'
 
 import { api } from '@/lib/api-client'
 
-export interface IGetRecentPaymentsResponse {
-  recentPayments: (Pick<
+export interface IRecentPayments
+  extends Pick<
     IPayment,
     'id' | 'amountPaid' | 'paymentMethod' | 'paymentDate'
-  > & { payer: IUser })[]
+  > {
+  payer: IUser
+}
+
+export interface IGetRecentPaymentsResponse {
+  recentPayments: IRecentPayments[]
 }
 
 export async function getRecentPayments({

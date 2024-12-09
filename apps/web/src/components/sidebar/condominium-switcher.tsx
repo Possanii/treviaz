@@ -45,6 +45,8 @@ export function CondominiumSwitcher() {
       router.replace(
         `/condominium/${activeCondominium.condominium.slug}/overview`
       )
+
+      router.refresh()
     }
   }, [setCookie, cookiesStorage, activeCondominium])
 

@@ -14,6 +14,6 @@ export function useQueryGetForumThreadsToApprove({
     queryKey: ['condominium', condominiumSlug, 'threads', 'approve'],
     queryFn: async (): Promise<{ threads: IGetForumThreadsToApprove[] }> =>
       await getForumThreadsToApprove({ condominiumSlug }),
-    refetchOnMount: false,
+    refetchOnMount: 'always',
   })
 }

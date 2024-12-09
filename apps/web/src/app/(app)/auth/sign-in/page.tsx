@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import LogoWithTextWhiteBg from '@/assets/logo/logo-with-text-white-bg.jpeg'
+import LogoWithTextWhiteBg from '@/assets/logo/logo-with-text.png'
 
 import { SignInForm } from './sign-in-form'
 
@@ -24,7 +24,7 @@ export default function SignInPage() {
           alt="Image"
           width="1920"
           height="1080"
-          className="max-h-screen w-full object-cover "
+          className="max-h-screen w-full object-cover bg-green-600"
         />
       </div>
     </div>

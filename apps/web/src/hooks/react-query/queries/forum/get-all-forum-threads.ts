@@ -16,6 +16,6 @@ export function useQueryGetAllForumThreads({
     queryKey: ['condominium', condSlug, categorySlug, 'threads'],
     queryFn: async (): Promise<IGetAllForumThreads> =>
       await getAllForumThreads({ condSlug, categorySlug }),
-    refetchOnMount: false,
+    refetchOnMount: 'always',
   })
 }

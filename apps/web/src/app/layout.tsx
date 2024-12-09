@@ -19,6 +19,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning={env.NEXT_PUBLIC_NODE_ENV === 'development'}
+      className="scroll-smooth"
     >
       <body>
         <Providers>{children}</Providers>
