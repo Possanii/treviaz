@@ -9,9 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // user condominium data
@@ -229,6 +228,8 @@ model LeisureArea {
   condominiumId String
 
   Reserve Reserve[]
+
+  @@map("leisure_area")
 }
 
 model Reserve {
