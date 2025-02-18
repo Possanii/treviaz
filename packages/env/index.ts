@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     SERVER_PORT: z.coerce.number().default(3333),
     DATABASE_URL: z.string().url(),
-    DIRECT_URL: z.string().url(),
+    // DIRECT_URL: z.string().url(),
     JWT_SECRET_KEY: z.string(),
     NODEMAILER_EMAIL_ADDRESS: z.string().email(),
     NODEMAILER_PASSWORD: z.string(),
@@ -25,7 +25,7 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     SERVER_PORT: process.env.SERVER_PORT,
     DATABASE_URL: process.env.DATABASE_URL,
-    DIRECT_URL: process.env.DIRECT_URL,
+    // DIRECT_URL: process.env.DIRECT_URL,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
