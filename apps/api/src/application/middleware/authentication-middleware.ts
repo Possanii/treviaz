@@ -1,6 +1,7 @@
 import { env } from '@treviaz/env'
 import axios from 'axios'
 import { verify } from 'jsonwebtoken'
+import jwkToPem from 'jwk-to-pem'
 
 import { cookiesStorage } from '../../../../../packages/cookies'
 import { JwtError } from '../errors/jwt-error'
@@ -9,21 +10,44 @@ import { IRequest } from '../interfaces/IRequest'
 import { IResponse } from '../interfaces/IResponse'
 import { IKeycloakJwtPayload, keycloakJwtSchema } from '../schemas/IKeycloakJwtPayload'
 
-export class AuthenticationMiddleware implements IMiddleware {
-  private publicKey: string | null = null
+interface JWK {
+  kid: string
+  kty: string
+  alg: string
+  use: string
+  n: string
+  e: string
+}
 
-  private async getPublicKey(): Promise<string> {
-    if (this.publicKey) return this.publicKey
+export class AuthenticationMiddleware implements IMiddleware {
+  private publicKeys: Map<string, string> = new Map()
+
+  private async getPublicKey(kid: string): Promise<string> {
+    const cachedKey = this.publicKeys.get(kid)
+    if (cachedKey) return cachedKey
 
     const response = await axios.get(
       `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect/certs`
     )
     
-    // Get the first key from the JWKS
-    const key = response.data.keys[0]
-    this.publicKey = `-----BEGIN PUBLIC KEY-----\n${key.n}\n-----END PUBLIC KEY-----`
-    
-    return this.publicKey
+    const keys = response.data.keys as JWK[]
+    for (const key of keys) {
+      const publicKey = jwkToPem(key as any)
+      this.publicKeys.set(key.kid, publicKey)
+    }
+
+    const publicKey = this.publicKeys.get(kid)
+    if (!publicKey) {
+      throw new JwtError()
+    }
+
+    return publicKey
+  }
+
+  private decodeTokenHeader(token: string): { kid: string } {
+    const [headerBase64] = token.split('.')
+    const header = JSON.parse(Buffer.from(headerBase64, 'base64').toString())
+    return header
   }
 
   async handle({ cookies }: IRequest): Promise<IResponse | IData> {
@@ -35,7 +59,8 @@ export class AuthenticationMiddleware implements IMiddleware {
 
     try {
       const token = authorization[cookiesStorage.API_AUTH_TOKEN]
-      const publicKey = await this.getPublicKey()
+      const { kid } = this.decodeTokenHeader(token)
+      const publicKey = await this.getPublicKey(kid)
       
       const decoded = verify(token, publicKey, {
         algorithms: ['RS256'],
