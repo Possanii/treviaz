@@ -6,4 +6,3 @@ export function makeCreateUserCondominiumController() {
 
   return new CreateUserCondominiumController(createUserCondominiumService)
 }
-

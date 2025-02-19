@@ -6,4 +6,3 @@ export function makeDeleteUserCondominiumController() {
 
   return new DeleteUserCondominiumController(deleteUserCondominiumService)
 }
-

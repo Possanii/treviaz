@@ -10,14 +10,17 @@ import { condominiumSchema } from '@/application/schemas/ICondominium'
 const editCondominiumSchema = condominiumSchema.omit({ id: true }).partial()
 
 export class EditCondominiumController implements IController {
-    constructor(private editCondominiumService: EditCondominiumService) {}
+  constructor(private editCondominiumService: EditCondominiumService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const validatedData = editCondominiumSchema.parse(request.body)
-        const condominium = await this.editCondominiumService.execute(request.params.id, validatedData)
-        return {
-            statusCode: 200,
-            body: condominium
-        }
+  async handle(request: IRequest): Promise<IResponse> {
+    const validatedData = editCondominiumSchema.parse(request.body)
+    const condominium = await this.editCondominiumService.execute(
+      request.params.id,
+      validatedData
+    )
+    return {
+      statusCode: 200,
+      body: condominium,
     }
+  }
 }

@@ -22,16 +22,20 @@ export class EditInviteController implements IController {
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
-      throw new UnprocessableEntityError('zod', 'Invalid invite edit data.', errors)
+      throw new UnprocessableEntityError(
+        'zod',
+        'Invalid invite edit data.',
+        errors
+      )
     }
 
     const { id, status, expires_at, condominium_id, role } = result.data
     const invite = await this.editInviteService.execute(id, {
-        status,
-        expires_at: expires_at ? new Date(expires_at) : undefined, // Convert string to Date
-        condominium_id,
-        role
-      })
+      status,
+      expires_at: expires_at ? new Date(expires_at) : undefined, // Convert string to Date
+      condominium_id,
+      role,
+    })
 
     return {
       statusCode: 200,

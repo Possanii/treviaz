@@ -7,18 +7,18 @@ import { DeleteServiceOwnerService } from '@/application/services/serviceowner/d
 import { serviceOwnerSchema } from '@/application/schemas/IServiceOwner'
 
 const deleteServiceOwnerSchema = z.object({
-    id: serviceOwnerSchema.shape.id
+  id: serviceOwnerSchema.shape.id,
 })
 
 export class DeleteServiceOwnerController implements IController {
-    constructor(private deleteServiceOwnerService: DeleteServiceOwnerService) {}
+  constructor(private deleteServiceOwnerService: DeleteServiceOwnerService) {}
 
-    async handle(request: IRequest): Promise<IResponse> {
-        const validatedData = deleteServiceOwnerSchema.parse(request.params)
-        await this.deleteServiceOwnerService.execute(validatedData.id)
-        return {
-            statusCode: 204,
-            body: null
-        }
+  async handle(request: IRequest): Promise<IResponse> {
+    const validatedData = deleteServiceOwnerSchema.parse(request.params)
+    await this.deleteServiceOwnerService.execute(validatedData.id)
+    return {
+      statusCode: 204,
+      body: null,
     }
+  }
 }

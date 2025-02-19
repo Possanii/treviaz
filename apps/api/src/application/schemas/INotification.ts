@@ -8,7 +8,7 @@ export const notificationSchema = z.object({
   created_at: z.date(),
   viewed: z.boolean(),
   type: z.string(),
-  data: z.any(), 
+  data: z.any(),
 })
 
 export type INotification = z.infer<typeof notificationSchema>

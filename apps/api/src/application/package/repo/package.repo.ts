@@ -1,6 +1,7 @@
 import { Package, PrismaClient } from '@prisma/client'
-import { IPackageRepo } from './package.repo.interface'
+
 import { ICreatePackage } from '../dto/package.dto'
+import { IPackageRepo } from './package.repo.interface'
 
 export class PackageRepo implements IPackageRepo {
   constructor(private readonly prisma: PrismaClient) {}

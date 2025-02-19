@@ -6,4 +6,3 @@ export function makeEditUserCondominiumController() {
 
   return new EditUserCondominiumController(EditUserCondominiumService)
 }
-
