@@ -35,12 +35,17 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: password
+      KC_FEATURES: scripts
+      KC_HTTP_RELATIVE_PATH: /auth
     volumes:
       - keycloak_data:/opt/keycloak/data
+      - ./apps/api/keycloak/realms:/opt/keycloak/data/import
     depends_on:
       postgres:
         condition: service_healthy
-    command: start-dev
+    command: 
+      - start-dev 
+      - --import-realm
 
 volumes:
   keycloak_data:
