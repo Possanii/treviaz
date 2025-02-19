@@ -6,7 +6,7 @@ import { JwtError } from '../errors/jwt-error'
 import { IData, IMiddleware } from '../interfaces/IMiddleware'
 import { IRequest } from '../interfaces/IRequest'
 import { IResponse } from '../interfaces/IResponse'
-import { ISupabaseJwtSchema } from '../schemas/ISupabase-jwt-payload'
+import { IKeycloakJwtPayload, keycloakJwtSchema } from '../schemas/IKeycloakJwtPayload'
 
 export class AuthenticationMiddleware implements IMiddleware {
   async handle({ cookies }: IRequest): Promise<IResponse | IData> {
@@ -17,10 +17,9 @@ export class AuthenticationMiddleware implements IMiddleware {
     }
 
     try {
-      const payload = verify(
-        authorization[cookiesStorage.API_AUTH_TOKEN],
-        env.JWT_SECRET_KEY
-      ) as ISupabaseJwtSchema
+      const token = authorization[cookiesStorage.API_AUTH_TOKEN]
+      const decoded = verify(token, env.JWT_SECRET_KEY)
+      const payload = keycloakJwtSchema.parse(decoded) as IKeycloakJwtPayload
 
       return {
         data: {

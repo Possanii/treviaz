@@ -16,7 +16,6 @@
     "@treviaz/cookies": "workspace:*",
     "@treviaz/entities": "workspace:*",
     "@treviaz/env": "workspace:*",
-    "@treviaz/supabase": "workspace:*",
     "@treviaz/ui": "workspace:*",
     "axios": "^1.7.7",
     "cookies-next": "^4.2.1",
