@@ -356,12 +356,18 @@ model Invoice {
   @@map("invoices")
 }
 
+enum PaymentMethods {
+  CREDIT_CARD
+  BOLETO
+  PIX
+}
+
 model Payment {
-  id            String   @id @default(uuid())
+  id            String         @id @default(uuid())
   amountPaid    Int
   paymentDate   DateTime
-  paymentMethod String
-  createdAt     DateTime @default(now())
+  paymentMethod PaymentMethods
+  createdAt     DateTime       @default(now())
 
   invoice   Invoice @relation(fields: [invoiceId], references: [id])
   invoiceId String
