@@ -31,4 +31,29 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/packages', packageRouter(packageController))
 
+app.get('/wipe-db', async (req, res) => {
+  await prisma.forumCategory.deleteMany()
+  await prisma.forumThread.deleteMany()
+  await prisma.forumPost.deleteMany()
+  await prisma.guest.deleteMany()
+  await prisma.invite.deleteMany()
+  await prisma.leisureArea.deleteMany()
+  await prisma.notification.deleteMany()
+  await prisma.reserve.deleteMany()
+  await prisma.serviceOwner.deleteMany()
+  await prisma.userCondominium.deleteMany()
+  await prisma.userUnit.deleteMany()
+  await prisma.financialTransaction.deleteMany()
+  await prisma.financialCategory.deleteMany()
+  await prisma.unit.deleteMany()
+  await prisma.package.deleteMany()
+  await prisma.payment.deleteMany()
+  await prisma.invoice.deleteMany()
+  await prisma.user.deleteMany()
+  await prisma.address.deleteMany()
+  await prisma.condominium.deleteMany()
+
+  res.status(200).send('Database wiped')
+})
+
 export default app
