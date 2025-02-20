@@ -4,29 +4,32 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { GetInviteByTokenService } from '@/application/services/invite/get-invite-by-token-service'
+import { SignInService } from '@/application/services/auth/signin-service'
 
-const getInviteByTokenSchema = z.object({
-  token: z.string(),
+const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
 })
 
-export class GetInviteByTokenController implements IController {
-  constructor(private getInviteByTokenService: GetInviteByTokenService) {}
+export class SignInController implements IController {
+  constructor(private signInService: SignInService) {}
 
-  async handle({ params }: IRequest): Promise<IResponse> {
-    const result = getInviteByTokenSchema.safeParse(params)
+  async handle({ body }: IRequest): Promise<IResponse> {
+    const result = signInSchema.safeParse(body)
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
-      throw new UnprocessableEntityError('zod', 'Invalid invite token.', errors)
+      throw new UnprocessableEntityError('validation', 'Invalid credentials.', errors)
     }
 
-    const { token } = result.data
-    const invite = await this.getInviteByTokenService.execute(token)
+    const { email, password } = result.data
+    const session = await this.signInService.execute({ email, password })
 
     return {
       statusCode: 200,
-      body: invite,
+      body: {
+        session,
+      },
     }
   }
 }

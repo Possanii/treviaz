@@ -3,10 +3,10 @@ import z from 'zod'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { CreateUserService } from '@/application/services/user/create-user-service'
 
 import { userSchema } from '@/application/schemas/IUser'
 import { userCondominiumSchema } from '@/application/schemas/IUserCondominium'
+import { SignUpService } from '@/application/services/auth/signup-service'
 
 const createUserSchema = userSchema.omit({ id: true }).extend({
   password: z
@@ -19,15 +19,17 @@ const createUserSchema = userSchema.omit({ id: true }).extend({
   }),
 })
 
-export class CreateUserController implements IController {
-  constructor(private createUserService: CreateUserService) {}
+export class SignUpController implements IController {
+  constructor(private signUpService: SignUpService) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     const validatedData = createUserSchema.parse(request.body)
-    const user = await this.createUserService.execute(validatedData)
+    const user = await this.signUpService.execute(validatedData)
     return {
       statusCode: 201,
-      body: null,
+      body: {
+        user,
+      },
     }
-  }
+  } 
 }

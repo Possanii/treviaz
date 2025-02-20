@@ -1,7 +1,8 @@
 import { ConflictError } from '@/application/errors/conflict-error'
 import { prisma } from '@/application/libs/prisma'
-import { IUser } from '@/application/schemas/IUser'
 import { KeycloakService } from './keycloak-service'
+import slugify from 'slugify'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 interface SignUpRequest {
   name: string
@@ -39,7 +40,8 @@ export class SignUpService {
           data: {
             name,
             email,
-            keycloakId: keycloakUser.id
+            keycloak_id: keycloakUser.id,
+            slug: slugify(name, { lower: true })
           }
         })
 
@@ -49,7 +51,7 @@ export class SignUpService {
           email: user.email
         }
       } catch (error) {
-        if (error.response?.status === 409 || error.code === 'P2002') {
+        if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
           throw new ConflictError('user', 'Email already in use')
         }
         throw error
