@@ -1,13 +1,4 @@
 services:
-  db:
-    image: postgres:alpine
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: treviaz
-
   postgres:
     image: postgres:alpine
     environment:
@@ -45,7 +36,6 @@ services:
         condition: service_healthy
     command: 
       - start-dev 
-      - --import-realm
 
 volumes:
   keycloak_data:
