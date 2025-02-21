@@ -73,7 +73,6 @@ model User {
   name                   String
   email                  String                 @unique
   keycloak_id            String                 @unique
-  slug                   String                 @unique
   avatar_url             String?
   created_at             DateTime               @default(now())
   updated_at             DateTime?              @updatedAt
