@@ -19,7 +19,11 @@ interface SignUpResponse {
 export class SignUpService {
   constructor(private keycloakService: KeycloakService) {}
 
-  async execute({ name, email, password }: SignUpRequest): Promise<SignUpResponse> {
+  async execute({
+    name,
+    email,
+    password,
+  }: SignUpRequest): Promise<SignUpResponse> {
     // Use transaction to ensure both Keycloak and database operations succeed or fail together
     return await prisma.$transaction(async (tx) => {
       try {
@@ -29,7 +33,7 @@ export class SignUpService {
           password,
           firstName: name,
           enabled: true,
-          emailVerified: false
+          emailVerified: false,
         })
 
         // Get the Keycloak user to get their ID
@@ -41,21 +45,24 @@ export class SignUpService {
             name,
             email,
             keycloak_id: keycloakUser.id,
-            slug: slugify(name, { lower: true })
-          }
+            slug: slugify(name, { lower: true }),
+          },
         })
 
         return {
           id: user.id,
           name: user.name,
-          email: user.email
+          email: user.email,
         }
       } catch (error) {
-        if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
+        if (
+          error instanceof PrismaClientKnownRequestError &&
+          error.code === 'P2002'
+        ) {
           throw new ConflictError('user', 'Email already in use')
         }
         throw error
       }
     })
   }
-} 
+}

@@ -25,18 +25,14 @@ export class KeycloakService {
     const data = {
       grant_type: 'client_credentials',
       client_id: env.KEYCLOAK_CLIENT_ID,
-      client_secret: env.KEYCLOAK_CLIENT_SECRET
+      client_secret: env.KEYCLOAK_CLIENT_SECRET,
     }
 
-    const response = await axios.post(
-      this.tokenEndpoint,
-      qs.stringify(data),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    )
+    const response = await axios.post(this.tokenEndpoint, qs.stringify(data), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
 
     this.adminToken = response.data.access_token
     return this.adminToken
@@ -44,19 +40,16 @@ export class KeycloakService {
 
   async getUserByEmail(email: string): Promise<IKeycloakUser> {
     const adminToken = await this.getAdminToken()
-    
-    const response = await axios.get(
-      `${this.usersEndpoint}`,
-      {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
-        params: {
-          email: email,
-          exact: true
-        }
-      }
-    )
+
+    const response = await axios.get(`${this.usersEndpoint}`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+      params: {
+        email: email,
+        exact: true,
+      },
+    })
 
     const users = response.data
     if (!users || users.length === 0) {
@@ -88,41 +81,36 @@ export class KeycloakService {
         {
           type: 'password',
           value: userData.password,
-          temporary: false
-        }
-      ]
+          temporary: false,
+        },
+      ],
     }
 
-    await axios.post(
-      this.usersEndpoint,
-      keycloakUser,
-      {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    )
+    await axios.post(this.usersEndpoint, keycloakUser, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'Content-Type': 'application/json',
+      },
+    })
   }
 
-  async getAccessToken(code: string, redirectUri: string): Promise<IKeycloakTokenResponse> {
+  async getAccessToken(
+    code: string,
+    redirectUri: string
+  ): Promise<IKeycloakTokenResponse> {
     const data = {
       grant_type: 'authorization_code',
       client_id: env.KEYCLOAK_CLIENT_ID,
       client_secret: env.KEYCLOAK_CLIENT_SECRET,
       code,
-      redirect_uri: redirectUri
+      redirect_uri: redirectUri,
     }
 
-    const response = await axios.post(
-      this.tokenEndpoint,
-      qs.stringify(data),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    )
+    const response = await axios.post(this.tokenEndpoint, qs.stringify(data), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
 
     return response.data
   }
@@ -132,44 +120,39 @@ export class KeycloakService {
       grant_type: 'refresh_token',
       client_id: env.KEYCLOAK_CLIENT_ID,
       client_secret: env.KEYCLOAK_CLIENT_SECRET,
-      refresh_token: refreshToken
+      refresh_token: refreshToken,
     }
 
-    const response = await axios.post(
-      this.tokenEndpoint,
-      qs.stringify(data),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    )
+    const response = await axios.post(this.tokenEndpoint, qs.stringify(data), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
 
     return response.data
   }
 
-  async getTokensByPassword(username: string, password: string): Promise<IKeycloakTokenResponse> {
+  async getTokensByPassword(
+    username: string,
+    password: string
+  ): Promise<IKeycloakTokenResponse> {
     const data = {
       grant_type: 'password',
       client_id: env.KEYCLOAK_CLIENT_ID,
       client_secret: env.KEYCLOAK_CLIENT_SECRET,
       username,
       password,
-      scope: 'openid profile email'
+      scope: 'openid profile email',
     }
 
-    const response = await axios.post(
-      this.tokenEndpoint,
-      qs.stringify(data),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    )
+    const response = await axios.post(this.tokenEndpoint, qs.stringify(data), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
 
     // Validate the response data against the schema
     const validatedData = IKeycloakTokenResponseSchema.parse(response.data)
     return validatedData
   }
-} 
+}

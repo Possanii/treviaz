@@ -8,7 +8,10 @@ import { JwtError } from '../errors/jwt-error'
 import { IData, IMiddleware } from '../interfaces/IMiddleware'
 import { IRequest } from '../interfaces/IRequest'
 import { IResponse } from '../interfaces/IResponse'
-import { IKeycloakJwtPayload, keycloakJwtSchema } from '../schemas/IKeycloakJwtPayload'
+import {
+  IKeycloakJwtPayload,
+  keycloakJwtSchema,
+} from '../schemas/IKeycloakJwtPayload'
 
 interface JWK {
   kid: string
@@ -29,7 +32,7 @@ export class AuthenticationMiddleware implements IMiddleware {
     const response = await axios.get(
       `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect/certs`
     )
-    
+
     const keys = response.data.keys as JWK[]
     for (const key of keys) {
       const publicKey = jwkToPem(key as any)
@@ -61,10 +64,10 @@ export class AuthenticationMiddleware implements IMiddleware {
       const token = authorization[cookiesStorage.API_AUTH_TOKEN]
       const { kid } = this.decodeTokenHeader(token)
       const publicKey = await this.getPublicKey(kid)
-      
+
       const decoded = verify(token, publicKey, {
         algorithms: ['RS256'],
-        issuer: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}`
+        issuer: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}`,
       })
 
       const payload = keycloakJwtSchema.parse(decoded) as IKeycloakJwtPayload

@@ -26,11 +26,14 @@ export class SignInService {
   async execute({ email, password }: SignInRequest): Promise<SignInResponse> {
     try {
       // First, authenticate with Keycloak
-      const tokens = await this.keycloakService.getTokensByPassword(email, password)
+      const tokens = await this.keycloakService.getTokensByPassword(
+        email,
+        password
+      )
 
       // Then, get user from our database
       const user = await prisma.user.findUnique({
-        where: { email }
+        where: { email },
       })
 
       if (!user) {
@@ -44,11 +47,11 @@ export class SignInService {
         user: {
           id: user.id,
           name: user.name,
-          email: user.email
-        }
+          email: user.email,
+        },
       }
     } catch (error) {
       throw new UnauthorizedError('Invalid credentials')
     }
   }
-} 
+}

@@ -14,11 +14,13 @@ export const keycloakJwtSchema = z.object({
   acr: z.string(),
   'allowed-origins': z.array(z.string()),
   realm_access: z.object({
-    roles: z.array(z.string())
+    roles: z.array(z.string()),
   }),
-  resource_access: z.record(z.object({
-    roles: z.array(z.string())
-  })),
+  resource_access: z.record(
+    z.object({
+      roles: z.array(z.string()),
+    })
+  ),
   scope: z.string(),
   sid: z.string(),
   email_verified: z.boolean(),
@@ -26,7 +28,7 @@ export const keycloakJwtSchema = z.object({
   preferred_username: z.string(),
   given_name: z.string(),
   family_name: z.string(),
-  email: z.string()
+  email: z.string(),
 })
 
-export type IKeycloakJwtPayload = z.infer<typeof keycloakJwtSchema> 
+export type IKeycloakJwtPayload = z.infer<typeof keycloakJwtSchema>

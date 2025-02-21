@@ -7,5 +7,5 @@ export const IKeycloakUserSchema = z.object({
   firstName: z.string(),
   lastName: z.string().optional(),
   enabled: z.boolean(),
-  emailVerified: z.boolean()
-}) 
+  emailVerified: z.boolean(),
+})

@@ -19,7 +19,11 @@ export class SignInController implements IController {
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors
-      throw new UnprocessableEntityError('validation', 'Invalid credentials.', errors)
+      throw new UnprocessableEntityError(
+        'validation',
+        'Invalid credentials.',
+        errors
+      )
     }
 
     const { email, password } = result.data
