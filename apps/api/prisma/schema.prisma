@@ -43,7 +43,6 @@ model Unit {
   id             String      @id @default(uuid())
   condominium_id String
   number         String
-  slug           String      @unique
   condominium    Condominium @relation(fields: [condominium_id], references: [id])
   packages       Package[]
   users          UserUnit[]
@@ -73,7 +72,6 @@ model User {
   name                   String
   email                  String                 @unique
   keycloak_id            String                 @unique
-  slug                   String                 @unique
   avatar_url             String?
   created_at             DateTime               @default(now())
   updated_at             DateTime?              @updatedAt
@@ -116,19 +114,6 @@ model UserCondominium {
   condominium Condominium @relation(fields: [condominium_id], references: [id], onDelete: Cascade)
 
   @@map("user_condominiums")
-}
-
-model ServiceOwner {
-  id              String   @id @default(uuid())
-  name            String
-  document_number String
-  email           String   @unique
-  phone           String
-  password_hashed String
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-
-  @@map("service_owners")
 }
 
 enum Role {
@@ -361,7 +346,7 @@ model Invoice {
 
 enum PaymentMethods {
   CREDIT_CARD
-  BOLETO
+  BANK_SLIP
   PIX
 }
 
