@@ -32,7 +32,7 @@ export class SignInController implements IController {
     return {
       statusCode: 200,
       body: {
-        session,
+        ...session,
       },
     }
   }

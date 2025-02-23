@@ -1,7 +1,7 @@
 import { NotFoundError } from '@/application/errors/not-found-error'
 import { UnauthorizedError } from '@/application/errors/unauthorized-error'
 import { prisma } from '@/application/libs/prisma'
-import { IUser } from '@/application/schemas/IUser'
+
 import { KeycloakService } from './keycloak-service'
 
 interface SignInRequest {
@@ -50,7 +50,7 @@ export class SignInService {
           email: user.email,
         },
       }
-    } catch (error) {
+    } catch {
       throw new UnauthorizedError('Invalid credentials')
     }
   }

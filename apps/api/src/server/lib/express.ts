@@ -40,7 +40,6 @@ app.get('/wipe-db', async (req, res) => {
   await prisma.leisureArea.deleteMany()
   await prisma.notification.deleteMany()
   await prisma.reserve.deleteMany()
-  await prisma.serviceOwner.deleteMany()
   await prisma.userCondominium.deleteMany()
   await prisma.userUnit.deleteMany()
   await prisma.financialTransaction.deleteMany()

@@ -1,8 +1,9 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+
 import { ConflictError } from '@/application/errors/conflict-error'
 import { prisma } from '@/application/libs/prisma'
+
 import { KeycloakService } from './keycloak-service'
-import slugify from 'slugify'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 interface SignUpRequest {
   name: string
@@ -31,7 +32,8 @@ export class SignUpService {
         await this.keycloakService.createUser({
           email,
           password,
-          firstName: name,
+          firstName: name.split(' ').shift() ?? '',
+          lastName: name.split(' ').pop() ?? '',
           enabled: true,
           emailVerified: false,
         })
@@ -45,7 +47,6 @@ export class SignUpService {
             name,
             email,
             keycloak_id: keycloakUser.id,
-            slug: slugify(name, { lower: true }),
           },
         })
 
