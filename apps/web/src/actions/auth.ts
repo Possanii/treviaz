@@ -2,13 +2,14 @@
 
 import { cookiesStorage } from '@treviaz/cookies'
 import { env } from '@treviaz/env'
-import { createClient } from '@treviaz/supabase/server'
 import { AxiosError } from 'axios'
 import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { isStrongPassword } from 'validator'
 import { z } from 'zod'
 
+import { signIn } from '@/http/auth/sign-in'
+import { signUp } from '@/http/auth/sign-up'
 import { IHttpBody } from '@/interfaces/IHttpBody'
 import { signUpSchema } from '@/schemas/ISign-up'
 
@@ -22,36 +23,7 @@ export async function signUpAction(data: FormData) {
   }
 
   try {
-    const { name, email, password } = result.data
-
-    const supabase = createClient()
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${env.NEXT_PUBLIC_SUPABASE_AUTH_REDIRECT_URL}`,
-        data: {
-          name,
-        },
-      },
-    })
-
-    if (error) {
-      return {
-        success: false,
-        message: error.message,
-        errors: null,
-      }
-    }
-
-    // cookies().set(cookiesStorage.API_AUTH_TOKEN, session!.access_token, {
-    //   httpOnly: true,
-    //   maxAge: session!.expires_in,
-    //   path: '/',
-    //   sameSite: 'strict',
-    //   secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
-    // })
+    await signUp(result.data)
   } catch (err) {
     if (err instanceof AxiosError) {
       const { message, body } = err.response!.data as IHttpBody
@@ -73,7 +45,7 @@ export async function signUpAction(data: FormData) {
   return { success: true, message: null, errors: null }
 }
 
-const signInSchema = z.object({
+export const signInSchema = z.object({
   email: z.string().email(),
   password: z
     .string({ message: 'Por favor, Insira sua senha' })
@@ -82,6 +54,8 @@ const signInSchema = z.object({
       message: 'Por favor, insira uma senha forte.',
     }),
 })
+
+export type SignInDto = z.infer<typeof signInSchema>
 
 export const signInAction = async (formData: FormData) => {
   const result = signInSchema.safeParse(Object.fromEntries(formData))
@@ -99,27 +73,14 @@ export const signInAction = async (formData: FormData) => {
   try {
     const { email, password } = result.data
 
-    const supabase = createClient()
-
-    const {
-      error,
-      data: { session },
-    } = await supabase.auth.signInWithPassword({
+    const { data } = await signIn({
       email,
       password,
     })
 
-    if (error) {
-      return {
-        success: false,
-        message: error.message,
-        errors: null,
-      }
-    }
-
-    cookies().set(cookiesStorage.API_AUTH_TOKEN, session!.access_token, {
+    cookies().set(cookiesStorage.API_AUTH_TOKEN, data.access_token, {
       httpOnly: true,
-      expires: new Date(Date.now() + session!.expires_in * 1000),
+      expires: new Date(data.expires_in * 1000),
       path: '/',
       sameSite: 'strict',
       secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
@@ -163,22 +124,9 @@ export const forgotPasswordAction = async (formData: FormData) => {
   }
 
   try {
-    const supabase = createClient()
     const origin = headers().get('origin')
 
     const { email } = result.data
-
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${origin}/api/auth/callback?redirect_to=/reset-password`,
-    })
-
-    if (error) {
-      return {
-        success: false,
-        message: error.message,
-        errors: null,
-      }
-    }
   } catch (err) {
     if (err instanceof AxiosError) {
       const { message, body } = err.response!.data as IHttpBody
@@ -234,20 +182,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   }
 
   try {
-    const supabase = createClient()
     const { password } = result.data
-
-    const { error } = await supabase.auth.updateUser({
-      password,
-    })
-
-    if (error) {
-      return {
-        success: false,
-        message: error.message,
-        errors: null,
-      }
-    }
   } catch (err) {
     if (err instanceof AxiosError) {
       const { message, body } = err.response!.data as IHttpBody
@@ -270,8 +205,6 @@ export const resetPasswordAction = async (formData: FormData) => {
 }
 
 export const signOutAction = async () => {
-  const supabase = createClient()
-  await supabase.auth.signOut()
   cookies().delete(cookiesStorage.API_AUTH_TOKEN)
 
   return redirect('/auth/sign-in')

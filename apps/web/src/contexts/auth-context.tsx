@@ -1,14 +1,14 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { User } from '@treviaz/supabase/types'
 import { createContext } from 'react'
 
 import { signOutAction } from '@/actions/auth'
 import { useQueryGetUser } from '@/hooks/react-query/queries/get-user'
+import { SignUpDto } from '@/schemas/ISign-up'
 
 interface IAuthContextValue {
-  user: User | null
+  user: SignUpDto | null
 }
 
 export const AuthContext = createContext<IAuthContextValue>({ user: null })

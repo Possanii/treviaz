@@ -19,13 +19,13 @@ import { useForm } from 'react-hook-form'
 import { useSignUpMutation } from '@/hooks/react-query/mutations/auth/sign-up-mutation'
 import { useAcceptInviteMutation } from '@/hooks/react-query/mutations/invite/accept-invite-mutation'
 import { IGetInviteByTokenResponse } from '@/http/invite/get-invite-by-token'
-import { ISignUp, signUpSchema } from '@/schemas/ISign-up'
+import { SignUpDto, signUpSchema } from '@/schemas/ISign-up'
 
 export function FormCreateAccountInvite({ invite }: IGetInviteByTokenResponse) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const form = useForm<ISignUp>({
+  const form = useForm<SignUpDto>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: '',

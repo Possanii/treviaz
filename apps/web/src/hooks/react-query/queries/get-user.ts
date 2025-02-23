@@ -1,14 +1,11 @@
-import { queryOptions } from '@tanstack/react-query'
-import { createClient } from '@treviaz/supabase/client'
-import { User } from '@treviaz/supabase/types'
+// import { queryOptions } from '@tanstack/react-query'
 
-export function useQueryGetUser() {
-  const supabase = createClient()
+// export function useQueryGetUser() {
 
-  return queryOptions({
-    queryKey: ['user'],
-    queryFn: async (): Promise<User | null> =>
-      (await supabase.auth.getUser()).data.user,
-    refetchOnMount: false,
-  })
-}
+//   return queryOptions({
+//     queryKey: ['user'],
+//     queryFn: async (): Promise<User | null> =>
+//       (await supabase.auth.getUser()).data.user,
+//     refetchOnMount: false,
+//   })
+// }
