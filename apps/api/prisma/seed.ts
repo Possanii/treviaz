@@ -1,13 +1,35 @@
 import { faker } from '@faker-js/faker'
 
 import { prisma } from '../src/application/libs/prisma'
+import { KeycloakService } from '../src/application/services/auth/keycloak-service'
 import { createSlug } from '../src/application/utils/create-slug'
 
 async function seed() {
+  const ownerData = {
+    name: 'Treviaz',
+    email: 'treviaz@acme.com',
+    password: '12345678',
+  }
+
+  const keyclockService = new KeycloakService()
+
+  await keyclockService.createUser({
+    email: ownerData.email,
+    password: ownerData.password,
+    firstName: ownerData.name.split(' ')[0],
+    enabled: true,
+    emailVerified: false,
+  })
+
+  // Get the Keycloak user to get their ID
+  const keycloakOwner = await this.keycloakService.getUserByEmail(
+    ownerData.email
+  )
+
   const owner = await prisma.user.create({
     data: {
-      name: 'Treviaz',
-      email: 'treviaz@acme.com',
+      ...ownerData,
+      keycloak_id: keycloakOwner.id,
       avatar_url: faker.image.avatar(),
     },
   })
@@ -18,6 +40,7 @@ async function seed() {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     email: faker.internet.email(),
+    keycloak_id: faker.string.uuid(),
     avatar_url: faker.image.avatar(),
   }))
 

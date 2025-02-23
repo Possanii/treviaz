@@ -1,12 +1,51 @@
 services:
   postgres:
     image: postgres:alpine
-    container_name: treviaz
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRESQL_DATABASE: treviaz
-    ports:
-      - 5432:5432
+      POSTGRES_DB: treviaz
+      POSTGRES_USER: treviaz
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U treviaz']
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    command: >
+      sh -c "
+      docker-entrypoint.sh postgres &
+      sleep 5 &&
+      psql -U treviaz -d treviaz -c 'CREATE SCHEMA IF NOT EXISTS keycloak AUTHORIZATION treviaz;' &&
+      psql -U treviaz -d treviaz -c 'ALTER ROLE treviaz SET search_path TO keycloak, public;' &&
+      wait
+      "
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.2
+    ports:
+      - '8080:8080'
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/treviaz
+      KC_DB_SCHEMA: keycloak
+      KC_DB_USERNAME: treviaz
+      KC_DB_PASSWORD: password
+      KC_FEATURES: scripts
+      KC_HTTP_RELATIVE_PATH: /auth
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      - ./apps/api/keycloak/realms:/opt/keycloak/data/import
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - start-dev
+
+volumes:
+  keycloak_data:
+  postgres_data:
