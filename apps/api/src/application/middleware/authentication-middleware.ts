@@ -1,7 +1,6 @@
 import { env } from '@treviaz/env'
-import axios from 'axios'
 import { verify } from 'jsonwebtoken'
-import jwkToPem from 'jwk-to-pem'
+import jwkToPem, { RSA } from 'jwk-to-pem'
 
 import { cookiesStorage } from '../../../../../packages/cookies'
 import { JwtError } from '../errors/jwt-error'
@@ -29,13 +28,18 @@ export class AuthenticationMiddleware implements IMiddleware {
     const cachedKey = this.publicKeys.get(kid)
     if (cachedKey) return cachedKey
 
-    const response = await axios.get(
-      `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect/certs`
+    const response = await fetch(
+      `${env.KEYCLOAK_URL}/auth/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect/certs`,
+      {
+        method: 'GET',
+      }
     )
 
-    const keys = response.data.keys as JWK[]
+    const data = (await response.json()) as { keys: JWK[] }
+
+    const keys = data.keys
     for (const key of keys) {
-      const publicKey = jwkToPem(key as any)
+      const publicKey = jwkToPem(key as RSA)
       this.publicKeys.set(key.kid, publicKey)
     }
 
@@ -67,7 +71,7 @@ export class AuthenticationMiddleware implements IMiddleware {
 
       const decoded = verify(token, publicKey, {
         algorithms: ['RS256'],
-        issuer: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}`,
+        issuer: `${env.KEYCLOAK_URL}/auth/realms/${env.KEYCLOAK_REALM}`,
       })
 
       const payload = keycloakJwtSchema.parse(decoded) as IKeycloakJwtPayload
@@ -77,7 +81,7 @@ export class AuthenticationMiddleware implements IMiddleware {
           user: payload,
         },
       }
-    } catch (error) {
+    } catch {
       throw new JwtError()
     }
   }
