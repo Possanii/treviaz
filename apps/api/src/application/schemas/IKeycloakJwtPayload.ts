@@ -3,14 +3,14 @@ import { z } from 'zod'
 export const keycloakJwtSchema = z.object({
   exp: z.number(),
   iat: z.number(),
-  auth_time: z.number(),
+  auth_time: z.number().optional(),
   jti: z.string(),
   iss: z.string(),
-  aud: z.string(),
+  aud: z.array(z.string()),
   sub: z.string(),
   typ: z.string(),
   azp: z.string(),
-  session_state: z.string(),
+  session_state: z.string().optional(),
   acr: z.string(),
   'allowed-origins': z.array(z.string()),
   realm_access: z.object({
