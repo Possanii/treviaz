@@ -7,7 +7,7 @@ export class GetMeService {
   async execute({ id }: { id: string }): Promise<IUser> {
     const user = await prisma.user.findUnique({
       where: {
-        keycloak_id: id,
+        id,
       },
     })
 
