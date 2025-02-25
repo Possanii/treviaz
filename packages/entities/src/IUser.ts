@@ -14,6 +14,7 @@ export const userSchema = z.object({
       message: 'Please, provide a valid photo URL.',
     })
     .nullish(),
+  keycloak_id: z.string().uuid(),
 })
 
 export type IUser = z.infer<typeof userSchema>
