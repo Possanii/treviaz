@@ -4,7 +4,7 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { GetUserByIdService } from '@/application/services/user/get-user-by-id-servuce'
+import { GetUserByIdService } from '@/application/services/user/get-user-by-id-service'
 
 export class GetUserByIdController implements IController {
   private readonly getUserByIdService: GetUserByIdService
