@@ -1,14 +1,12 @@
 import { queryOptions } from '@tanstack/react-query'
-import { createClient } from '@treviaz/supabase/client'
-import { User } from '@treviaz/supabase/types'
+import { IUser } from '@treviaz/entities/schemas/IUser'
+
+import { getMe } from '@/http/user/get-me'
 
 export function useQueryGetUser() {
-  const supabase = createClient()
-
   return queryOptions({
     queryKey: ['user'],
-    queryFn: async (): Promise<User | null> =>
-      (await supabase.auth.getUser()).data.user,
+    queryFn: async (): Promise<IUser | null> => await getMe(),
     refetchOnMount: false,
   })
 }

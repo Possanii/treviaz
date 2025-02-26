@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
           alt="Image"
           width="1920"
           height="1080"
-          className="max-h-screen w-full object-cover"
+          className="max-h-screen w-full object-cover bg-green-600"
         />
       </div>
       <div className="flex items-center justify-center py-12">
