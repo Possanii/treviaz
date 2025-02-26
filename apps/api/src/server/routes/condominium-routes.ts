@@ -2,13 +2,13 @@ import { makeCreateCondominiumController } from '@/factories/controllers/condomi
 import { makeDeleteCondominiumController } from '@/factories/controllers/condominium/make-delete-condominium-controller'
 import { makeEditCondominiumController } from '@/factories/controllers/condominium/make-edit-condominium-controller'
 import { makeGetCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-condominium-by-slug-controller'
-import { makeGetLiversFromCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-livers-from-condominium-by-slug-controller'
 import { makeGetUserRelationshipCondominiumsController } from '@/factories/controllers/condominium/make-get-user-relationship-condominium-controller'
 import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authentication-middleware'
 
 import { middlewareAdapter } from '../adapters/middleware-adapter'
 import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
+import { makeGetResidentsFromCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-residents-from-condominium-by-slug-controller'
 
 app.post(
   '/condominium',
@@ -28,7 +28,7 @@ app.get(
   routeAdapter(makeGetCondominiumBySlugController())
 )
 app.get(
-  '/condominium/slug/:slug/livers',
+  '/condominium/slug/:slug/residents',
   middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetLiversFromCondominiumBySlugController())
+  routeAdapter(makeGetResidentsFromCondominiumBySlugController())
 )

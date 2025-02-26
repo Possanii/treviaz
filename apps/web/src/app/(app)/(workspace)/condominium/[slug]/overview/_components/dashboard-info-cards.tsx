@@ -10,7 +10,7 @@ import {
 import { DollarSign, Theater, Users } from 'lucide-react'
 import { useParams } from 'next/navigation'
 
-import { useQueryGetTotalNewLivers } from '@/hooks/react-query/queries/dashboard/get-total-new-livers-query'
+import { useQueryGetTotalNewresidents } from '@/hooks/react-query/queries/dashboard/get-total-new-residents-query'
 import { useQueryGetTotalNewThreads } from '@/hooks/react-query/queries/dashboard/get-total-new-threads-query'
 import { useQueryGetTotalIncomeByMonth } from '@/hooks/react-query/queries/financial/get-total-income-query'
 import { formatCurrency } from '@/utils/format-currency'
@@ -20,12 +20,12 @@ export function DashboardInfoCards() {
 
   const [
     { data: totalIncomeData },
-    { data: totalNewLiversData },
+    { data: totalNewresidentsData },
     { data: totalNewThreadsData },
   ] = useSuspenseQueries({
     queries: [
       useQueryGetTotalIncomeByMonth({ condSlug: slug }),
-      useQueryGetTotalNewLivers({ condSlug: slug }),
+      useQueryGetTotalNewresidents({ condSlug: slug }),
       useQueryGetTotalNewThreads({ condSlug: slug }),
     ],
   })
@@ -53,7 +53,7 @@ export function DashboardInfoCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            +{totalNewLiversData.totalNewLivers}
+            +{totalNewresidentsData.totalNewresidents}
           </div>
           <p className="text-xs font-bold text-accent-foreground">
             +60% comparado ao mês passado

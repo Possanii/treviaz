@@ -11,7 +11,7 @@ import React from 'react'
 
 import DashboardInfoCardSkeleton from '@/components/dashboard-info-card-skeleton'
 import { useQueryGetRecentPayments } from '@/hooks/react-query/queries/dashboard/get-recent-payments-query'
-import { useQueryGetTotalNewLivers } from '@/hooks/react-query/queries/dashboard/get-total-new-livers-query'
+import { useQueryGetTotalNewresidents } from '@/hooks/react-query/queries/dashboard/get-total-new-residents-query'
 import { useQueryGetTotalNewThreads } from '@/hooks/react-query/queries/dashboard/get-total-new-threads-query'
 import { useQueryGetTotalIncomeByMonth } from '@/hooks/react-query/queries/financial/get-total-income-query'
 import { queryClient } from '@/lib/query-client'
@@ -27,7 +27,7 @@ export async function OverViewPage({ params }: { params: { slug: string } }) {
     useQueryGetTotalIncomeByMonth({ condSlug: params.slug })
   )
   await queryClient.prefetchQuery(
-    useQueryGetTotalNewLivers({ condSlug: params.slug })
+    useQueryGetTotalNewresidents({ condSlug: params.slug })
   )
   await queryClient.prefetchQuery(
     useQueryGetTotalNewThreads({ condSlug: params.slug })

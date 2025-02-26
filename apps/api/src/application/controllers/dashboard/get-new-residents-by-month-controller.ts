@@ -4,13 +4,15 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { GetNewLiversByMonthService } from '@/application/services/dashboard/get-new-livers-by-month-service'
+import { GetNewResidentsByMonthService } from '@/application/services/dashboard/get-new-residents-by-month-service'
 
-export class GetNewLiversByMonthController implements IController {
-  private readonly getNewLiversByMonthService: GetNewLiversByMonthService
+export class GetNewResidentsByMonthController implements IController {
+  private readonly getNewResidentsByMonthService: GetNewResidentsByMonthService
 
-  constructor(getNewLiversByMonthService: GetNewLiversByMonthService) {
-    this.getNewLiversByMonthService = getNewLiversByMonthService
+  constructor(
+    getNewResidentsByMonthService: GetNewResidentsByMonthService
+  ) {
+    this.getNewResidentsByMonthService = getNewResidentsByMonthService
   }
 
   async handle({ params }: IRequest): Promise<IResponse> {
@@ -28,13 +30,13 @@ export class GetNewLiversByMonthController implements IController {
 
     const { slug } = result.data
 
-    const totalNewLivers = await this.getNewLiversByMonthService.execute({
+    const totalNewresidents = await this.getNewResidentsByMonthService.execute({
       slug,
     })
 
     return {
       statusCode: 200,
-      body: { totalNewLivers },
+      body: { totalNewresidents },
     }
   }
 }

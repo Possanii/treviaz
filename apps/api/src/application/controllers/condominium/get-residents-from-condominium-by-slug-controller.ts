@@ -4,16 +4,16 @@ import { UnprocessableEntityError } from '@/application/errors/unprocessable-ent
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { GetLiversFromCondominiumBySlugService } from '@/application/services/condominium/get-livers-from-condominium-by-slug-service'
+import { GetResidentsFromCondominiumBySlugService } from '@/application/services/condominium/get-residents-from-condominium-by-slug-service'
 
-export class GetLiversFromCondominiumBySlugController implements IController {
-  private readonly getLiversFromCondominiumBySlugService: GetLiversFromCondominiumBySlugService
+export class GetResidentsFromCondominiumBySlugController implements IController {
+  private readonly getResidentsFromCondominiumBySlugService: GetResidentsFromCondominiumBySlugService
 
   constructor(
-    getLiversFromCondominiumBySlugService: GetLiversFromCondominiumBySlugService
+    getResidentsFromCondominiumBySlugService: GetResidentsFromCondominiumBySlugService
   ) {
-    this.getLiversFromCondominiumBySlugService =
-      getLiversFromCondominiumBySlugService
+    this.getResidentsFromCondominiumBySlugService =
+      getResidentsFromCondominiumBySlugService
   }
 
   async handle({ params }: IRequest): Promise<IResponse> {
@@ -31,7 +31,7 @@ export class GetLiversFromCondominiumBySlugController implements IController {
 
     const { slug } = result.data
 
-    const { livers } = await this.getLiversFromCondominiumBySlugService.execute(
+    const { residents } = await this.getResidentsFromCondominiumBySlugService.execute(
       {
         slug,
       }
@@ -39,7 +39,7 @@ export class GetLiversFromCondominiumBySlugController implements IController {
 
     return {
       statusCode: 200,
-      body: { livers },
+      body: { residents },
     }
   }
 }

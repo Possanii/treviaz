@@ -12,7 +12,7 @@
     "db:studio": "pnpm env:load prisma studio",
     "env:load": "dotenv -e ../../.env --",
     "db:seed": "pnpm env:load tsx prisma/seed.ts",
-    "db:seed:livers": "pnpm env:load tsx prisma/seed-livers.ts"
+    "db:seed:residents": "pnpm env:load tsx prisma/seed-residents.ts"
   },
   "prisma": {
     "seed": "pnpm env:load tsx prisma/seed.ts"

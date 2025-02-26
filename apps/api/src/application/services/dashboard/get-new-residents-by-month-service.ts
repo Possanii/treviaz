@@ -1,8 +1,8 @@
 import { prisma } from '@/application/libs/prisma'
 
-export class GetNewLiversByMonthService {
+export class GetNewResidentsByMonthService {
   async execute({ slug }: { slug: string }) {
-    const totalNewLivers = await prisma.userCondominium.aggregate({
+    const totalNewresidents = await prisma.userCondominium.aggregate({
       _count: { _all: true },
       where: {
         condominium: {
@@ -16,6 +16,6 @@ export class GetNewLiversByMonthService {
       },
     })
 
-    return totalNewLivers._count._all || 0
+    return totalNewresidents._count._all || 0
   }
 }

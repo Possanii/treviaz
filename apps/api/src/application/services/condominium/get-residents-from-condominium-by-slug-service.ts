@@ -1,10 +1,10 @@
-import { ILiversTable } from '@treviaz/entities/schemas/ILiversTable'
+import { IresidentsTable } from '@treviaz/entities/schemas/IresidentsTable'
 
 import { prisma } from '@/application/libs/prisma'
 
-export class GetLiversFromCondominiumBySlugService {
-  async execute({ slug }: { slug: string }): Promise<ILiversTable> {
-    const livers = await prisma.condominium.findUnique({
+export class GetResidentsFromCondominiumBySlugService {
+  async execute({ slug }: { slug: string }): Promise<IresidentsTable> {
+    const residents = await prisma.condominium.findUnique({
       where: {
         slug,
       },
@@ -26,6 +26,6 @@ export class GetLiversFromCondominiumBySlugService {
       },
     })
 
-    return { livers }
+    return { residents }
   }
 }
