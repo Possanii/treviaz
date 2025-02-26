@@ -1,10 +1,11 @@
 import { IKeycloakJwtPayload } from '../schemas/IKeycloakJwtPayload'
 import { IRequest } from '../interfaces/IRequest'
-import { GetUserByKeycloakIdService } from '../services/user/get-user-by-keycloak-id-service'
+import { PrismaClient } from '@prisma/client'
+
+// Create a singleton Prisma client
+const prisma = new PrismaClient()
 
 export function CurrentUser() {
-  const getUserService = new GetUserByKeycloakIdService()
-
   return function (
     target: any,
     propertyKey: string,
@@ -16,10 +17,36 @@ export function CurrentUser() {
       const request: IRequest = args[0]
       const keycloakUser = request.user as IKeycloakJwtPayload
       
-      const user = await getUserService.execute(keycloakUser.sub)
+      try {
+        // Get the user with condominium relations and permissions
+        const user = await prisma.user.findUnique({
+          where: {
+            keycloak_id: keycloakUser.sub
+          },
+          include: {
+            condominiums: {
+              include: {
+                condominium: true,
+                role: {
+                  include: {
+                    permissions: true
+                  }
+                }
+              }
+            }
+          }
+        })
 
-      args[parameterIndex] = user
-      return originalMethod.apply(this, args)
+        if (!user) {
+          throw new Error('User not found in database')
+        }
+
+        args[parameterIndex] = user
+        return originalMethod.apply(this, args)
+      } catch (error) {
+        console.error('Error in CurrentUser decorator:', error)
+        throw new Error('Failed to retrieve user data')
+      }
     }
   }
 } 
