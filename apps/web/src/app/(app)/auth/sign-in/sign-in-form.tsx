@@ -1,51 +1,51 @@
 'use client'
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '@treviaz/ui/components/ui/alert'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@treviaz/ui/components/ui/button'
 import { Input } from '@treviaz/ui/components/ui/input'
 import { Label } from '@treviaz/ui/components/ui/label'
-import { AlertTriangle, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 
-import { signInAction } from '@/actions/auth'
-import { useFormState } from '@/hooks/use-form-state'
+import { SignInDto, signInSchema } from '@/actions/auth.dto'
+import { useSignInMutation } from '@/hooks/react-query/mutations/auth/sign-in-mutation'
 
 export function SignInForm() {
   const router = useRouter()
   const params = useSearchParams()
+  const { mutateAsync, isPending } = useSignInMutation()
 
-  const [{ success, message, errors }, handleSubmit, isPending] = useFormState({
-    action: signInAction,
-    onSuccess: () => {
-      router.push('/')
+  const {
+    register,
+    handleSubmit: useFormHandleSubmit,
+    formState: { errors },
+  } = useForm<SignInDto>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: params.get('email') || '',
     },
   })
+
+  const handleSubmit = useFormHandleSubmit(async (data) => {
+    await mutateAsync(data)
+
+    router.push('/')
+  })
+
   return (
     <form onSubmit={handleSubmit} className="grid gap-4">
-      {success === false && message && (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Falha no cadastro!</AlertTitle>
-          <AlertDescription>{message}</AlertDescription>
-        </Alert>
-      )}
-
       <div className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
-            name="email"
             type="email"
             placeholder="m@example.com"
-            defaultValue={params.get('email') ?? ''}
             required
-            errors={errors?.email && errors.email[0]}
+            errors={errors?.email && errors.email.message}
+            {...register('email')}
           />
         </div>
         <div className="grid gap-2">
@@ -60,10 +60,10 @@ export function SignInForm() {
           </div>
           <Input
             id="password"
-            name="password"
             type="password"
             required
-            errors={errors?.password && errors.password[0]}
+            errors={errors?.password && errors.password.message}
+            {...register('password')}
           />
         </div>
         <Button type="submit" className="w-full" disabled={isPending}>

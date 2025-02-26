@@ -8,10 +8,10 @@ import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
 
 app.post(
-  '/auth/signup',
+  '/auth/sign-up',
   routeAdapter(new SignUpController(new SignUpService(new KeycloakService())))
 )
 app.post(
-  '/auth/signin',
+  '/auth/sign-in',
   routeAdapter(new SignInController(new SignInService(new KeycloakService())))
 )

@@ -1,22 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
+import { ForgotPasswordDto } from '@/actions/auth.dto'
 import { ErrorToast, SuccessToast, UnkownErrorToats } from '@/components/toasts'
-import { signUp } from '@/http/auth/sign-up'
+import { forgotPassword } from '@/http/auth/forgot-password'
 import { HttpErroResponse } from '@/interfaces/http-error-response'
 
-export function useSignUpMutation() {
+export function useForgotPasswordMutation() {
   return useMutation({
-    mutationFn: async ({
-      email,
-      password,
-      name,
-    }: {
-      email: string
-      password: string
-      name: string
-    }) => {
-      return await signUp({ email, password, name })
+    mutationFn: async ({ email }: ForgotPasswordDto) => {
+      return await forgotPassword({ email })
     },
     onError: async (err) => {
       if (err instanceof AxiosError) {
@@ -27,7 +20,10 @@ export function useSignUpMutation() {
       }
     },
     onSuccess: () => {
-      SuccessToast('Usuário criado', 'Seu usuário foi criado com sucesso.')
+      SuccessToast(
+        'Email enviado!',
+        'Um email foi enviado com as instruções para trocar sua senha.'
+      )
     },
   })
 }
