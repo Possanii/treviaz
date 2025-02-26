@@ -12,5 +12,9 @@
   "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@keycloak/keycloak-admin-client": "^26.1.2",
+    "keycloak-connect": "^26.1.1"
   }
 }

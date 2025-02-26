@@ -11,11 +11,12 @@
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
     "env:load": "dotenv -e ../../.env --",
-    "db:seed": "pnpm env:load tsx prisma/seed.ts",
-    "db:seed:residents": "pnpm env:load tsx prisma/seed-residents.ts"
+    "db:seed": "dotenv -e ../../.env -- prisma db seed",
+    "db:seed:condominium": "dotenv -e ../../.env -- ts-node prisma/seed-condominium.ts",
+    "db:seed:all": "pnpm db:seed && pnpm db:seed:condominium"
   },
   "prisma": {
-    "seed": "pnpm env:load tsx prisma/seed.ts"
+    "seed": "ts-node prisma/seed-permissions.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.2.0",
@@ -28,7 +29,7 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/jwk-to-pem": "^2.0.3",
-    "@types/node": "^20",
+    "@types/node": "^20.16.5",
     "@types/nodemailer": "^6.4.16",
     "@types/qs": "^6.9.18",
     "@types/ramda": "^0.30.2",
@@ -41,16 +42,19 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@keycloak/keycloak-admin-client": "^26.1.2",
     "@prisma/client": "^6.4.0",
     "@treviaz/cookies": "workspace:*",
     "@treviaz/entities": "workspace:*",
     "@treviaz/env": "workspace:*",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "jwk-to-pem": "^2.0.7",
+    "keycloak-connect": "^26.1.1",
     "nodemailer": "^6.9.16",
     "qs": "^6.14.0",
     "ramda": "^0.30.1",
