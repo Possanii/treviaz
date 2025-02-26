@@ -9,7 +9,7 @@ export const condominiumSchema = z.object({
   address: addressSchema,
   address_id: z.string().uuid(),
   photo_url: z.string().url().optional(),
-  owner_id: z.string().uuid(),
+  owner_id: z.string().uuid().optional(),
   created_at: z.date(),
   updated_at: z.date(),
 })
