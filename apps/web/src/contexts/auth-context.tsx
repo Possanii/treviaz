@@ -1,14 +1,14 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { User } from '@treviaz/supabase/types'
+import { IUser } from '@treviaz/entities/schemas/IUser'
+import { useRouter } from 'next/navigation'
 import { createContext } from 'react'
 
-import { signOutAction } from '@/actions/auth'
 import { useQueryGetUser } from '@/hooks/react-query/queries/get-user'
 
 interface IAuthContextValue {
-  user: User | null
+  user: IUser | null
 }
 
 export const AuthContext = createContext<IAuthContextValue>({ user: null })
@@ -19,13 +19,14 @@ interface IAuthProviderProps {
 
 export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   const { data: user, isLoading } = useQuery(useQueryGetUser())
+  const router = useRouter()
 
   if (isLoading) {
     return <>Loading...</>
   }
 
   if (!user) {
-    signOutAction()
+    router.replace('/api/auth/sign-out')
     return null
   }
 

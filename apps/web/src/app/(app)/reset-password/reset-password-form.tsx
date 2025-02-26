@@ -1,29 +1,32 @@
 'use client'
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '@treviaz/ui/components/ui/alert'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@treviaz/ui/components/ui/button'
 import { Input } from '@treviaz/ui/components/ui/input'
 import { Label } from '@treviaz/ui/components/ui/label'
-import { toast } from '@treviaz/ui/components/ui/sonner'
-import { AlertTriangle, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 
-import { resetPasswordAction } from '@/actions/auth'
-import { useFormState } from '@/hooks/use-form-state'
+import { ResetPasswordDto, resetPasswordSchema } from '@/actions/auth.dto'
+import { useResetPasswordMutation } from '@/hooks/react-query/mutations/auth/reset-password-mutation'
 
 export default function ResetPasswordForm() {
+  const { mutateAsync, isPending } = useResetPasswordMutation()
   const router = useRouter()
 
-  const [{ success, message, errors }, handleSubmit, isPending] = useFormState({
-    action: resetPasswordAction,
-    onSuccess: () => {
-      router.replace('/auth/sign-in')
-      toast('Sua senha foi alterada com sucesso.')
-    },
+  const {
+    register,
+    handleSubmit: useFormHandleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordDto>({
+    resolver: zodResolver(resetPasswordSchema),
+  })
+
+  const handleSubmit = useFormHandleSubmit(async (data) => {
+    await mutateAsync(data)
+
+    router.replace('/auth/sign-in')
   })
 
   return (
@@ -31,31 +34,24 @@ export default function ResetPasswordForm() {
       onSubmit={handleSubmit}
       className="flex flex-col w-full max-w-md p-4 gap-4 [&>input]:mb-4"
     >
-      {success === false && message && (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Falha no cadastro!</AlertTitle>
-          <AlertDescription>{message}</AlertDescription>
-        </Alert>
-      )}
       <div className="grid gap-2">
         <Label htmlFor="password">Nova senha</Label>
         <Input
           type="password"
-          name="password"
           placeholder="Nova senha"
           required
-          errors={errors?.password && errors.password[0]}
+          errors={errors?.password && errors.password.message}
+          {...register('password')}
         />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="confirm_password">Confirmar nova senha</Label>
         <Input
           type="password"
-          name="confirm_password"
           placeholder="Confirmar nova senha"
           required
-          errors={errors?.confirm_password && errors.confirm_password[0]}
+          errors={errors?.confirm_password && errors.confirm_password.message}
+          {...register('confirm_password')}
         />
       </div>
       <Button type="submit" disabled={isPending}>

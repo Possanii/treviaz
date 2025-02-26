@@ -11,18 +11,18 @@ export function sidebarData() {
   if (!currentCondominium)
     return {
       user: {
-        name: user?.user_metadata.name,
-        email: user?.user_metadata.email,
-        avatar: '',
+        name: user!.name,
+        email: user!.email,
+        avatar: user?.avatar_url ?? null,
       },
       navMain: [],
     }
 
   return {
     user: {
-      name: user?.user_metadata.name,
-      email: user?.user_metadata.email,
-      avatar: '',
+      name: user!.name,
+      email: user!.email,
+      avatar: user?.avatar_url ?? null,
     },
     navMain: [
       {
