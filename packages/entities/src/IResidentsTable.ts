@@ -15,12 +15,12 @@ export const liverDataTable = z.object({
 
 export type ILiverDataTable = z.infer<typeof liverDataTable>
 
-export const liversTableSchema = z.object({
-  livers: z
+export const residentsTableSchema = z.object({
+  residents: z
     .object({
       users: z.array(liverDataTable),
     })
     .nullable(),
 })
 
-export type ILiversTable = z.infer<typeof liversTableSchema>
+export type IresidentsTable = z.infer<typeof residentsTableSchema>

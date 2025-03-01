@@ -11,7 +11,10 @@ export class CreateCondominiumService {
     data: Omit<
       ICondominium,
       'id' | 'slug' | 'created_at' | 'updated_at' | 'address_id' | 'address'
-    > & { address: Omit<IAddress, 'id'> }
+    > & { 
+      address: Omit<IAddress, 'id'>,
+      owner_id: string // Keep this parameter for backward compatibility
+    }
   ): Promise<void> {
     const existingCondominium = await prisma.condominium.findFirst({
       where: { name: data.name },
@@ -22,6 +25,15 @@ export class CreateCondominiumService {
         'condominium',
         'Condominium with this name already exists'
       )
+    }
+
+    // Get the admin role
+    const adminRole = await prisma.role.findFirst({
+      where: { name: 'ADMIN' }
+    })
+
+    if (!adminRole) {
+      throw new BadRequestError('role', 'Admin role not found')
     }
 
     await prisma.$transaction(async (tx) => {
@@ -42,18 +54,14 @@ export class CreateCondominiumService {
             },
           },
           photo_url: data.photo_url,
-          owner: {
-            connect: {
-              id: data.owner_id,
-            },
-          },
+          // Remove owner connection
         },
       })
 
       await tx.userCondominium.create({
         data: {
           condominium_id: condominium.id,
-          role: 'ADMIN',
+          role_id: adminRole.id, // Use role_id instead of role enum
           user_id: data.owner_id,
         },
       })

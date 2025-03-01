@@ -29,9 +29,6 @@ model Condominium {
   units      Unit[]
   invites    Invite[]
 
-  owner    User   @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  owner_id String
-
   forumCategory        ForumCategory[]
   financialTransaction FinancialTransaction[]
   leisureArea          LeisureArea[]
@@ -80,7 +77,6 @@ model User {
   reserves               Reserve[]
   guests                 Guest[]
   notifications          Notification[]
-  owner_condominiums     Condominium[]
   invites_created        Invite[]
   forum_category_created ForumCategory[]
   forum_threads_created  ForumThread[]          @relation("created_forum_threads")
@@ -107,7 +103,8 @@ model UserCondominium {
   id             String   @id @default(uuid())
   user_id        String
   condominium_id String
-  role           Role
+  role_id        String
+  role           Role     @relation(fields: [role_id], references: [id])
   joined_at      DateTime @default(now())
 
   user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -116,12 +113,24 @@ model UserCondominium {
   @@map("user_condominiums")
 }
 
-enum Role {
-  RESIDENT
-  ADMIN
-  SYNDIC
-  BILLING
-  SERVICES
+model Role {
+  id                String            @id @default(uuid())
+  name              String
+  permissions       Permission[]
+  description       String
+  user_condominiums UserCondominium[]
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  Invite            Invite[]
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  roles       Role[]
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 enum ReserveStatus {
@@ -255,8 +264,9 @@ model Guest {
 model Invite {
   id         String       @id @default(uuid())
   email      String
-  role       Role
   token      String       @unique
+  role_id    String
+  role       Role         @relation(fields: [role_id], references: [id])
   status     InviteStatus @default(PENDING)
   sent_at    DateTime     @default(now())
   expires_at DateTime

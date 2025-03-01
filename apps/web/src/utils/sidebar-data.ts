@@ -33,7 +33,7 @@ export function sidebarData() {
         items: [
           {
             title: 'Moradores',
-            url: `/condominium/${currentCondominium}/livers`,
+            url: `/condominium/${currentCondominium}/residents`,
           },
           {
             title: 'Convites',

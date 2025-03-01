@@ -96,7 +96,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
 
       return (
         <Button size={'sm'} asChild>
-          <Link href={`/condominium/${slug}/livers/${row.original.user.id}`}>
+          <Link href={`/condominium/${slug}/residents/${row.original.user.id}`}>
             Ver
           </Link>
         </Button>
