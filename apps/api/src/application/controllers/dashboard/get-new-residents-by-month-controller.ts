@@ -9,9 +9,7 @@ import { GetNewResidentsByMonthService } from '@/application/services/dashboard/
 export class GetNewResidentsByMonthController implements IController {
   private readonly getNewResidentsByMonthService: GetNewResidentsByMonthService
 
-  constructor(
-    getNewResidentsByMonthService: GetNewResidentsByMonthService
-  ) {
+  constructor(getNewResidentsByMonthService: GetNewResidentsByMonthService) {
     this.getNewResidentsByMonthService = getNewResidentsByMonthService
   }
 

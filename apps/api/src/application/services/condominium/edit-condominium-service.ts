@@ -36,7 +36,7 @@ export class EditCondominiumService {
     if (owner_id) {
       // Get admin role
       const adminRole = await prisma.role.findFirst({
-        where: { name: 'ADMIN' }
+        where: { name: 'ADMIN' },
       })
 
       if (!adminRole) {
@@ -48,16 +48,16 @@ export class EditCondominiumService {
         where: {
           condominium_id: id,
           role: {
-            name: 'ADMIN'
-          }
-        }
+            name: 'ADMIN',
+          },
+        },
       })
 
       // Update admin if different
       if (currentAdmin && currentAdmin.user_id !== owner_id) {
         await prisma.userCondominium.update({
           where: { id: currentAdmin.id },
-          data: { user_id: owner_id }
+          data: { user_id: owner_id },
         })
       } else if (!currentAdmin) {
         // Create new admin relationship if none exists
@@ -65,8 +65,8 @@ export class EditCondominiumService {
           data: {
             condominium_id: id,
             user_id: owner_id,
-            role_id: adminRole.id
-          }
+            role_id: adminRole.id,
+          },
         })
       }
     }
@@ -82,12 +82,12 @@ export class EditCondominiumService {
       where: {
         condominium_id: id,
         role: {
-          name: 'ADMIN'
-        }
+          name: 'ADMIN',
+        },
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     })
 
     return this.formatCondominiumResponse(updatedCondominium, admin?.user_id)
@@ -106,7 +106,10 @@ export class EditCondominiumService {
     }
   }
 
-  private formatCondominiumResponse(condominium: any, ownerId?: string): ICondominium {
+  private formatCondominiumResponse(
+    condominium: any,
+    ownerId?: string
+  ): ICondominium {
     return {
       id: condominium.id,
       name: condominium.name,

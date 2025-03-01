@@ -6,7 +6,9 @@ import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { GetResidentsFromCondominiumBySlugService } from '@/application/services/condominium/get-residents-from-condominium-by-slug-service'
 
-export class GetResidentsFromCondominiumBySlugController implements IController {
+export class GetResidentsFromCondominiumBySlugController
+  implements IController
+{
   private readonly getResidentsFromCondominiumBySlugService: GetResidentsFromCondominiumBySlugService
 
   constructor(
@@ -31,11 +33,10 @@ export class GetResidentsFromCondominiumBySlugController implements IController 
 
     const { slug } = result.data
 
-    const { residents } = await this.getResidentsFromCondominiumBySlugService.execute(
-      {
+    const { residents } =
+      await this.getResidentsFromCondominiumBySlugService.execute({
         slug,
-      }
-    )
+      })
 
     return {
       statusCode: 200,

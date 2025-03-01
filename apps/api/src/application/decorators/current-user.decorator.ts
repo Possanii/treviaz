@@ -6,22 +6,18 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export function CurrentUser() {
-  return function (
-    target: any,
-    propertyKey: string,
-    parameterIndex: number
-  ) {
+  return function (target: any, propertyKey: string, parameterIndex: number) {
     const originalMethod = target[propertyKey]
 
     target[propertyKey] = async function (...args: any[]) {
       const request: IRequest = args[0]
       const keycloakUser = request.user as IKeycloakJwtPayload
-      
+
       try {
         // Get the user with condominium relations and permissions
         const user = await prisma.user.findUnique({
           where: {
-            keycloak_id: keycloakUser.sub
+            keycloak_id: keycloakUser.sub,
           },
           include: {
             condominiums: {
@@ -29,12 +25,12 @@ export function CurrentUser() {
                 condominium: true,
                 role: {
                   include: {
-                    permissions: true
-                  }
-                }
-              }
-            }
-          }
+                    permissions: true,
+                  },
+                },
+              },
+            },
+          },
         })
 
         if (!user) {
@@ -49,4 +45,4 @@ export function CurrentUser() {
       }
     }
   }
-} 
+}

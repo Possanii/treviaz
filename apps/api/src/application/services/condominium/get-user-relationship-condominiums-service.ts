@@ -5,7 +5,7 @@ import { IUserCondominium } from '@/application/schemas/IUserCondominium'
 export class GetUserRelationshipCondominiumsService {
   async execute({ id }: { id: string }): Promise<
     (Pick<IUserCondominium, 'id' | 'joined_at'> & {
-      role: string;
+      role: string
       condominium: Pick<ICondominium, 'id' | 'name' | 'slug'>
     })[]
   > {
@@ -18,8 +18,8 @@ export class GetUserRelationshipCondominiumsService {
         joined_at: true,
         role: {
           select: {
-            name: true
-          }
+            name: true,
+          },
         },
         condominium: {
           select: {
@@ -35,11 +35,11 @@ export class GetUserRelationshipCondominiumsService {
     })
 
     // Transform the data to match the expected return type
-    return userCondominiums.map(uc => ({
+    return userCondominiums.map((uc) => ({
       id: uc.id,
       joined_at: uc.joined_at,
       role: uc.role.name, // Extract the role name from the role object
-      condominium: uc.condominium
+      condominium: uc.condominium,
     }))
   }
 }

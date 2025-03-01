@@ -108,7 +108,9 @@ export class KeycloakService {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Error creating user:', errorText)
-      throw new Error(`Failed to create user: ${response.status} ${response.statusText}`)
+      throw new Error(
+        `Failed to create user: ${response.status} ${response.statusText}`
+      )
     }
 
     // Check if we can get the user ID from the Location header
@@ -126,7 +128,7 @@ export class KeycloakService {
 
     // If we couldn't get the ID from the location header, get it by email
     console.log('User created successfully in Keycloak, fetching ID by email')
-    
+
     try {
       const user = await this.getUserByEmail(userData.email)
       return user.id

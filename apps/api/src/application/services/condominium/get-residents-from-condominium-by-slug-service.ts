@@ -12,8 +12,8 @@ export class GetResidentsFromCondominiumBySlugService {
         users: {
           where: {
             role: {
-              name: 'RESIDENT'
-            }
+              name: 'RESIDENT',
+            },
           },
           select: {
             joined_at: true,
@@ -23,9 +23,9 @@ export class GetResidentsFromCondominiumBySlugService {
                 name: true,
                 permissions: {
                   select: {
-                    name: true
-                  }
-                }
+                    name: true,
+                  },
+                },
               },
             },
             user: {
@@ -42,13 +42,20 @@ export class GetResidentsFromCondominiumBySlugService {
     })
 
     return {
-      residents: condominium ? {
-        users: condominium.users.map(userCondominium => ({
-          joined_at: userCondominium.joined_at,
-          role: userCondominium.role.name as "RESIDENT" | "ADMIN" | "SYNDIC" | "BILLING" | "SERVICES",
-          user: userCondominium.user
-        }))
-      } : null
+      residents: condominium
+        ? {
+            users: condominium.users.map((userCondominium) => ({
+              joined_at: userCondominium.joined_at,
+              role: userCondominium.role.name as
+                | 'RESIDENT'
+                | 'ADMIN'
+                | 'SYNDIC'
+                | 'BILLING'
+                | 'SERVICES',
+              user: userCondominium.user,
+            })),
+          }
+        : null,
     }
   }
 }

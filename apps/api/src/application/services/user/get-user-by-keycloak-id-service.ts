@@ -10,13 +10,13 @@ export class GetUserByKeycloakIdService {
           include: {
             role: {
               include: {
-                permissions: true
-              }
+                permissions: true,
+              },
             },
-            condominium: true
-          }
-        }
-      }
+            condominium: true,
+          },
+        },
+      },
     })
 
     if (!user) {
@@ -25,4 +25,4 @@ export class GetUserByKeycloakIdService {
 
     return user
   }
-} 
+}

@@ -16,11 +16,13 @@ function createSlug(text: string): string {
 async function main() {
   // Get the admin role that should have been created by seed-permissions.ts
   const adminRole = await prisma.role.findFirst({
-    where: { name: 'ADMIN' }
+    where: { name: 'ADMIN' },
   })
 
   if (!adminRole) {
-    throw new Error('Admin role not found. Please run seed-permissions.ts first.')
+    throw new Error(
+      'Admin role not found. Please run seed-permissions.ts first.'
+    )
   }
 
   // Create or update owner user
@@ -51,7 +53,7 @@ async function main() {
   // Create condominium
   const condominiumName = 'Sample Condominium 2'
   const slug = createSlug(condominiumName)
-  
+
   const condominium = await prisma.condominium.upsert({
     where: { slug },
     update: {},
@@ -67,7 +69,7 @@ async function main() {
     where: {
       user_id: owner.id,
       condominium_id: condominium.id,
-    }
+    },
   })
 
   // Set owner through UserCondominium if not already set
@@ -84,9 +86,9 @@ async function main() {
   // Create financial categories
   // First check if they exist
   const rentCategory = await prisma.financialCategory.findFirst({
-    where: { name: 'Rent' }
+    where: { name: 'Rent' },
   })
-  
+
   if (!rentCategory) {
     await prisma.financialCategory.create({
       data: {
@@ -98,9 +100,9 @@ async function main() {
   }
 
   const maintenanceCategory = await prisma.financialCategory.findFirst({
-    where: { name: 'Maintenance' }
+    where: { name: 'Maintenance' },
   })
-  
+
   if (!maintenanceCategory) {
     await prisma.financialCategory.create({
       data: {
@@ -112,9 +114,9 @@ async function main() {
   }
 
   const condoFeeCategory = await prisma.financialCategory.findFirst({
-    where: { name: 'Condominium Fee' }
+    where: { name: 'Condominium Fee' },
   })
-  
+
   if (!condoFeeCategory) {
     await prisma.financialCategory.create({
       data: {

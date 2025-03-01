@@ -9,7 +9,7 @@ export class GetNewResidentsByMonthService {
           slug,
         },
         role: {
-          name: 'RESIDENT'
+          name: 'RESIDENT',
         },
         joined_at: {
           gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),

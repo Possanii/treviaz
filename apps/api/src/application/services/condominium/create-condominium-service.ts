@@ -11,8 +11,8 @@ export class CreateCondominiumService {
     data: Omit<
       ICondominium,
       'id' | 'slug' | 'created_at' | 'updated_at' | 'address_id' | 'address'
-    > & { 
-      address: Omit<IAddress, 'id'>,
+    > & {
+      address: Omit<IAddress, 'id'>
       owner_id: string // Keep this parameter for backward compatibility
     }
   ): Promise<void> {
@@ -29,7 +29,7 @@ export class CreateCondominiumService {
 
     // Get the admin role
     const adminRole = await prisma.role.findFirst({
-      where: { name: 'ADMIN' }
+      where: { name: 'ADMIN' },
     })
 
     if (!adminRole) {

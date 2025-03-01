@@ -25,8 +25,11 @@ export class SignUpController implements IController {
   constructor(private signUpService: SignUpService) {}
 
   async handle(request: IRequest): Promise<IResponse> {
-    console.log('SignUpController received request body:', JSON.stringify(request.body, null, 2))
-    
+    console.log(
+      'SignUpController received request body:',
+      JSON.stringify(request.body, null, 2)
+    )
+
     const validatedData = createUserSchema.safeParse(request.body)
 
     if (!validatedData.success) {
@@ -42,7 +45,10 @@ export class SignUpController implements IController {
       }
     }
 
-    console.log('Validation successful, calling service with:', JSON.stringify(validatedData.data, null, 2))
+    console.log(
+      'Validation successful, calling service with:',
+      JSON.stringify(validatedData.data, null, 2)
+    )
     const user = await this.signUpService.execute(validatedData.data)
     return {
       statusCode: 201,

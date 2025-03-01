@@ -33,9 +33,9 @@ export class SignUpService {
 
   async execute(data: SignUpRequest): Promise<SignUpResponse> {
     console.log('SignUpService received data:', JSON.stringify(data, null, 2))
-    
+
     const { name, email, password, document_number, condominium } = data
-    
+
     // Use transaction to ensure both Keycloak and database operations succeed or fail together
     return await prisma.$transaction(async (tx) => {
       try {
@@ -59,7 +59,6 @@ export class SignUpService {
             name,
             email,
             keycloak_id: keycloakId,
-        
           },
         })
 
@@ -69,7 +68,7 @@ export class SignUpService {
         if (condominium) {
           console.log('Condominium info provided:', condominium)
           const { condominium_id, role } = condominium
-          
+
           console.log('Checking if condominium exists...')
           // Check if condominium exists
           const condominiumExists = await tx.condominium.findUnique({
@@ -101,7 +100,7 @@ export class SignUpService {
               role_id: roleEntity.id,
             },
           })
-          
+
           console.log('User-condominium relationship created')
         }
 
@@ -112,12 +111,12 @@ export class SignUpService {
           document_number,
           condominium,
         }
-        
+
         console.log('Returning response:', JSON.stringify(response, null, 2))
         return response
       } catch (error) {
         console.error('Error in SignUpService:', error)
-        
+
         if (
           error instanceof PrismaClientKnownRequestError &&
           error.code === 'P2002'
