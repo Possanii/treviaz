@@ -1,17 +1,9 @@
-import { faker } from '@faker-js/faker'
+import { fakerPT_BR as faker } from '@faker-js/faker'
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+import { createSlug } from '../src/application/utils/create-slug'
 
-// Helper function to create a slug
-function createSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]/g, '')
-    .replace(/\s+/g, '-')
-}
+const prisma = new PrismaClient()
 
 async function main() {
   // Get the admin role that should have been created by seed-permissions.ts
@@ -61,6 +53,7 @@ async function main() {
       name: condominiumName,
       slug,
       address_id: address.id,
+      owner_id: owner.id,
     },
   })
 

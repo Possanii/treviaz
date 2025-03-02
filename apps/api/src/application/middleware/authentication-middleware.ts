@@ -1,8 +1,8 @@
-import { env } from '@treviaz/env'
 import { verify } from 'jsonwebtoken'
 import jwkToPem, { RSA } from 'jwk-to-pem'
 
 import { cookiesStorage } from '../../../../../packages/cookies'
+import { env } from '../../../../../packages/env'
 import { JwtError } from '../errors/jwt-error'
 import { IData, IMiddleware } from '../interfaces/IMiddleware'
 import { IRequest } from '../interfaces/IRequest'

@@ -1,4 +1,4 @@
-import { env } from '@treviaz/env'
+import { env } from '../../../../../packages/env'
 
 export const CreateInviteMail = ({ token }: { token: string }) => ({
   pt: {

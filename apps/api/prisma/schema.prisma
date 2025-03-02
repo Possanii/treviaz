@@ -29,6 +29,9 @@ model Condominium {
   units      Unit[]
   invites    Invite[]
 
+  owner    User   @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id String
+
   forumCategory        ForumCategory[]
   financialTransaction FinancialTransaction[]
   leisureArea          LeisureArea[]
@@ -76,6 +79,7 @@ model User {
   condominiums           UserCondominium[]
   reserves               Reserve[]
   guests                 Guest[]
+  owner_condominiums     Condominium[]
   notifications          Notification[]
   invites_created        Invite[]
   forum_category_created ForumCategory[]

@@ -11,12 +11,10 @@
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
     "env:load": "dotenv -e ../../.env --",
-    "db:seed": "dotenv -e ../../.env -- prisma db seed",
-    "db:seed:condominium": "dotenv -e ../../.env -- ts-node prisma/seed-condominium.ts",
-    "db:seed:all": "pnpm db:seed && pnpm db:seed:condominium"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed-permissions.ts"
+    "db:seed": "pnpm env:load tsx prisma/seed.ts",
+    "db:seed:condominium": "pnpm env:load tsx prisma/seed-condominium.ts",
+    "db:seed:residents": "pnpm env:load tsx prisma/seed-residents.ts",
+    "db:seed:all": "pnpm db:seed && pnpm db:seed:condominium && pnpm db:seed:residents"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.2.0",
