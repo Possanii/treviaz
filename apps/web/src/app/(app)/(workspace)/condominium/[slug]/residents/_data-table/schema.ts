@@ -1,4 +1,4 @@
-import { liverDataTable } from '@treviaz/entities/schemas/ILiversTable'
+import { liverDataTable } from '@treviaz/entities/schemas/IresidentsTable'
 import { roleSchema } from '@treviaz/entities/schemas/IRole'
 import { z } from 'zod'
 

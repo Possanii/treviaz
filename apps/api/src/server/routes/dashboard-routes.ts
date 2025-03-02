@@ -1,4 +1,4 @@
-import { makeGetNewLiversByMonthController } from '@/factories/controllers/dashboard/make-get-new-livers-by-month-controller'
+import { makeGetNewResidentsByMonthController } from '@/factories/controllers/dashboard/make-get-new-residents-by-month-controller'
 import { makeGetNewThreadsByMonthController } from '@/factories/controllers/dashboard/make-get-new-threads-by-month-controller'
 import { makeGetRecentPaymentsController } from '@/factories/controllers/dashboard/make-get-recent-payments-controller'
 import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authentication-middleware'
@@ -8,9 +8,9 @@ import { routeAdapter } from '../adapters/route-adapter'
 import app from '../lib/express'
 
 app.get(
-  '/dashboard/:slug/total-new-livers',
+  '/dashboard/:slug/total-new-residents',
   middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetNewLiversByMonthController())
+  routeAdapter(makeGetNewResidentsByMonthController())
 )
 
 app.get(

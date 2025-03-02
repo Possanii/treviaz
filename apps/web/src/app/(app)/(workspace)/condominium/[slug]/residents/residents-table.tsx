@@ -5,24 +5,24 @@ import { Button } from '@treviaz/ui/components/ui/button'
 import { useParams } from 'next/navigation'
 
 import { useModalInviteUserCondominium } from '@/contexts/invite-user-condominio-modal-context'
-import { useQueryGetLiversFromCondominiumBySlug } from '@/hooks/react-query/queries/get-livers-from-condominium-by-slug'
+import { useQueryGetresidentsFromCondominiumBySlug } from '@/hooks/react-query/queries/get-residents-from-condominium-by-slug'
 
 import { columns } from './_data-table/columns'
 import { createFilterFields } from './_data-table/constants'
 import { DataTable } from './_data-table/data-table'
 import { searchParamsCache } from './_data-table/search-params'
 
-interface ILiversTableProps {
+interface IresidentsTableProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export function LiversTable({ searchParams }: ILiversTableProps) {
+export function residentsTable({ searchParams }: IresidentsTableProps) {
   const { slug } = useParams<{ slug: string }>()
   const { data } = useSuspenseQuery(
-    useQueryGetLiversFromCondominiumBySlug({ slug })
+    useQueryGetresidentsFromCondominiumBySlug({ slug })
   )
 
-  const filterFields = createFilterFields(data.livers!.users)
+  const filterFields = createFilterFields(data.residents!.users)
 
   const search = searchParamsCache.parse(searchParams)
 
@@ -35,7 +35,7 @@ export function LiversTable({ searchParams }: ILiversTableProps) {
       </Button>
       <DataTable
         columns={columns}
-        data={data.livers!.users}
+        data={data.residents!.users}
         filterFields={filterFields}
         defaultColumnFilters={Object.entries(search)
           .map(([key, value]) => ({

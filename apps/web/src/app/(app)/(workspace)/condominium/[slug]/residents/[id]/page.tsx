@@ -38,7 +38,7 @@ export default async function Page({
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href={`/condominium/${params.slug}/livers`}>
+          <BreadcrumbLink href={`/condominium/${params.slug}/residents`}>
             Moradores
           </BreadcrumbLink>
         </BreadcrumbItem>

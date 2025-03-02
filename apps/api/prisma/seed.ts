@@ -1,30 +1,170 @@
-import { faker } from '@faker-js/faker'
+import { fakerPT_BR as faker } from '@faker-js/faker'
+import { PrismaClient } from '@prisma/client'
 
-import { prisma } from '../src/application/libs/prisma'
 import { KeycloakService } from '../src/application/services/auth/keycloak-service'
 import { createSlug } from '../src/application/utils/create-slug'
 
-async function seed() {
-  const ownerData = {
-    name: 'Treviaz',
-    email: 'treviaz@acme.com',
-    password: '12345678',
+const prisma = new PrismaClient()
+
+async function main() {
+  // Check if roles exist first
+  let adminRole = await prisma.role.findFirst({
+    where: { name: 'ADMIN' },
+  })
+
+  if (!adminRole) {
+    adminRole = await prisma.role.create({
+      data: {
+        name: 'ADMIN',
+        description: 'Administrator role with full access',
+      },
+    })
   }
 
-  const keyclockService = new KeycloakService()
+  let residentRole = await prisma.role.findFirst({
+    where: { name: 'RESIDENT' },
+  })
 
-  await keyclockService.createUser({
+  if (!residentRole) {
+    residentRole = await prisma.role.create({
+      data: {
+        name: 'RESIDENT',
+        description: 'Regular resident role',
+      },
+    })
+  }
+
+  let syndicRole = await prisma.role.findFirst({
+    where: { name: 'SYNDIC' },
+  })
+
+  if (!syndicRole) {
+    syndicRole = await prisma.role.create({
+      data: {
+        name: 'SYNDIC',
+        description: 'Syndic role',
+      },
+    })
+  }
+
+  // Create permissions for admin role
+  const createInvitePermission = await prisma.permission.findFirst({
+    where: { name: 'CREATE_INVITE' },
+  })
+
+  if (!createInvitePermission) {
+    await prisma.permission.create({
+      data: {
+        name: 'CREATE_INVITE',
+        description: 'Can create invites',
+        roles: {
+          connect: { id: adminRole.id },
+        },
+      },
+    })
+  }
+
+  const manageUsersPermission = await prisma.permission.findFirst({
+    where: { name: 'MANAGE_USERS' },
+  })
+
+  if (!manageUsersPermission) {
+    await prisma.permission.create({
+      data: {
+        name: 'MANAGE_USERS',
+        description: 'Can manage users',
+        roles: {
+          connect: { id: adminRole.id },
+        },
+      },
+    })
+  }
+
+  // Create permissions for resident role
+  const viewForumPermission = await prisma.permission.findFirst({
+    where: { name: 'VIEW_FORUM' },
+  })
+
+  if (!viewForumPermission) {
+    await prisma.permission.create({
+      data: {
+        name: 'VIEW_FORUM',
+        description: 'Can view forum posts',
+        roles: {
+          connect: { id: residentRole.id },
+        },
+      },
+    })
+  }
+
+  const createForumPostPermission = await prisma.permission.findFirst({
+    where: { name: 'CREATE_FORUM_POST' },
+  })
+
+  if (!createForumPostPermission) {
+    await prisma.permission.create({
+      data: {
+        name: 'CREATE_FORUM_POST',
+        description: 'Can create forum posts',
+        roles: {
+          connect: { id: residentRole.id },
+        },
+      },
+    })
+  }
+
+  // Create permissions for syndic role
+  const manageCondominiumPermission = await prisma.permission.findFirst({
+    where: { name: 'MANAGE_CONDOMINIUM' },
+  })
+
+  if (!manageCondominiumPermission) {
+    await prisma.permission.create({
+      data: {
+        name: 'MANAGE_CONDOMINIUM',
+        description: 'Can manage condominium settings',
+        roles: {
+          connect: { id: syndicRole.id },
+        },
+      },
+    })
+  }
+
+  const approvePostsPermission = await prisma.permission.findFirst({
+    where: { name: 'APPROVE_POSTS' },
+  })
+
+  if (!approvePostsPermission) {
+    await prisma.permission.create({
+      data: {
+        name: 'APPROVE_POSTS',
+        description: 'Can approve forum posts',
+        roles: {
+          connect: { id: syndicRole.id },
+        },
+      },
+    })
+  }
+
+  // Create owner user
+  const ownerData = {
+    name: 'Treviaz Acme',
+    email: 'treviaz@acme.com',
+  }
+
+  const keycloakService = new KeycloakService()
+
+  await keycloakService.createUser({
     email: ownerData.email,
-    password: ownerData.password,
+    password: 'Qwert2025!',
     firstName: ownerData.name.split(' ')[0],
+    lastName: ownerData.name.split(' ')[1],
     enabled: true,
     emailVerified: false,
   })
 
   // Get the Keycloak user to get their ID
-  const keycloakOwner = await this.keycloakService.getUserByEmail(
-    ownerData.email
-  )
+  const keycloakOwner = await keycloakService.getUserByEmail(ownerData.email)
 
   const owner = await prisma.user.create({
     data: {
@@ -85,7 +225,7 @@ async function seed() {
     data: residents.map((resident) => ({
       condominium_id: condominium.id,
       user_id: resident.id,
-      role: 'RESIDENT',
+      role_id: residentRole.id,
     })),
   })
 
@@ -96,37 +236,54 @@ async function seed() {
     })),
   })
 
-  const categorie1 = await prisma.financialCategory.create({
-    data: {
-      name: 'Aluguel',
-      type: 'EXPENSE',
-      description: 'Pagamento alguel mensal',
-    },
+  // First check if they exist
+  let rentCategory: any
+
+  rentCategory = await prisma.financialCategory.findFirst({
+    where: { name: 'Rent' },
   })
 
-  const categorie2 = await prisma.financialCategory.create({
-    data: {
-      name: 'Jardineiro',
-      type: 'EXPENSE',
-      description: 'Pagamento jardineiro mensal',
-    },
+  if (!rentCategory) {
+    rentCategory = await prisma.financialCategory.create({
+      data: {
+        name: 'Rent',
+        type: 'EXPENSE',
+        description: 'Monthly rent payment',
+      },
+    })
+  }
+
+  let maintenanceCategory: any
+
+  maintenanceCategory = await prisma.financialCategory.findFirst({
+    where: { name: 'Maintenance' },
   })
 
-  const categorie3 = await prisma.financialCategory.create({
-    data: {
-      name: 'Piscineiro',
-      type: 'EXPENSE',
-      description: 'Pagamento piscineiro mensal',
-    },
+  if (!maintenanceCategory) {
+    maintenanceCategory = await prisma.financialCategory.create({
+      data: {
+        name: 'Maintenance',
+        type: 'EXPENSE',
+        description: 'Building maintenance',
+      },
+    })
+  }
+
+  let condoFeeCategory: any
+
+  condoFeeCategory = await prisma.financialCategory.findFirst({
+    where: { name: 'Condominium Fee' },
   })
 
-  const categorie4 = await prisma.financialCategory.create({
-    data: {
-      name: 'Condominio',
-      type: 'INCOME',
-      description: 'Pagamento condominio mensal',
-    },
-  })
+  if (!condoFeeCategory) {
+    condoFeeCategory = await prisma.financialCategory.create({
+      data: {
+        name: 'Condominium Fee',
+        type: 'INCOME',
+        description: 'Monthly condominium fee',
+      },
+    })
+  }
 
   const invoices = residents.map((resident) => ({
     id: faker.string.uuid(),
@@ -146,7 +303,7 @@ async function seed() {
     )!.status
     return {
       id: faker.string.uuid(),
-      categoryId: categorie4.id,
+      categoryId: condoFeeCategory.id,
       condominiumId: condominium.id,
       amount: 540,
       status,
@@ -172,26 +329,18 @@ async function seed() {
   await prisma.financialTransaction.createMany({
     data: [
       {
-        categoryId: categorie1.id,
+        categoryId: rentCategory.id,
         condominiumId: condominium.id,
         amount: 15000,
         status: 'PENDING',
         dueDate: new Date(),
       },
       {
-        categoryId: categorie2.id,
+        categoryId: maintenanceCategory.id,
         condominiumId: condominium.id,
         amount: 120,
         status: 'OVERDUE',
         dueDate: new Date(),
-      },
-      {
-        categoryId: categorie3.id,
-        condominiumId: condominium.id,
-        amount: 150,
-        status: 'PAID',
-        paymentDate: new Date(),
-        dueDate: new Date(new Date().setDate(new Date().getDate() - 3)), // less 3 days
       },
       ...payments,
     ],
@@ -264,8 +413,14 @@ async function seed() {
       })),
     })
   })
+
+  console.log('🔥 Database seed completed!')
 }
 
-seed().then(() => {
-  console.log('🔥 Database seeded!')
-})
+main()
+  .catch((error) => {
+    console.error('Error seeding database: ', error)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })

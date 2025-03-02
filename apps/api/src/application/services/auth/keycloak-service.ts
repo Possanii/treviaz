@@ -77,7 +77,7 @@ export class KeycloakService {
     lastName: string
     enabled?: boolean
     emailVerified?: boolean
-  }): Promise<void> {
+  }): Promise<string> {
     const adminToken = await this.getAdminToken()
 
     const keycloakUser = {
@@ -96,7 +96,7 @@ export class KeycloakService {
       ],
     }
 
-    await fetch(this.usersEndpoint, {
+    const response = await fetch(this.usersEndpoint, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${adminToken}`,
@@ -104,6 +104,38 @@ export class KeycloakService {
       },
       body: JSON.stringify(keycloakUser),
     })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Error creating user:', errorText)
+      throw new Error(
+        `Failed to create user: ${response.status} ${response.statusText}`
+      )
+    }
+
+    // Check if we can get the user ID from the Location header
+    const locationHeader = response.headers.get('location')
+    if (locationHeader) {
+      console.log('Location header:', locationHeader)
+      // Extract the user ID from the location header
+      // Format is typically: http://localhost:8080/auth/admin/realms/treviaz-realm/users/USER_ID
+      const userId = locationHeader.split('/').pop()
+      if (userId) {
+        console.log(`Retrieved user ID from location header: ${userId}`)
+        return userId
+      }
+    }
+
+    // If we couldn't get the ID from the location header, get it by email
+    console.log('User created successfully in Keycloak, fetching ID by email')
+
+    try {
+      const user = await this.getUserByEmail(userData.email)
+      return user.id
+    } catch (error) {
+      console.error('Error getting user by email after creation:', error)
+      throw new Error('User created but ID could not be retrieved')
+    }
   }
 
   async getAccessToken(

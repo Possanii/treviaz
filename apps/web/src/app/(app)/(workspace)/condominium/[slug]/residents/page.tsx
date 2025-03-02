@@ -9,12 +9,12 @@ import React from 'react'
 
 import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton'
 import { AppHeader } from '@/components/sidebar/app-header'
-import { useQueryGetLiversFromCondominiumBySlug } from '@/hooks/react-query/queries/get-livers-from-condominium-by-slug'
+import { useQueryGetresidentsFromCondominiumBySlug } from '@/hooks/react-query/queries/get-residents-from-condominium-by-slug'
 import { queryClient } from '@/lib/query-client'
 
-import { LiversTable } from './livers-table'
+import { residentsTable } from './residents-table'
 
-export default async function LiversPages({
+export default async function residentsPages({
   searchParams,
   params,
 }: {
@@ -24,7 +24,7 @@ export default async function LiversPages({
   const { slug } = params
 
   await queryClient.prefetchQuery(
-    useQueryGetLiversFromCondominiumBySlug({ slug })
+    useQueryGetresidentsFromCondominiumBySlug({ slug })
   )
 
   const dehydratedState = dehydrate(queryClient)
@@ -47,7 +47,7 @@ export default async function LiversPages({
       <section className="p-[--main-content-padding]">
         <HydrationBoundary state={dehydratedState}>
           <React.Suspense fallback={<DataTableSkeleton />}>
-            <LiversTable searchParams={searchParams} />
+            <residentsTable searchParams={searchParams} />
           </React.Suspense>
         </HydrationBoundary>
       </section>
