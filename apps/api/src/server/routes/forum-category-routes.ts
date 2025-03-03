@@ -2,6 +2,7 @@ import { makeCreateForumCategoryController } from '@/factories/controllers/forum
 import { makeDeleteForumCategoryController } from '@/factories/controllers/forumcategory/make-delete-forumcategory-controller'
 import { makeEditForumCategoryController } from '@/factories/controllers/forumcategory/make-edit-forumcategory-controller'
 import { makeGetForumCategoriesFromCondominiumController } from '@/factories/controllers/forumcategory/make-get-forum-categories-from-condominium-controller'
+import { makeAddCurrentUserToMetadataMiddleware } from '@/factories/middleware/make-add-current-user-to-metadata-middleware'
 import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authentication-middleware'
 
 import { middlewareAdapter } from '../adapters/middleware-adapter'
@@ -11,6 +12,7 @@ import app from '../lib/express'
 app.post(
   '/forumcategory/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
+  middlewareAdapter(makeAddCurrentUserToMetadataMiddleware()),
   routeAdapter(makeCreateForumCategoryController())
 )
 app.put(

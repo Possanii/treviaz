@@ -12,7 +12,7 @@ export class GetMeController implements IController {
 
   async handle({ metadata }: IRequest): Promise<IResponse> {
     const user = await this.getMeService.execute({
-      id: metadata!.user!.uid,
+      id: metadata!.user!.id,
     })
 
     return {

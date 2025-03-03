@@ -32,7 +32,7 @@ export class CreateForumCategoryController implements IController {
 
     await this.createForumCategoryService.execute({
       ...result.data,
-      id: metadata!.user!.uid,
+      id: metadata!.user!.id,
     })
 
     return {
