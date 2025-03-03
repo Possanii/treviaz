@@ -4,7 +4,8 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "format": "cd apps/api && pnpm format && cd ../web && pnpm format"
   },
   "devDependencies": {
     "turbo": "^2.1.1"

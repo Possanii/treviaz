@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
-export const roleSchema = z.object({
+export const permissionSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   description: z.string(),
   created_at: z.date(),
 })
 
-export type IRole = z.infer<typeof roleSchema>
+export type IPermission = z.infer<typeof permissionSchema>

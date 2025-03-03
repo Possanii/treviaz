@@ -8,7 +8,6 @@ export const userSchema = z.object({
   email: z.string().email({
     message: 'Please, provide a valid email address.',
   }),
-  keycloak_id: z.string(),
   avatar_url: z
     .string()
     .url({

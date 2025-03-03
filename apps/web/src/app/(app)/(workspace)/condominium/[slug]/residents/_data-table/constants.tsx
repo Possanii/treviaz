@@ -1,6 +1,6 @@
 'use client'
 
-import { ILiverDataTable } from '@treviaz/entities/schemas/IresidentsTable'
+import { ILiverDataTable } from '@treviaz/entities/schemas/IResidentsTable'
 
 import { DataTableFilterField, Option } from '@/components/data-table/types'
 

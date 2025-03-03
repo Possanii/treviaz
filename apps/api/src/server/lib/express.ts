@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
 
+import logger from '@/application/configs/logger'
 import { PackageController } from '@/application/package/controller/package.controller'
 import { PackageRepo } from '@/application/package/repo/package.repo'
 import { PackageService } from '@/application/package/service/package.service'
@@ -28,6 +29,11 @@ app.use(
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url} - ${req.ip}`)
+  next()
+})
 
 app.use('/packages', packageRouter(packageController))
 

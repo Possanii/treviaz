@@ -6,7 +6,7 @@ import { NotFoundError } from '@/application/errors/not-found-error'
 import { prisma } from '@/application/libs/prisma'
 
 interface IGetUserById {
-  user: IUser & {
+  user: Omit<IUser, 'keycloak_id'> & {
     created_at: Date
     condominiums: (Pick<IUserCondominium, 'id' | 'role' | 'joined_at'> & {
       condominium: Pick<ICondominium, 'id' | 'name' | 'slug' | 'photo_url'>
@@ -22,6 +22,8 @@ export class GetUserByIdService {
     id: string
     slug: string
   }): Promise<IGetUserById> {
+    console.log({ slug })
+
     const user = await prisma.user.findUnique({
       where: {
         id,

@@ -23,4 +23,4 @@ export const residentsTableSchema = z.object({
     .nullable(),
 })
 
-export type IresidentsTable = z.infer<typeof residentsTableSchema>
+export type IResidentsTable = z.infer<typeof residentsTableSchema>

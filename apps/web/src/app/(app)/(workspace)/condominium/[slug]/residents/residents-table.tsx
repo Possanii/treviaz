@@ -16,7 +16,7 @@ interface IresidentsTableProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export function residentsTable({ searchParams }: IresidentsTableProps) {
+export function ResidentsTable({ searchParams }: IresidentsTableProps) {
   const { slug } = useParams<{ slug: string }>()
   const { data } = useSuspenseQuery(
     useQueryGetresidentsFromCondominiumBySlug({ slug })
