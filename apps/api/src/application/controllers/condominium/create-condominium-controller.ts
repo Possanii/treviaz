@@ -26,7 +26,7 @@ export class CreateCondominiumController implements IController {
   async handle({ body, metadata }: IRequest): Promise<IResponse> {
     const result = createCondominiumSchema.safeParse({
       ...body,
-      owner_id: metadata?.user?.uid,
+      owner_id: metadata?.user?.id,
     })
 
     if (!result.success) {

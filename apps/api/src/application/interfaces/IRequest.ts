@@ -1,13 +1,11 @@
 import type { Request } from 'express'
-import { IKeycloakJwtPayload } from '../schemas/IKeycloakJwtPayload'
 
-import { IKeycloakJwtPayload } from '../schemas/IKeycloakJwtPayload'
+import { IUser } from '@/application/schemas/IUser'
 
 import { IKeycloakJwtPayload } from '../schemas/IKeycloakJwtPayload'
 
 export interface IRequest extends Request {
-  metadata?: {
-    user?: IKeycloakJwtPayload
+  metadata?: IKeycloakJwtPayload & {
+    user?: IUser
   }
-  user?: IKeycloakJwtPayload
 }

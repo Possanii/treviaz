@@ -1,6 +1,7 @@
-import { IKeycloakJwtPayload } from '../schemas/IKeycloakJwtPayload'
-import { IRequest } from '../interfaces/IRequest'
 import { PrismaClient } from '@prisma/client'
+
+import { IRequest } from '../interfaces/IRequest'
+import { IKeycloakJwtPayload } from '../schemas/IKeycloakJwtPayload'
 
 // Create a singleton Prisma client
 const prisma = new PrismaClient()
@@ -11,7 +12,7 @@ export function CurrentUser() {
 
     target[propertyKey] = async function (...args: any[]) {
       const request: IRequest = args[0]
-      const keycloakUser = request.user as IKeycloakJwtPayload
+      const keycloakUser = request.metadata as IKeycloakJwtPayload
 
       try {
         // Get the user with condominium relations and permissions

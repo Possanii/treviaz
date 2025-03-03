@@ -20,7 +20,7 @@ export class GetUserRelationshipCondominiumsController implements IController {
       .pick({
         id: true,
       })
-      .safeParse({ id: metadata!.user!.uid })
+      .safeParse({ id: metadata!.user!.id })
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors

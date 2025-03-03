@@ -12,6 +12,7 @@ export function middlewareAdapter(middleware: IMiddleware) {
         return response.status(result.statusCode).json(result.body)
       }
 
+      // @ts-ignore
       request.metadata = {
         ...request.metadata,
         ...result.data,

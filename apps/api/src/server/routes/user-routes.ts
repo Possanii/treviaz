@@ -3,6 +3,7 @@ import { makeDeleteUserController } from '@/factories/controllers/user/make-dele
 import { makeEditUserController } from '@/factories/controllers/user/make-edit-user-controller'
 import { makeGetMeController } from '@/factories/controllers/user/make-get-me-controller'
 import { makeGetUserByIdController } from '@/factories/controllers/user/make-get-user-by-id-controller'
+import { makeAddCurrentUserToMetadataMiddleware } from '@/factories/middleware/make-add-current-user-to-metadata-middleware'
 import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authentication-middleware'
 
 import { middlewareAdapter } from '../adapters/middleware-adapter'
@@ -14,6 +15,7 @@ app.post('/user', routeAdapter(makeCreateUserController()))
 app.get(
   '/user',
   middlewareAdapter(makeAuthenticationMiddleware()),
+  middlewareAdapter(makeAddCurrentUserToMetadataMiddleware()),
   routeAdapter(makeGetMeController())
 )
 app.put(
