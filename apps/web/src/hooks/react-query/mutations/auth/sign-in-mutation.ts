@@ -1,8 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { cookiesStorage } from '@treviaz/cookies'
-import { env } from '@treviaz/env'
 import { AxiosError, AxiosResponse } from 'axios'
-import { setCookie } from 'cookies-next'
 
 import { SignInDto } from '@/actions/auth.dto'
 import { ErrorToast, SuccessToast, UnkownErrorToats } from '@/components/toasts'
@@ -22,18 +19,16 @@ export function useSignInMutation() {
         UnkownErrorToats(err)
       }
     },
-    onSuccess: (response: AxiosResponse) => {
-      setCookie(
-        cookiesStorage.API_AUTH_TOKEN,
-        response.data.body.access_token,
-        {
-          httpOnly: true,
-          expires: new Date(Date.now() + response.data.body.expires_in * 1000),
-          path: '/',
-          sameSite: 'strict',
-          secure: env.NEXT_PUBLIC_NODE_ENV === 'production',
-        }
-      )
+    onSuccess: async (response: AxiosResponse) => {
+      await fetch('/api/set-cookie', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(response.data),
+      })
+
       SuccessToast('Login realizado!', 'Logado com sucesso.')
     },
   })

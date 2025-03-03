@@ -222,11 +222,18 @@ async function main() {
   })
 
   await prisma.userCondominium.createMany({
-    data: residents.map((resident) => ({
-      condominium_id: condominium.id,
-      user_id: resident.id,
-      role_id: residentRole.id,
-    })),
+    data: [
+      ...residents.map((resident) => ({
+        condominium_id: condominium.id,
+        user_id: resident.id,
+        role_id: residentRole.id,
+      })),
+      {
+        condominium_id: condominium.id,
+        user_id: owner.id,
+        role_id: adminRole.id,
+      },
+    ],
   })
 
   await prisma.userUnit.createMany({
@@ -388,7 +395,7 @@ async function main() {
     return {
       id: faker.string.uuid(),
       created_by_user_id: faker.helpers.arrayElement(residents).id,
-      description: faker.lorem.sentence(),
+      description: faker.lorem.paragraphs({ min: 1, max: 3 }),
       related_to_category_id: faker.helpers.arrayElement(forumCategories).id,
       title,
       slug: createSlug(title),

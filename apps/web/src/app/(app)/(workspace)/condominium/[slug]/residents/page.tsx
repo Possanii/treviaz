@@ -12,7 +12,7 @@ import { AppHeader } from '@/components/sidebar/app-header'
 import { useQueryGetresidentsFromCondominiumBySlug } from '@/hooks/react-query/queries/get-residents-from-condominium-by-slug'
 import { queryClient } from '@/lib/query-client'
 
-import { residentsTable } from './residents-table'
+import { ResidentsTable } from './residents-table'
 
 export default async function residentsPages({
   searchParams,
@@ -47,7 +47,7 @@ export default async function residentsPages({
       <section className="p-[--main-content-padding]">
         <HydrationBoundary state={dehydratedState}>
           <React.Suspense fallback={<DataTableSkeleton />}>
-            <residentsTable searchParams={searchParams} />
+            <ResidentsTable searchParams={searchParams} />
           </React.Suspense>
         </HydrationBoundary>
       </section>

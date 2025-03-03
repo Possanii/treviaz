@@ -7,11 +7,10 @@ import {
 } from '@treviaz/ui/components/ui/breadcrumb'
 import React from 'react'
 
+import { ViewUserDetails } from '@/app/(app)/(workspace)/condominium/[slug]/residents/[id]/user-details'
 import { AppHeader } from '@/components/sidebar/app-header'
 import { useQueryGetUserById } from '@/hooks/react-query/queries/user/get-user-by-id'
 import { queryClient } from '@/lib/query-client'
-
-import { ViewUserDetails } from './user-details'
 
 export default async function Page({
   params,

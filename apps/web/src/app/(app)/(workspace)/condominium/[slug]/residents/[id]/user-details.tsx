@@ -72,7 +72,7 @@ export function ViewUserDetails() {
                     </div>
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    {condominium.role}
+                    {condominium.role.name}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Joined on{' '}
