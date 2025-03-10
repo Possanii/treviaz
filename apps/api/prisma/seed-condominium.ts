@@ -53,7 +53,6 @@ async function main() {
       name: condominiumName,
       slug,
       address_id: address.id,
-      owner_id: owner.id,
     },
   })
 
