@@ -22,6 +22,7 @@ model Condominium {
   address    Address           @relation(fields: [address_id], references: [id])
   address_id String            @unique
   photo_url  String?
+  deliveries Delivery[]
   created_at DateTime          @default(now())
   updated_at DateTime          @updatedAt
   users      UserCondominium[]
@@ -75,6 +76,7 @@ model User {
   avatar_url             String?
   created_at             DateTime               @default(now())
   updated_at             DateTime?              @updatedAt
+  deliveries             Delivery[]
   forumPosts             ForumPost[]
   condominiums           UserCondominium[]
   reserves               Reserve[]
@@ -356,6 +358,25 @@ model Invoice {
   residentId String
 
   @@map("invoices")
+}
+
+model Delivery {
+  id String @id @default(uuid())
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+  condominium_id String
+  condominium Condominium @relation(fields: [condominium_id], references: [id])
+  status DeliveryStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("deliveries")
+}
+
+enum DeliveryStatus {
+  PENDING
+  DELIVERED
+  CANCELLED
 }
 
 enum PaymentMethods {
