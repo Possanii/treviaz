@@ -1,4 +1,10 @@
-import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
+import {
+  BookOpen,
+  Bot,
+  PackageCheck,
+  Settings2,
+  SquareTerminal,
+} from 'lucide-react'
 
 import { useAuth } from '@/hooks/use-auth'
 
@@ -72,6 +78,17 @@ export function sidebarData() {
           {
             title: 'Configurações',
             url: `/condominium/${currentCondominium}/threads/settings`,
+          },
+        ],
+      },
+      {
+        title: 'Encomendas',
+        url: `#`,
+        icon: PackageCheck,
+        items: [
+          {
+            title: 'Todas encomendas',
+            url: `/condominium/${currentCondominium}/deliveries`,
           },
         ],
       },
