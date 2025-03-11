@@ -1,16 +1,19 @@
+import z from 'zod'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { GetDeliveriesByCondominiumService } from '@/application/services/delivery/get-deliveries-by-condominium-service'
-import z from 'zod'
 
 const getDeliveriesByCondominiumSchema = z.object({
-  condominium_id: z.string().uuid(),
+  condominiumSlug: z.string(),
 })
 
 export class GetDeliveriesByCondominiumController implements IController {
-  constructor(private getDeliveriesByCondominiumService: GetDeliveriesByCondominiumService) {}
+  constructor(
+    private getDeliveriesByCondominiumService: GetDeliveriesByCondominiumService
+  ) {}
 
   async handle({ params }: IRequest): Promise<IResponse> {
     const result = getDeliveriesByCondominiumSchema.safeParse(params)
@@ -26,7 +29,7 @@ export class GetDeliveriesByCondominiumController implements IController {
     }
 
     const deliveries = await this.getDeliveriesByCondominiumService.execute(
-      result.data.condominium_id
+      result.data.condominiumSlug
     )
 
     return {
@@ -34,4 +37,4 @@ export class GetDeliveriesByCondominiumController implements IController {
       body: { deliveries },
     }
   }
-} 
+}

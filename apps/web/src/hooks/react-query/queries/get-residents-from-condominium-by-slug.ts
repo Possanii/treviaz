@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { IresidentsTable } from '@treviaz/entities/schemas/IresidentsTable'
+import { IResidentsTable } from '@treviaz/entities/src/IResidentsTable'
 
 import { getresidentsFromCondominiumBySlug } from '@/http/condominium/get-residents-from-condominium-by-slug'
 
@@ -10,7 +10,7 @@ export function useQueryGetresidentsFromCondominiumBySlug({
 }) {
   return queryOptions({
     queryKey: ['condominium', 'residents', slug],
-    queryFn: async (): Promise<IresidentsTable> =>
+    queryFn: async (): Promise<IResidentsTable> =>
       await getresidentsFromCondominiumBySlug({ slug }),
     refetchOnMount: false,
   })
