@@ -14,6 +14,7 @@ import app from '../lib/express'
 app.post(
   '/delivery',
   middlewareAdapter(makeAuthenticationMiddleware()),
+  middlewareAdapter(makeAddCurrentUserToMetadataMiddleware()),
   routeAdapter(makeCreateDeliveryController())
 )
 
@@ -34,7 +35,7 @@ app.get(
 
 // Get deliveries by condominium
 app.get(
-  '/delivery/condominium/:condominium_id',
+  '/delivery/condominium/:condominiumSlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetDeliveriesByCondominiumController())
 )
@@ -44,4 +45,4 @@ app.patch(
   '/delivery/:id/status',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateDeliveryStatusController())
-) 
+)

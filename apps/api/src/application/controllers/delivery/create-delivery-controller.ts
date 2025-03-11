@@ -4,7 +4,6 @@ import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { DeliverySchema } from '@/application/schemas/IDelivery'
 import { CreateDeliveryService } from '@/application/services/delivery/create-delivery-service'
-import z from 'zod'
 
 const createDeliverySchema = DeliverySchema.omit({
   id: true,
