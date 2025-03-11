@@ -9,6 +9,10 @@ export class GetDeliveriesByCondominiumService {
           slug: condominiumSlug,
         },
       },
+      include: {
+        condominium: true,
+        user: true,
+      },
     })
 
     return deliveries
