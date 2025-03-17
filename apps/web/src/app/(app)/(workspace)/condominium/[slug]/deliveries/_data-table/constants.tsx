@@ -25,13 +25,17 @@ export const statusColor = {
 
 export function createFilterFields(data: IGetCondominiumDeliveries[]) {
   const statusSet = new Set<string>()
-  const userSet = new Set<string>()
 
   data.forEach((row) => {
     statusSet.add(row.status)
   })
 
   return [
+    {
+      label: 'Morador',
+      value: 'user',
+      type: 'input',
+    },
     {
       label: 'Status',
       value: 'status',
