@@ -1,3 +1,5 @@
+import { condominiumSchema } from '@treviaz/entities/schemas/ICondominium'
+import { userSchema } from '@treviaz/entities/schemas/IUser'
 import { z } from 'zod'
 
 import { api } from '@/lib/api-client'
@@ -16,6 +18,8 @@ export const getCondominiumDeliveriesSchema = z.object({
   status: deliveryStatusSchema,
   createdAt: z.string(),
   updatedAt: z.string(),
+  user: userSchema,
+  condominium: condominiumSchema,
 })
 
 export type IGetCondominiumDeliveries = z.infer<
