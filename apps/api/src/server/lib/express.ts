@@ -20,7 +20,7 @@ const app = express()
 app.use(
   cors({
     origin: ['http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
@@ -36,6 +36,8 @@ app.use((req, res, next) => {
 })
 
 app.use('/packages', packageRouter(packageController))
+
+app.use('/delivery', packageRouter(packageController))
 
 app.get('/wipe-db', async (req, res) => {
   await prisma.forumCategory.deleteMany()
