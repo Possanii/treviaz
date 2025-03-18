@@ -10,6 +10,7 @@ import { Badge } from '@treviaz/ui/components/ui/badge'
 import { formatRelative, isSameDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+import { DropdownUpdateDeliveriesActions } from '@/app/(app)/(workspace)/condominium/[slug]/deliveries/_data-table/_components/dropdown-forum-thread-approve-actions'
 import { isArrayOfDates } from '@/components/data-table/utils'
 import { getNameInitial } from '@/utils/get-name-initials'
 
@@ -104,13 +105,11 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       label: 'Criado em',
     },
   },
-  // {
-  //   header: 'More',
-  //   cell: ({ row }) => {
-  //     return (
-  //       <DropdownForumThreadApproveActions threadSlug={row.original.slug} />
-  //     )
-  //   },
-  //   enableHiding: false,
-  // },
+  {
+    header: 'More',
+    cell: ({ row }) => {
+      return <DropdownUpdateDeliveriesActions deliveryId={row.original.id} />
+    },
+    enableHiding: false,
+  },
 ]
