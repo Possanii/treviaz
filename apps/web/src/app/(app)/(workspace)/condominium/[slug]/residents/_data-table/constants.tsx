@@ -42,7 +42,7 @@ export function createFilterFields(data: ILiverDataTable[]) {
   data.forEach((order) => {
     nameSet.add(order.user.name)
     emailSet.add(order.user.email)
-    roleSet.add(order.role)
+    roleSet.add(order.role.name)
   })
 
   return [

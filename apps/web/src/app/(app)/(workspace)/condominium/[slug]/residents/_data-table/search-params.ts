@@ -1,10 +1,8 @@
-import { roleSchema } from '@treviaz/entities/schemas/IRole'
 import {
   createParser,
   createSearchParamsCache,
   parseAsArrayOf,
   parseAsString,
-  parseAsStringLiteral,
   parseAsTimestamp,
 } from 'nuqs/server'
 
@@ -27,10 +25,7 @@ export const parseAsSort = createParser({
 export const searchParamsParser = {
   name: parseAsString,
   email: parseAsString,
-  role: parseAsArrayOf(
-    parseAsStringLiteral(roleSchema.options),
-    ARRAY_DELIMITER
-  ),
+  role: parseAsArrayOf(parseAsString, ARRAY_DELIMITER),
   joined_at: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
 }
 

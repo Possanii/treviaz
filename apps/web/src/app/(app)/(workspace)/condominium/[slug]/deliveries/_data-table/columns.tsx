@@ -1,16 +1,53 @@
 'use client'
 
 import { type ColumnDef } from '@tanstack/react-table'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@treviaz/ui/components/ui/avatar'
 import { Badge } from '@treviaz/ui/components/ui/badge'
 import { formatRelative, isSameDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+import { DropdownUpdateDeliveriesActions } from '@/app/(app)/(workspace)/condominium/[slug]/deliveries/_data-table/_components/dropdown-forum-thread-approve-actions'
 import { isArrayOfDates } from '@/components/data-table/utils'
+import { getNameInitial } from '@/utils/get-name-initials'
 
 import { statusColor } from './constants'
 import type { ColumnSchema } from './schema'
 
 export const columns: ColumnDef<ColumnSchema>[] = [
+  {
+    accessorKey: 'user',
+    header: 'Morador',
+    cell: ({ row }) => {
+      const rowInfo = row.original
+      return (
+        <div key={rowInfo.user.id} className="flex items-center">
+          <Avatar className="h-9 w-9">
+            <AvatarImage
+              src={rowInfo.user.avatar_url || undefined}
+              alt={rowInfo.user.name}
+            />
+            <AvatarFallback>{getNameInitial(rowInfo.user.name)}</AvatarFallback>
+          </Avatar>
+          <div className="ml-4 space-y-1">
+            <p className="text-sm font-medium leading-none">
+              {rowInfo.user.name}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {rowInfo.user.email}
+            </p>
+          </div>
+        </div>
+      )
+    },
+    accessorFn: (row) => row.user.name,
+    meta: {
+      label: 'Morador',
+    },
+  },
   {
     accessorKey: 'status',
     header: 'Status',
@@ -68,13 +105,11 @@ export const columns: ColumnDef<ColumnSchema>[] = [
       label: 'Criado em',
     },
   },
-  // {
-  //   header: 'More',
-  //   cell: ({ row }) => {
-  //     return (
-  //       <DropdownForumThreadApproveActions threadSlug={row.original.slug} />
-  //     )
-  //   },
-  //   enableHiding: false,
-  // },
+  {
+    header: 'More',
+    cell: ({ row }) => {
+      return <DropdownUpdateDeliveriesActions deliveryId={row.original.id} />
+    },
+    enableHiding: false,
+  },
 ]

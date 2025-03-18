@@ -1,11 +1,12 @@
+import { DeliveryStatus } from '@prisma/client'
+import z from 'zod'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { DeliverySchema } from '@/application/schemas/IDelivery'
 import { UpdateDeliveryStatusService } from '@/application/services/delivery/update-delivery-status-service'
-import { DeliveryStatus } from '@prisma/client'
-import z from 'zod'
 
 const updateDeliveryStatusSchema = z.object({
   id: DeliverySchema.shape.id,
@@ -13,7 +14,9 @@ const updateDeliveryStatusSchema = z.object({
 })
 
 export class UpdateDeliveryStatusController implements IController {
-  constructor(private updateDeliveryStatusService: UpdateDeliveryStatusService) {}
+  constructor(
+    private readonly updateDeliveryStatusService: UpdateDeliveryStatusService
+  ) {}
 
   async handle({ params, body }: IRequest): Promise<IResponse> {
     const result = updateDeliveryStatusSchema.safeParse({
@@ -40,4 +43,4 @@ export class UpdateDeliveryStatusController implements IController {
       body: null,
     }
   }
-} 
+}

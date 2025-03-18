@@ -11,6 +11,8 @@ export const deliveryStatusSchema = z.enum([
   'CANCELLED',
 ])
 
+export type IDeliveryStatus = z.infer<typeof deliveryStatusSchema>
+
 export const getCondominiumDeliveriesSchema = z.object({
   id: z.string().uuid(),
   condominium_id: z.string().uuid(),

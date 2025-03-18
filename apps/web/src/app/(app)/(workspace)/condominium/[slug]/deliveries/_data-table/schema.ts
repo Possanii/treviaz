@@ -15,6 +15,7 @@ export const columnSchema = getCondominiumDeliveriesSchema
 export type ColumnSchema = z.infer<typeof columnSchema>
 
 export const columnFilterSchema = z.object({
+  user: z.string().optional(),
   status: deliveryStatusSchema
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(inviteStatusSchema)

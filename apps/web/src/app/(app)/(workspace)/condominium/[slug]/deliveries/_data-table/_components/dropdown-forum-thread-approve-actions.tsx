@@ -6,75 +6,53 @@ import {
   DropdownMenuPrimitive,
   DropdownMenuTrigger,
 } from '@treviaz/ui/components/ui/dropdown-menu'
-import {
-  ChevronsUpDown,
-  CircleCheck,
-  CircleX,
-  Eye,
-  LucideIcon,
-} from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { ChevronsUpDown, CircleCheck, CircleX, LucideIcon } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { useMutationApproveForumThread } from '@/hooks/react-query/mutations/forum/approve-forum-thread-mutation'
-import { useMutationDenyForumThread } from '@/hooks/react-query/mutations/forum/deny-forum-thread-mutation'
-import { useQueryGetAllForumThreads } from '@/hooks/react-query/queries/forum/get-all-forum-threads'
-import { useQueryGetForumThreadsToApprove } from '@/hooks/react-query/queries/forum/get-forum-threads-to-approve'
+import { useMutationUpdateDelivery } from '@/hooks/react-query/mutations/delivery/approve-delivery-mutation'
+import { useQueryGetCondominiumDeliveries } from '@/hooks/react-query/queries/delivery/get-condominium-deliveries'
 import { queryClient } from '@/lib/query-client'
 
-interface IDropdownForumThreadApproveActionsProps {
+interface IDropdownUpdateDeliveriesActionsProps {
   label: string
   Icon: LucideIcon
   onClick: () => void
 }
 
-export function DropdownForumThreadApproveActions({
-  threadSlug,
+export function DropdownUpdateDeliveriesActions({
+  deliveryId,
 }: {
-  threadSlug: string
+  deliveryId: string
 }) {
   const { slug } = useParams<{ slug: string }>()
-  const router = useRouter()
 
   const {
-    mutateAsync: approveForumThreadMutateAsync,
-    isSuccess: approveForumThreadIsSuccess,
-    isPending: approveForumThreadIsPending,
-  } = useMutationApproveForumThread()
-
-  const {
-    mutateAsync: denyForumThreadMutateAsync,
-    isSuccess: denyForumThreadIsSuccess,
-    isPending: denyForumThreadIsPending,
-  } = useMutationDenyForumThread()
+    mutateAsync: updateDeliveryMutateAsync,
+    isSuccess: updateDeliveryIsSuccess,
+    isPending: updateDeliveryIsPending,
+  } = useMutationUpdateDelivery()
 
   useEffect(() => {
-    if (approveForumThreadIsSuccess || denyForumThreadIsSuccess) {
+    if (updateDeliveryIsSuccess) {
       queryClient.invalidateQueries(
-        useQueryGetForumThreadsToApprove({ condominiumSlug: slug })
-      )
-      queryClient.invalidateQueries(
-        useQueryGetAllForumThreads({ condSlug: slug })
+        useQueryGetCondominiumDeliveries({ condominiumSlug: slug })
       )
     }
-  }, [queryClient, slug, approveForumThreadIsSuccess, denyForumThreadIsSuccess])
+  }, [queryClient, slug, updateDeliveryIsSuccess])
 
-  const data: IDropdownForumThreadApproveActionsProps[] = [
+  const data: IDropdownUpdateDeliveriesActionsProps[] = [
     {
-      label: 'Ver',
-      Icon: Eye,
-      onClick: () =>
-        router.push(`/condominium/${slug}/approvals/${threadSlug}`),
-    },
-    {
-      label: 'Aprovar',
+      label: 'Entregue',
       Icon: CircleCheck,
-      onClick: () => approveForumThreadMutateAsync({ threadSlug }),
+      onClick: () =>
+        updateDeliveryMutateAsync({ deliveryId, status: 'DELIVERED' }),
     },
     {
-      label: 'Reprovar',
+      label: 'Rescusado',
       Icon: CircleX,
-      onClick: () => denyForumThreadMutateAsync({ threadSlug }),
+      onClick: () =>
+        updateDeliveryMutateAsync({ deliveryId, status: 'CANCELLED' }),
     },
   ]
 
@@ -93,7 +71,7 @@ export function DropdownForumThreadApproveActions({
               variant={'ghost'}
               onClick={onClick}
               className="w-full cursor-pointer justify-start"
-              disabled={approveForumThreadIsPending || denyForumThreadIsPending}
+              disabled={updateDeliveryIsPending}
             >
               <div className="flex items-center">
                 <span className="mr-4">

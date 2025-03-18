@@ -3,6 +3,7 @@ import {
   createParser,
   createSearchParamsCache,
   parseAsArrayOf,
+  parseAsString,
   parseAsStringLiteral,
   parseAsTimestamp,
 } from 'nuqs/server'
@@ -24,6 +25,7 @@ export const parseAsSort = createParser({
 })
 
 export const searchParamsParser = {
+  user: parseAsString,
   status: parseAsArrayOf(
     parseAsStringLiteral(inviteStatusSchema.options),
     ARRAY_DELIMITER
