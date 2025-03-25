@@ -37,8 +37,6 @@ app.use((req, res, next) => {
 
 app.use('/packages', packageRouter(packageController))
 
-app.use('/delivery', packageRouter(packageController))
-
 app.get('/wipe-db', async (req, res) => {
   await prisma.forumCategory.deleteMany()
   await prisma.forumThread.deleteMany()

@@ -1,8 +1,10 @@
 'use client'
 
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { Button } from '@treviaz/ui/components/ui/button'
 import { useParams } from 'next/navigation'
 
+import { useModalCreateDelivery } from '@/contexts/create-delivery-modal-context'
 import { useQueryGetCondominiumDeliveries } from '@/hooks/react-query/queries/delivery/get-condominium-deliveries'
 
 import { columns } from './_data-table/columns'
@@ -22,12 +24,17 @@ export function CondominiumDeliveriesTable({
     useQueryGetCondominiumDeliveries({ condominiumSlug: slug })
   )
 
+  const { toggleModal } = useModalCreateDelivery()
+
   const filterFields = createFilterFields(data.deliveries)
 
   const search = searchParamsCache.parse(searchParams)
 
   return (
     <div className="grid gap-6">
+      <Button className="ml-auto max-w-fit" onClick={toggleModal}>
+        Notificar Encomendar
+      </Button>
       <DataTable
         columns={columns}
         data={data.deliveries}
