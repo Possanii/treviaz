@@ -12,7 +12,7 @@ import app from '../lib/express'
 
 // Create a new delivery
 app.post(
-  '/delivery',
+  '/delivery/:slug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   middlewareAdapter(makeAddCurrentUserToMetadataMiddleware()),
   routeAdapter(makeCreateDeliveryController())
