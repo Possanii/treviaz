@@ -1,12 +1,15 @@
 import { api } from '@/lib/api-client'
 
 export type ICreateDeliveryDTO = {
-  condominium_id: string
+  condominiumSlug: string
   unitId: string
 }
 
-export async function createDelivery(body: ICreateDeliveryDTO) {
-  const result = api.post('/delivery', body)
+export async function createDelivery({
+  condominiumSlug,
+  unitId,
+}: ICreateDeliveryDTO) {
+  const result = api.post(`/delivery/${condominiumSlug}`, { unitId })
 
   return result
 }

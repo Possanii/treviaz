@@ -9,7 +9,7 @@ import { useQueryGetCondominiumDeliveries } from '@/hooks/react-query/queries/de
 import { queryClient } from '@/lib/query-client'
 
 export const createDeliverySchema = z.object({
-  condominium_id: z.string().uuid(),
+  condominiumSlug: z.string(),
   unitId: z.string().uuid(),
 })
 
@@ -19,7 +19,7 @@ export function FormCreateDeliveryController({ slug }: { slug: string }) {
   const form = useForm<ICreateDelivery>({
     resolver: zodResolver(createDeliverySchema),
     defaultValues: {
-      condominium_id: '18d00dc9-bd71-40b0-835f-d5091700c0bd',
+      condominiumSlug: slug,
     },
   })
 
