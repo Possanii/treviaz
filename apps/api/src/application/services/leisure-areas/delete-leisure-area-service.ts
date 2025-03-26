@@ -5,5 +5,7 @@ export class DeleteLeisureAreaService {
     const leisureArea = await prisma.leisureArea.delete({
       where: { id },
     })
+
+    return leisureArea
   }
 }
