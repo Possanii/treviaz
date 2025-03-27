@@ -1,4 +1,4 @@
-import { IresidentsTable } from '@treviaz/entities/schemas/IresidentsTable'
+import { IResidentsTable } from '@treviaz/entities/schemas/IResidentsTable'
 
 import { api } from '@/lib/api-client'
 import { formatStringToDate } from '@/utils/format-string-to-date'
@@ -8,7 +8,7 @@ export async function getresidentsFromCondominiumBySlug({
 }: {
   slug: string
 }) {
-  const result = await api.get<{ body: IresidentsTable }>(
+  const result = await api.get<{ body: IResidentsTable }>(
     `/condominium/slug/${slug}/residents`
   )
 

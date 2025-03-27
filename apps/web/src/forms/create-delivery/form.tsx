@@ -1,21 +1,16 @@
+import { useQuery } from '@tanstack/react-query'
 import { ModalFooter } from '@treviaz/ui/components/custom/modal/modal-footer'
+import { SelectUnit } from '@treviaz/ui/components/custom/select-units'
 import {
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@treviaz/ui/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@treviaz/ui/components/ui/form'
-import { Input } from '@treviaz/ui/components/ui/input'
+import { Form } from '@treviaz/ui/components/ui/form'
 
 import { FormCreateDeliveryController } from '@/forms/create-delivery/controller'
+import { useQueryGetUnitsFromCondominium } from '@/hooks/react-query/queries/get-units-from-condominium-by-slug'
 import { getCurrentCondominium } from '@/utils/utils'
 
 export function CreateDeliveryForm() {
@@ -23,6 +18,10 @@ export function CreateDeliveryForm() {
 
   const { form, handleSubmit, createDeliveryIsPending } =
     FormCreateDeliveryController({ slug: slug as string })
+
+  const { data, isPending } = useQuery(
+    useQueryGetUnitsFromCondominium({ slug: slug as string })
+  )
 
   return (
     <Form {...form}>
@@ -33,22 +32,16 @@ export function CreateDeliveryForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          <FormField
-            name="unitId"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Unidade</FormLabel>
-                <FormControl>
-                  <Input placeholder="123" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <ModalFooter className="mt-6" isLoading={createDeliveryIsPending} />
-        </form>
+        {!isPending && (
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <SelectUnit
+              units={data!.units}
+              control={form.control}
+              fieldName="unitId"
+            />
+            <ModalFooter className="mt-6" isLoading={createDeliveryIsPending} />
+          </form>
+        )}
       </CardContent>
     </Form>
   )
