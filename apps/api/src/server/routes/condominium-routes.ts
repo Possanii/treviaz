@@ -4,6 +4,7 @@ import { makeEditCondominiumController } from '@/factories/controllers/condomini
 import { makeGetCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-condominium-by-slug-controller'
 import { makeGetResidentsFromCondominiumBySlugController } from '@/factories/controllers/condominium/make-get-residents-from-condominium-by-slug-controller'
 import { makeGetUserRelationshipCondominiumsController } from '@/factories/controllers/condominium/make-get-user-relationship-condominium-controller'
+import { makeGetUnitsFromCondominiumController } from '@/factories/controllers/unit/make-get-units-from-condominium-controller'
 import { makeAddCurrentUserToMetadataMiddleware } from '@/factories/middleware/make-add-current-user-to-metadata-middleware'
 import { makeAuthenticationMiddleware } from '@/factories/middleware/make-authentication-middleware'
 
@@ -34,4 +35,10 @@ app.get(
   '/condominium/slug/:slug/residents',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetResidentsFromCondominiumBySlugController())
+)
+
+app.get(
+  '/condominium/slug/:slug/units',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetUnitsFromCondominiumController())
 )

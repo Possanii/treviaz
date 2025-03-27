@@ -3,32 +3,25 @@
 import {Check, ChevronsUpDown} from 'lucide-react'
 import {useState} from 'react'
 import {Control, FieldValues, Path} from 'react-hook-form'
-import {IUser} from '@treviaz/entities/schemas/IUser'
-import {IForumCategory} from '@treviaz/entities/schemas/forum/IForumCategory'
 
 import {cn} from '@/lib/utils'
 import {Popover, PopoverContent, PopoverTrigger} from '../ui/popover'
 import {Button} from '../ui/button'
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,} from '../ui/command'
 import {FormControl, FormField, FormItem, FormLabel, FormMessage,} from '../ui/form'
+import {IUnit} from "@treviaz/entities/schemas/IUnit";
 
-interface IGetAllCategoriesFromCondominium
-  extends Array<
-    IForumCategory & { created_by: Pick<IUser, 'id' | 'name' | 'avatar_url'> }
-  > {
-}
-
-interface ISelectForumCategoryProps<TData extends FieldValues> {
-  control: Control<TData>
+interface ISelectUnitProps<TData extends FieldValues> {
   fieldName: Path<TData>
-  categories: IGetAllCategoriesFromCondominium
+  control: Control<TData>
+  units: IUnit[]
 }
 
-export function SelectForumCategory<TData extends FieldValues>({
-                                                                 fieldName,
-                                                                 control,
-                                                                 categories,
-                                                               }: ISelectForumCategoryProps<TData>) {
+export function SelectUnit<TData extends FieldValues>({
+                                                        fieldName,
+                                                        control,
+                                                        units,
+                                                      }: ISelectUnitProps<TData>) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -37,7 +30,7 @@ export function SelectForumCategory<TData extends FieldValues>({
       control={control}
       render={({field}) => (
         <FormItem>
-          <FormLabel>Categoria</FormLabel>
+          <FormLabel>Unidades</FormLabel>
           <FormControl>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -48,35 +41,32 @@ export function SelectForumCategory<TData extends FieldValues>({
                   className="w-full justify-between"
                   defaultValue={field.value}
                 >
-                  {categories.find((category) => category.slug === field.value)
-                    ?.name || 'Selecione a categoria...'}
+                  {field.value ? units.find((unit) => unit.id === field.value)!.number : 'Selecione o unidades...'}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-full p-0">
                 <Command {...field}>
-                  <CommandInput placeholder="Procurar categoria..."/>
+                  <CommandInput placeholder="Procurar cargo..."/>
                   <CommandList>
-                    <CommandEmpty>Nenhuma categoria encontrada.</CommandEmpty>
+                    <CommandEmpty>Nenhuma unidade encontrado.</CommandEmpty>
                     <CommandGroup>
-                      {categories.map((forumcategory, index) => (
+                      {units.map((unit, index) => (
                         <CommandItem
                           key={index}
-                          value={forumcategory.slug}
+                          value={unit.id}
                           defaultValue={field.value}
                           onSelect={() => {
-                            field.onChange(forumcategory.slug)
+                            field.onChange(unit.id)
                           }}
                         >
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              field.value === forumcategory.slug
-                                ? 'opacity-100'
-                                : 'opacity-0'
+                              field.value === unit.id ? 'opacity-100' : 'opacity-0'
                             )}
                           />
-                          {forumcategory.name}
+                          {unit.number}
                         </CommandItem>
                       ))}
                     </CommandGroup>

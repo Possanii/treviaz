@@ -49,7 +49,7 @@ export function DropdownUpdateDeliveriesActions({
         updateDeliveryMutateAsync({ deliveryId, status: 'DELIVERED' }),
     },
     {
-      label: 'Rescusado',
+      label: 'Recusado',
       Icon: CircleX,
       onClick: () =>
         updateDeliveryMutateAsync({ deliveryId, status: 'CANCELLED' }),

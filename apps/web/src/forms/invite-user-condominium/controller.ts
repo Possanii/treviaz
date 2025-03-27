@@ -25,7 +25,7 @@ export function FormInviteUserCondominiumController({
     resolver: zodResolver(inviteUserCondominiumSchema),
     defaultValues: {
       email: '',
-      role: 'RESIDENT',
+      role: '',
     },
   })
 
