@@ -1,6 +1,6 @@
 import { prisma } from "@/application/libs/prisma";
 
-export class GetLeisureAreaByCondominiumService {
+export class GetLeisureAreasByCondominiumService {
   async execute(condominiumId: string) {
     const leisureArea = await prisma.leisureArea.findMany({
       where: { condominiumId },
