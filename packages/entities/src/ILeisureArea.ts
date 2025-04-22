@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const leisureArea = z.object({
+export const leisureAreaSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1, 'Leisure area name is required'),
   description: z.string().optional(),
@@ -8,4 +8,4 @@ export const leisureArea = z.object({
   createdAt: z.date(),
 })
 
-export type ILeisureArea = z.infer<typeof leisureArea>
+export type ILeisureArea = z.infer<typeof leisureAreaSchema>
