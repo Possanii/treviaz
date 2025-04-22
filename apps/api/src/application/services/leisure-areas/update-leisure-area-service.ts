@@ -1,6 +1,6 @@
-import { prisma } from "@/application/libs/prisma";
+import { ILeisureArea } from '@treviaz/entities/schemas/ILeisureArea'
 
-import { ILeisureArea } from "@/application/schemas/ILeisureArea";
+import { prisma } from '@/application/libs/prisma'
 
 export class UpdateLeisureAreaService {
   async execute(id: string, data: Partial<ILeisureArea>) {

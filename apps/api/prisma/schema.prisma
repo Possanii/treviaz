@@ -35,7 +35,7 @@ model Condominium {
 
   forumCategory        ForumCategory[]
   financialTransaction FinancialTransaction[]
-  leisureArea          LeisureArea[]
+  ILeisureArea         LeisureArea[]
 
   @@map("condominiums")
 }
@@ -236,12 +236,12 @@ model LeisureArea {
 }
 
 model Reserve {
-  id           String        @id @default(uuid())
-  reserve_date DateTime
-  start_time   DateTime
-  end_time     DateTime
-  status       ReserveStatus
-  created_at   DateTime      @default(now())
+  id         String        @id @default(uuid())
+  title      String
+  start_date DateTime
+  end_date   DateTime
+  status     ReserveStatus
+  created_at DateTime      @default(now())
 
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
@@ -361,14 +361,14 @@ model Invoice {
 }
 
 model Delivery {
-  id String @id @default(uuid())
-  user_id String
-  user User @relation(fields: [user_id], references: [id])
+  id             String         @id @default(uuid())
+  user_id        String
+  user           User           @relation(fields: [user_id], references: [id])
   condominium_id String
-  condominium Condominium @relation(fields: [condominium_id], references: [id])
-  status DeliveryStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  condominium    Condominium    @relation(fields: [condominium_id], references: [id])
+  status         DeliveryStatus @default(PENDING)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   @@map("deliveries")
 }

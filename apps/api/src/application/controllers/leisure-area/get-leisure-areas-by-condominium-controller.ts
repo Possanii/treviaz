@@ -1,12 +1,13 @@
+import z from 'zod'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { GetLeisureAreasByCondominiumService } from '@/application/services/leisure-areas/get-leisure-areas-by-condominium-service'
-import z from 'zod'
 
 const getLeisureAreasByCondominiumSchema = z.object({
-  condominiumId: z.string().uuid(),
+  condominiumSlug: z.string(),
 })
 
 export class GetLeisureAreasByCondominiumController implements IController {
@@ -22,13 +23,13 @@ export class GetLeisureAreasByCondominiumController implements IController {
 
       throw new UnprocessableEntityError(
         'zod',
-        'Invalid condominium id.',
+        'Invalid condominium slug.',
         errors
       )
     }
 
     const leisureAreas = await this.getLeisureAreasByCondominiumService.execute(
-      result.data.condominiumId
+      result.data.condominiumSlug
     )
 
     return {
@@ -36,4 +37,4 @@ export class GetLeisureAreasByCondominiumController implements IController {
       body: { leisureAreas },
     }
   }
-} 
+}

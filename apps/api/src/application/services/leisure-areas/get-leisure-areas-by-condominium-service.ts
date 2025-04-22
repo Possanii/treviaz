@@ -1,9 +1,13 @@
-import { prisma } from "@/application/libs/prisma";
+import { prisma } from '@/application/libs/prisma'
 
 export class GetLeisureAreasByCondominiumService {
-  async execute(condominiumId: string) {
+  async execute(condominiumSlug: string) {
     const leisureArea = await prisma.leisureArea.findMany({
-      where: { condominiumId },
+      where: {
+        condominium: {
+          slug: condominiumSlug,
+        },
+      },
     })
 
     return leisureArea

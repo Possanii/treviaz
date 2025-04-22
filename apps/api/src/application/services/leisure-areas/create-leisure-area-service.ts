@@ -1,17 +1,25 @@
-import { prisma } from "@/application/libs/prisma";
-import { ILeisureArea } from "@/application/schemas/ILeisureArea";
+import { ILeisureArea } from '@treviaz/entities/schemas/ILeisureArea'
+
+import { prisma } from '@/application/libs/prisma'
+
 export class CreateLeisureAreaService {
-  async execute({ name, description, condominiumId }: ILeisureArea) {
+  async execute({
+    name,
+    description,
+    photo_url: photoUrl,
+    condominiumSlug,
+  }: Omit<ILeisureArea, 'id' | 'createdAt'> & { condominiumSlug: string }) {
     const leisureArea = await prisma.leisureArea.create({
       data: {
         name,
         description,
+        photo_url: photoUrl,
         condominium: {
           connect: {
-            id: condominiumId
-          }
-        }
-      }
+            slug: condominiumSlug,
+          },
+        },
+      },
     })
     return leisureArea
   }

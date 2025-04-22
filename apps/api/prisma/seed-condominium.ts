@@ -52,7 +52,16 @@ async function main() {
     create: {
       name: condominiumName,
       slug,
-      address_id: address.id,
+      address: {
+        connect: {
+          id: address.id,
+        },
+      },
+      owner: {
+        connect: {
+          id: owner.id,
+        },
+      },
     },
   })
 
