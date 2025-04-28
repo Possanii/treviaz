@@ -1,28 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { useEffect } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useCalendarContext } from '../calendar-context'
-import { format } from 'date-fns'
-import { DateTimePicker } from '@/components/form/date-time-picker'
-import { ColorPicker } from '@/components/form/color-picker'
+import { useQuery } from '@tanstack/react-query'
+import { ColorPicker } from '@treviaz/ui/components/custom/color-picker'
+import { DateTimePicker } from '@treviaz/ui/components/custom/date-time-picker'
+import { SelectLeisureArea } from '@treviaz/ui/components/custom/select-leisure-areas'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,11 +13,36 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+} from '@treviaz/ui/components/ui/alert-dialog'
+import { Button } from '@treviaz/ui/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@treviaz/ui/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@treviaz/ui/components/ui/form'
+import { format } from 'date-fns'
+import { useParams } from 'next/navigation'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { useQueryGetLeisureAreasFromCondominium } from '@/hooks/react-query/queries/leisure-area/get-leisure-areas-from-condominium-query'
+
+import { useCalendarContext } from '../calendar-context'
 
 const formSchema = z
   .object({
-    title: z.string().min(1, 'Title is required'),
+    id: z.string().uuid(),
     start: z.string().refine((val) => !isNaN(Date.parse(val)), {
       message: 'Invalid start date',
     }),
@@ -75,7 +80,7 @@ export default function CalendarManageEventDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      id: '',
       start: '',
       end: '',
       color: 'blue',
@@ -85,10 +90,9 @@ export default function CalendarManageEventDialog() {
   useEffect(() => {
     if (selectedEvent) {
       form.reset({
-        title: selectedEvent.title,
-        start: format(selectedEvent.start, "yyyy-MM-dd'T'HH:mm"),
-        end: format(selectedEvent.end, "yyyy-MM-dd'T'HH:mm"),
-        color: selectedEvent.color,
+        id: '',
+        start: format(selectedEvent.start_date, "yyyy-MM-dd'T'HH:mm"),
+        end: format(selectedEvent.end_date, "yyyy-MM-dd'T'HH:mm"),
       })
     }
   }, [selectedEvent, form])
@@ -98,7 +102,7 @@ export default function CalendarManageEventDialog() {
 
     const updatedEvent = {
       ...selectedEvent,
-      title: values.title,
+      id: values.id,
       start: new Date(values.start),
       end: new Date(values.end),
       color: values.color,
@@ -124,6 +128,9 @@ export default function CalendarManageEventDialog() {
     form.reset()
   }
 
+  const { slug } = useParams<{ slug: string }>()
+
+  const { data } = useQuery(useQueryGetLeisureAreasFromCondominium({ slug }))
   return (
     <Dialog open={manageEventDialogOpen} onOpenChange={handleClose}>
       <DialogContent>
@@ -132,18 +139,10 @@ export default function CalendarManageEventDialog() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+            <SelectLeisureArea
               control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Event title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName={'id'}
+              leisureAreas={data?.leisureAreas ?? []}
             />
 
             <FormField

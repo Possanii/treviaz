@@ -1,8 +1,10 @@
-import { CalendarContext } from './calendar-context'
-import { CalendarEvent, Mode } from './calendar-types'
+import { IReserve } from '@treviaz/entities/schemas/IReserve'
 import { useState } from 'react'
-import CalendarNewEventDialog from './dialog/calendar-new-event-dialog'
+
+import { CalendarContext } from './calendar-context'
+import { Mode } from './calendar-types'
 import CalendarManageEventDialog from './dialog/calendar-manage-event-dialog'
+import CalendarNewEventDialog from './dialog/calendar-new-event-dialog'
 
 export default function CalendarProvider({
   events,
@@ -14,8 +16,8 @@ export default function CalendarProvider({
   calendarIconIsToday = true,
   children,
 }: {
-  events: CalendarEvent[]
-  setEvents: (events: CalendarEvent[]) => void
+  events: IReserve[]
+  setEvents: (events: IReserve[]) => void
   mode: Mode
   setMode: (mode: Mode) => void
   date: Date
@@ -25,7 +27,7 @@ export default function CalendarProvider({
 }) {
   const [newEventDialogOpen, setNewEventDialogOpen] = useState(false)
   const [manageEventDialogOpen, setManageEventDialogOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<IReserve | null>(null)
 
   return (
     <CalendarContext.Provider

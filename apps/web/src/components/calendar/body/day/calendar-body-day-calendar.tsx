@@ -1,5 +1,6 @@
+import { Calendar } from '@treviaz/ui/components/ui/calendar'
+
 import { useCalendarContext } from '../../calendar-context'
-import { Calendar } from '@/components/ui/calendar'
 
 export default function CalendarBodyDayCalendar() {
   const { date, setDate } = useCalendarContext()

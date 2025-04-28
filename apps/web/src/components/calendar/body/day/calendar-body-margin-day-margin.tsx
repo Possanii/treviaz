@@ -1,5 +1,5 @@
+import { cn } from '@treviaz/ui/lib/utils'
 import { format } from 'date-fns'
-import { cn } from '@/lib/utils'
 
 export const hours = Array.from({ length: 24 }, (_, i) => i)
 

@@ -1,5 +1,6 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@treviaz/ui/components/ui/button'
 import { Plus } from 'lucide-react'
+
 import { useCalendarContext } from '../../calendar-context'
 
 export default function CalendarHeaderActionsAdd() {

@@ -1,5 +1,5 @@
+import { cn } from '@treviaz/ui/lib/utils'
 import { format, isSameDay } from 'date-fns'
-import { cn } from '../../../lib/utils'
 
 export default function CalendarBodyHeader({
   date,

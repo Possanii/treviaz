@@ -1,15 +1,16 @@
-import { Button } from '@/components/ui/button'
-import { useCalendarContext } from '../../calendar-context'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from '@treviaz/ui/components/ui/button'
 import {
-  format,
   addDays,
   addMonths,
   addWeeks,
+  format,
   subDays,
   subMonths,
   subWeeks,
 } from 'date-fns'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
+import { useCalendarContext } from '../../calendar-context'
 
 export default function CalendarHeaderDateChevrons() {
   const { mode, date, setDate } = useCalendarContext()

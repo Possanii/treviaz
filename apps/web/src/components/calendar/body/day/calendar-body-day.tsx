@@ -1,7 +1,7 @@
-import CalendarBodyDayCalendar from './calendar-body-day-calendar'
-import CalendarBodyDayEvents from './calendar-body-day-events'
 import { useCalendarContext } from '../../calendar-context'
+import CalendarBodyDayCalendar from './calendar-body-day-calendar'
 import CalendarBodyDayContent from './calendar-body-day-content'
+import CalendarBodyDayEvents from './calendar-body-day-events'
 import CalendarBodyMarginDayMargin from './calendar-body-margin-day-margin'
 
 export default function CalendarBodyDay() {

@@ -1,11 +1,15 @@
 'use client'
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Mode, calendarModes } from '../../calendar-types'
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@treviaz/ui/components/ui/toggle-group'
+import { cn } from '@treviaz/ui/lib/utils'
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+
 import { useCalendarContext } from '../../calendar-context'
 import { calendarModeIconMap } from '../../calendar-mode-icon-map'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import { calendarModes, Mode } from '../../calendar-types'
 
 export default function CalendarHeaderActionsMode() {
   const { mode, setMode } = useCalendarContext()
@@ -17,8 +21,8 @@ export default function CalendarHeaderActionsMode() {
         type="single"
         variant="outline"
         value={mode}
-        onValueChange={(value) => {
-          if (value) setMode(value as Mode)
+        onValueChange={(value: Mode) => {
+          if (value) setMode(value)
         }}
       >
         {calendarModes.map((modeValue) => {

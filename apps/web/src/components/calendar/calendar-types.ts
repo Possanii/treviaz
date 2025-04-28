@@ -1,6 +1,11 @@
+import { IReserve } from '@treviaz/entities/schemas/IReserve'
+
+export const calendarModes = ['day', 'week', 'month'] as const
+export type Mode = (typeof calendarModes)[number]
+
 export type CalendarProps = {
-  events: CalendarEvent[]
-  setEvents: (events: CalendarEvent[]) => void
+  events: IReserve[]
+  setEvents: (events: IReserve[]) => void
   mode: Mode
   setMode: (mode: Mode) => void
   date: Date
@@ -13,16 +18,6 @@ export type CalendarContextType = CalendarProps & {
   setNewEventDialogOpen: (open: boolean) => void
   manageEventDialogOpen: boolean
   setManageEventDialogOpen: (open: boolean) => void
-  selectedEvent: CalendarEvent | null
-  setSelectedEvent: (event: CalendarEvent | null) => void
+  selectedEvent: IReserve | null
+  setSelectedEvent: (event: IReserve | null) => void
 }
-export type CalendarEvent = {
-  id: string
-  title: string
-  color: string
-  start: Date
-  end: Date
-}
-
-export const calendarModes = ['day', 'week', 'month'] as const
-export type Mode = (typeof calendarModes)[number]

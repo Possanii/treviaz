@@ -1,12 +1,13 @@
-import { useCalendarContext } from '../../calendar-context'
 import { isSameDay } from 'date-fns'
+
+import { useCalendarContext } from '../../calendar-context'
 
 export default function CalendarBodyDayEvents() {
   const { events, date, setManageEventDialogOpen, setSelectedEvent } =
     useCalendarContext()
-  const dayEvents = events.filter((event) => isSameDay(event.start, date))
+  const dayEvents = events.filter((event) => isSameDay(event.start_date, date))
 
-  return !!dayEvents.length ? (
+  return dayEvents.length ? (
     <div className="flex flex-col gap-2">
       <p className="font-medium p-2 pb-0 font-heading">Events</p>
       <div className="flex flex-col gap-2">
@@ -20,7 +21,7 @@ export default function CalendarBodyDayEvents() {
             }}
           >
             <div className="flex items-center gap-2">
-              <div className={`size-2 rounded-full bg-${event.color}-500`} />
+              <div className={`size-2 rounded-full`} />
               <p className="text-muted-foreground text-sm font-medium">
                 {event.title}
               </p>

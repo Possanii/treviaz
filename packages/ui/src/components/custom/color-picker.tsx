@@ -1,7 +1,6 @@
-import * as React from 'react'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { cn } from '@/lib/utils'
-import { colorOptions } from '../calendar/calendar-tailwind-classes'
+import {cn} from '@/lib/utils'
+import {RadioGroup, RadioGroupItem} from '../ui/radio-group'
+import {colorOptions} from "@/components/custom/calendar-tailwind-classes.ts";
 
 interface ColorPickerProps {
   field: {
@@ -10,7 +9,7 @@ interface ColorPickerProps {
   }
 }
 
-export function ColorPicker({ field }: ColorPickerProps) {
+export function ColorPicker({field}: ColorPickerProps) {
   return (
     <RadioGroup
       onValueChange={field.onChange}

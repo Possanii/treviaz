@@ -1,12 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useQuery } from '@tanstack/react-query'
+import { ColorPicker } from '@treviaz/ui/components/custom/color-picker'
+import { DateTimePicker } from '@treviaz/ui/components/custom/date-time-picker'
+import { SelectLeisureArea } from '@treviaz/ui/components/custom/select-leisure-areas'
+import { Button } from '@treviaz/ui/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '@treviaz/ui/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -14,17 +17,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useCalendarContext } from '../calendar-context'
+} from '@treviaz/ui/components/ui/form'
 import { format } from 'date-fns'
-import { DateTimePicker } from '@/components/form/date-time-picker'
-import { ColorPicker } from '@/components/form/color-picker'
+import { useParams } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { useMutationCreateReserve } from '@/hooks/react-query/mutations/reserve/create-reserve-mutation'
+import { useQueryGetLeisureAreasFromCondominium } from '@/hooks/react-query/queries/leisure-area/get-leisure-areas-from-condominium-query'
+import { useQueryGetReservesFromCondominium } from '@/hooks/react-query/queries/reserves/get-reserves-from-condominium-query'
+import { queryClient } from '@/lib/query-client'
+
+import { useCalendarContext } from '../calendar-context'
 
 const formSchema = z
   .object({
-    title: z.string().min(1, 'Title is required'),
+    id: z.string().uuid(),
     start: z.string().datetime(),
     end: z.string().datetime(),
     color: z.string(),
@@ -42,32 +50,39 @@ const formSchema = z
   )
 
 export default function CalendarNewEventDialog() {
-  const { newEventDialogOpen, setNewEventDialogOpen, date, events, setEvents } =
+  const { newEventDialogOpen, setNewEventDialogOpen, date } =
     useCalendarContext()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      id: '',
       start: format(date, "yyyy-MM-dd'T'HH:mm"),
       end: format(date, "yyyy-MM-dd'T'HH:mm"),
       color: 'blue',
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const newEvent = {
-      id: crypto.randomUUID(),
-      title: values.title,
-      start: new Date(values.start),
-      end: new Date(values.end),
-      color: values.color,
-    }
+  const { mutateAsync } = useMutationCreateReserve()
 
-    setEvents([...events, newEvent])
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await mutateAsync({
+      body: {
+        start_date: new Date(values.start),
+        end_date: new Date(values.end),
+      },
+      leisureAreaId: { id: values.id },
+    })
+    await queryClient.invalidateQueries(
+      useQueryGetReservesFromCondominium({ slug })
+    )
     setNewEventDialogOpen(false)
     form.reset()
   }
+
+  const { slug } = useParams<{ slug: string }>()
+
+  const { data } = useQuery(useQueryGetLeisureAreasFromCondominium({ slug }))
 
   return (
     <Dialog open={newEventDialogOpen} onOpenChange={setNewEventDialogOpen}>
@@ -77,18 +92,10 @@ export default function CalendarNewEventDialog() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+            <SelectLeisureArea
               control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Event title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName={'id'}
+              leisureAreas={data?.leisureAreas ?? []}
             />
 
             <FormField

@@ -1,18 +1,19 @@
-import { useCalendarContext } from '../../calendar-context'
+import { cn } from '@treviaz/ui/lib/utils'
 import {
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
   eachDayOfInterval,
-  isSameMonth,
-  isSameDay,
+  endOfMonth,
+  endOfWeek,
   format,
+  isSameDay,
+  isSameMonth,
   isWithinInterval,
+  startOfMonth,
+  startOfWeek,
 } from 'date-fns'
-import { cn } from '@/lib/utils'
-import CalendarEvent from '../../calendar-event'
 import { AnimatePresence, motion } from 'framer-motion'
+
+import { useCalendarContext } from '../../calendar-context'
+import CalendarEvent from '../../calendar-event'
 
 export default function CalendarBodyMonth() {
   const { date, events, setDate, setMode } = useCalendarContext()
@@ -38,11 +39,14 @@ export default function CalendarBodyMonth() {
   // Filter events to only show those within the current month view
   const visibleEvents = events.filter(
     (event) =>
-      isWithinInterval(event.start, {
+      isWithinInterval(event.start_date, {
         start: calendarStart,
         end: calendarEnd,
       }) ||
-      isWithinInterval(event.end, { start: calendarStart, end: calendarEnd })
+      isWithinInterval(event.end_date, {
+        start: calendarStart,
+        end: calendarEnd,
+      })
   )
 
   return (
@@ -72,7 +76,7 @@ export default function CalendarBodyMonth() {
         >
           {calendarDays.map((day) => {
             const dayEvents = visibleEvents.filter((event) =>
-              isSameDay(event.start, day)
+              isSameDay(event.start_date, day)
             )
             const isToday = isSameDay(day, today)
             const isCurrentMonth = isSameMonth(day, date)
