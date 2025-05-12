@@ -16,6 +16,8 @@ export type CalendarProps = {
 export type CalendarContextType = CalendarProps & {
   newEventDialogOpen: boolean
   setNewEventDialogOpen: (open: boolean) => void
+  newLeisureAreaDialogOpen: boolean
+  setNewLeisureAreaDialogOpen: (open: boolean) => void
   manageEventDialogOpen: boolean
   setManageEventDialogOpen: (open: boolean) => void
   selectedEvent: IReserve | null

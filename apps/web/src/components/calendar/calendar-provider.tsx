@@ -1,6 +1,8 @@
 import { IReserve } from '@treviaz/entities/schemas/IReserve'
 import { useState } from 'react'
 
+import CalendarNewLeisureAreaDialog from '@/components/calendar/dialog/calendar-new-leisure-area-dialog'
+
 import { CalendarContext } from './calendar-context'
 import { Mode } from './calendar-types'
 import CalendarManageEventDialog from './dialog/calendar-manage-event-dialog'
@@ -26,6 +28,8 @@ export default function CalendarProvider({
   children: React.ReactNode
 }) {
   const [newEventDialogOpen, setNewEventDialogOpen] = useState(false)
+  const [newLeisureAreaDialogOpen, setNewLeisureAreaDialogOpen] =
+    useState(false)
   const [manageEventDialogOpen, setManageEventDialogOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<IReserve | null>(null)
 
@@ -41,6 +45,8 @@ export default function CalendarProvider({
         calendarIconIsToday,
         newEventDialogOpen,
         setNewEventDialogOpen,
+        newLeisureAreaDialogOpen,
+        setNewLeisureAreaDialogOpen,
         manageEventDialogOpen,
         setManageEventDialogOpen,
         selectedEvent,
@@ -48,6 +54,7 @@ export default function CalendarProvider({
       }}
     >
       <CalendarNewEventDialog />
+      <CalendarNewLeisureAreaDialog />
       <CalendarManageEventDialog />
       {children}
     </CalendarContext.Provider>

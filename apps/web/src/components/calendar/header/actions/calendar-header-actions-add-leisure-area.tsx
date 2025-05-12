@@ -3,15 +3,15 @@ import { Plus } from 'lucide-react'
 
 import { useCalendarContext } from '../../calendar-context'
 
-export default function CalendarHeaderActionsAdd() {
-  const { setNewEventDialogOpen } = useCalendarContext()
+export default function CalendarHeaderActionsAddLeisureArea() {
+  const { setNewLeisureAreaDialogOpen } = useCalendarContext()
   return (
     <Button
       className="flex items-center gap-1 bg-primary text-background"
-      onClick={() => setNewEventDialogOpen(true)}
+      onClick={() => setNewLeisureAreaDialogOpen(true)}
     >
       <Plus />
-      Criar Reserva
+      Adicionar Área de Lazer
     </Button>
   )
 }

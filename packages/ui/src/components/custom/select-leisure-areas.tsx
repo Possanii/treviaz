@@ -41,7 +41,7 @@ export function SelectLeisureArea<TData extends FieldValues>({
                   className="w-full justify-between"
                   defaultValue={field.value}
                 >
-                  {field.value ? leisureAreas.find((leisureArea) => leisureArea.id === field.value)!.name : 'Selecione a áreas de lazer...'}
+                  {field.value ? leisureAreas.find((leisureArea) => leisureArea.id === field.value)?.name : 'Selecione a áreas de lazer...'}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                 </Button>
               </PopoverTrigger>

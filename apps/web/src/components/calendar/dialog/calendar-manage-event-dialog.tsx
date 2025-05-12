@@ -89,8 +89,9 @@ export default function CalendarManageEventDialog() {
 
   useEffect(() => {
     if (selectedEvent) {
+      console.log(selectedEvent)
       form.reset({
-        id: '',
+        id: selectedEvent.id,
         start: format(selectedEvent.start_date, "yyyy-MM-dd'T'HH:mm"),
         end: format(selectedEvent.end_date, "yyyy-MM-dd'T'HH:mm"),
       })
@@ -131,89 +132,92 @@ export default function CalendarManageEventDialog() {
   const { slug } = useParams<{ slug: string }>()
 
   const { data } = useQuery(useQueryGetLeisureAreasFromCondominium({ slug }))
+
   return (
     <Dialog open={manageEventDialogOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Manage event</DialogTitle>
+          <DialogTitle>Editar Reserva</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <SelectLeisureArea
-              control={form.control}
-              fieldName={'id'}
-              leisureAreas={data?.leisureAreas ?? []}
-            />
+        {data && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <SelectLeisureArea
+                control={form.control}
+                fieldName={'id'}
+                leisureAreas={data.leisureAreas ?? []}
+              />
 
-            <FormField
-              control={form.control}
-              name="start"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">Start</FormLabel>
-                  <FormControl>
-                    <DateTimePicker field={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="start"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">Start</FormLabel>
+                    <FormControl>
+                      <DateTimePicker field={field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="end"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">End</FormLabel>
-                  <FormControl>
-                    <DateTimePicker field={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="end"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">End</FormLabel>
+                    <FormControl>
+                      <DateTimePicker field={field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">Color</FormLabel>
-                  <FormControl>
-                    <ColorPicker field={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="color"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">Color</FormLabel>
+                    <FormControl>
+                      <ColorPicker field={field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <DialogFooter className="flex justify-between gap-2">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" type="button">
-                    Delete
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete event</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to delete this event? This action
-                      cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              <Button type="submit">Update event</Button>
-            </DialogFooter>
-          </form>
-        </Form>
+              <DialogFooter className="flex justify-between gap-2">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" type="button">
+                      Cancelar
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Cancelar reserva</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Tem certeza que deseja deletar a reserva? Essa ação é
+                        definitiva
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDelete}>
+                        Cancelar
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <Button type="submit">Atualizar reserva</Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   )
