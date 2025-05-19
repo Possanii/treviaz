@@ -10,14 +10,14 @@ import app from '../lib/express'
 
 // Create a new leisure area
 app.post(
-  '/leisure-area',
+  '/leisure-area/condominium/:condominiumSlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateLeisureAreaController())
 )
 
 // Get leisure areas by condominium
 app.get(
-  '/leisure-area/condominium/:condominiumId',
+  '/leisure-area/condominium/:condominiumSlug',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetLeisureAreasByCondominiumController())
 )
@@ -34,4 +34,4 @@ app.delete(
   '/leisure-area/:id',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteLeisureAreaController())
-) 
+)

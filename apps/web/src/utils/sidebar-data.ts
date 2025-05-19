@@ -1,6 +1,7 @@
 import {
   BookOpen,
   Bot,
+  HouseIcon,
   PackageCheck,
   Settings2,
   SquareTerminal,
@@ -89,6 +90,17 @@ export function sidebarData() {
           {
             title: 'Todas encomendas',
             url: `/condominium/${currentCondominium}/deliveries`,
+          },
+        ],
+      },
+      {
+        title: 'Áreas comum',
+        url: `#`,
+        icon: HouseIcon,
+        items: [
+          {
+            title: 'Reservas',
+            url: `/condominium/${currentCondominium}/leisure-area`,
           },
         ],
       },

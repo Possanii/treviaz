@@ -1,8 +1,9 @@
+import { leisureAreaSchema } from '@treviaz/entities/schemas/ILeisureArea'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { leisureAreaSchema } from '@/application/schemas/ILeisureArea'
 import { UpdateLeisureAreaService } from '@/application/services/leisure-areas/update-leisure-area-service'
 
 const updateLeisureAreaSchema = leisureAreaSchema.pick({
@@ -34,4 +35,4 @@ export class UpdateLeisureAreaController implements IController {
       body: null,
     }
   }
-} 
+}
