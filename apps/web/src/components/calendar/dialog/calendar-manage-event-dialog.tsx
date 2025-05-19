@@ -89,7 +89,6 @@ export default function CalendarManageEventDialog() {
 
   useEffect(() => {
     if (selectedEvent) {
-      console.log(selectedEvent)
       form.reset({
         id: selectedEvent.id,
         start: format(selectedEvent.start_date, "yyyy-MM-dd'T'HH:mm"),
