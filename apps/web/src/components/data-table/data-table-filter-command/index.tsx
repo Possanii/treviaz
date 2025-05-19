@@ -135,7 +135,7 @@ export function DataTableFilterCommand<TData, TSchema extends z.AnyZodObject>({
           {inputValue.trim() ? (
             <span className="text-foreground">{inputValue}</span>
           ) : (
-            <span>Search data table...</span>
+            <span>Procurar na tabela...</span>
           )}
         </span>
         <Kbd className="ml-auto text-muted-foreground group-hover:text-accent-foreground">
@@ -324,7 +324,7 @@ export function DataTableFilterCommand<TData, TSchema extends z.AnyZodObject>({
                     )
                   })}
               </CommandGroup>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
             </CommandList>
             <div
               className="flex flex-wrap justify-between gap-3 border-t bg-accent/50 px-2 py-1.5 text-sm text-accent-foreground"
@@ -333,13 +333,13 @@ export function DataTableFilterCommand<TData, TSchema extends z.AnyZodObject>({
               <div className="flex flex-wrap gap-3">
                 <span>
                   Use <Kbd variant="outline">↑</Kbd>{' '}
-                  <Kbd variant="outline">↓</Kbd> to navigate
+                  <Kbd variant="outline">↓</Kbd> para navegar
                 </span>
                 <span>
-                  <Kbd variant="outline">Enter</Kbd> to query
+                  <Kbd variant="outline">Enter</Kbd> para buscar
                 </span>
                 <span>
-                  <Kbd variant="outline">Esc</Kbd> to close
+                  <Kbd variant="outline">Esc</Kbd> Para fechar
                 </span>
                 <Separator orientation="vertical" className="my-auto h-3" />
                 <span>
@@ -359,7 +359,7 @@ export function DataTableFilterCommand<TData, TSchema extends z.AnyZodObject>({
                   }}
                   onClick={() => setLastSearches([])}
                 >
-                  Clear suggestions
+                  Limpar sugestões
                 </button>
               ) : null}
             </div>

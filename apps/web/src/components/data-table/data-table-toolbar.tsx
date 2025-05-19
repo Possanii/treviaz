@@ -51,18 +51,18 @@ export function DataTableToolbar<TData>({
               >
                 {controlsOpen ? (
                   <>
-                    <PanelLeftClose className="mr-2 h-4 w-4" /> Hide Controls
+                    <PanelLeftClose className="mr-2 h-4 w-4" /> Esconder filtros
                   </>
                 ) : (
                   <>
-                    <PanelLeftOpen className="mr-2 h-4 w-4" /> Show Controls
+                    <PanelLeftOpen className="mr-2 h-4 w-4" /> Mostrar filtros
                   </>
                 )}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
               <p>
-                Toggle controls with{' '}
+                Abrir filtros com{' '}
                 <Kbd className="ml-1 text-muted-foreground group-hover:text-accent-foreground">
                   <span className="mr-0.5">⌘</span>
                   <span>B</span>
@@ -84,7 +84,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
           >
             <X className="mr-2 h-4 w-4" />
-            Reset
+            Resetar
           </Button>
         ) : null}
         <DataTableViewOptions table={table} />

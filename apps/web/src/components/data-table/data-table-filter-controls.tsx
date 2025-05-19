@@ -45,7 +45,7 @@ export function DataTableFilterControls<TData, TValue>({
               onClick={() => table.resetColumnFilters()}
             >
               <X className="mr-2 h-4 w-4" />
-              Reset
+              Resetar
             </Button>
           ) : null}
         </div>

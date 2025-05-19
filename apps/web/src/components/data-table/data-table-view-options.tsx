@@ -39,14 +39,14 @@ export function DataTableViewOptions<TData>({
           className="h-9 w-9"
         >
           <Settings2 className="h-4 w-4" />
-          <span className="sr-only">View</span>
+          <span className="sr-only">Ver</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent side="bottom" align="end" className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search options..." />
+          <CommandInput placeholder="Procurar..." />
           <CommandList>
-            <CommandEmpty>No option found.</CommandEmpty>
+            <CommandEmpty>Nenhum opção encontrada.</CommandEmpty>
             <CommandGroup>
               {table
                 .getAllColumns()

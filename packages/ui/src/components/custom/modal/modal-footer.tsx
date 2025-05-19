@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { DialogClose, DialogFooter } from '@/components/ui/dialog'
-import { cn } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
+import {Button} from '@/components/ui/button'
+import {DialogClose, DialogFooter} from '@/components/ui/dialog'
+import {cn} from '@/lib/utils'
+import {Loader2} from 'lucide-react'
 
 interface IModalFooter extends React.HTMLAttributes<HTMLDivElement> {
   buttonLabel?: string
@@ -12,17 +12,17 @@ interface IModalFooter extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function ModalFooter({
-  buttonLabel = 'Salvar',
-  action,
-  isLoading,
-  className,
-  ...props
-}: IModalFooter) {
+                              buttonLabel = 'Salvar',
+                              action,
+                              isLoading,
+                              className,
+                              ...props
+                            }: IModalFooter) {
   return (
     <DialogFooter className={cn('sm:justify-end', className)} {...props}>
       <DialogClose asChild>
         <Button type="button" variant="secondary" className="w-24">
-          Close
+          Fechar
         </Button>
       </DialogClose>
       {action || (
@@ -32,7 +32,7 @@ export function ModalFooter({
           disabled={isLoading}
         >
           {isLoading ? (
-            <Loader2 className="animate-spin size-4" />
+            <Loader2 className="animate-spin size-4"/>
           ) : (
             buttonLabel
           )}

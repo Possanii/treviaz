@@ -99,7 +99,7 @@ export function DataTableFilterCheckbox<TData>({
                     onClick={() => column?.setFilterValue([option.value])}
                     className="absolute inset-y-0 right-0 hidden font-normal text-muted-foreground backdrop-blur-sm hover:text-foreground group-hover:block"
                   >
-                    <span className="px-2">only</span>
+                    <span className="px-2">Somente</span>
                   </button>
                 </Label>
               </div>
