@@ -38,11 +38,11 @@ export class CreateForumPostController implements IController {
 
     const post = result.data
 
-    const { uid } = metadata!.user!
+    const { id } = metadata!.user!
 
     await this.createForumPostService.execute({
       ...post,
-      id: uid,
+      id,
     })
     return {
       statusCode: 201,

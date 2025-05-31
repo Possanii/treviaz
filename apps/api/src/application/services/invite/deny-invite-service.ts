@@ -1,9 +1,13 @@
+import { IRoleEnum } from '@treviaz/entities/schemas/IRole'
+
+import { BadRequestError } from '@/application/errors/bad-request-error'
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
+
 import { prisma } from '../../libs/prisma'
 import { IInvite } from '../../schemas/IInvite'
 
 export class DenyInviteService {
-  async execute(token: string): Promise<IInvite> {
+  async execute(token: string): Promise<Omit<IInvite, 'author_id'>> {
     const invite = await prisma.invite.findFirst({
       where: { token, status: 'PENDING' },
     })
@@ -22,6 +26,14 @@ export class DenyInviteService {
       },
     })
 
+    const role = await prisma.role.findUnique({
+      where: { id: deniedInvite.role_id },
+    })
+
+    if (!role) {
+      throw new BadRequestError('role', 'Role not found')
+    }
+
     return {
       id: deniedInvite.id,
       email: deniedInvite.email,
@@ -30,7 +42,7 @@ export class DenyInviteService {
       sent_at: deniedInvite.sent_at,
       expires_at: deniedInvite.expires_at,
       condominium_id: deniedInvite.condominium_id,
-      role: deniedInvite.role,
+      role: role.name as IRoleEnum,
     }
   }
 }

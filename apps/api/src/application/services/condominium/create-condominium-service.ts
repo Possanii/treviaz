@@ -37,22 +37,24 @@ export class CreateCondominiumService {
     }
 
     await prisma.$transaction(async (tx) => {
+      const address = await tx.address.create({
+        data: {
+          street: data.address.street,
+          number: data.address.number,
+          neighborhood: data.address.neighborhood,
+          city: data.address.city,
+          state: data.address.state,
+          zip_code: data.address.zip_code,
+          country: data.address.country,
+        },
+      })
+
       const condominium = await tx.condominium.create({
         data: {
           name: data.name,
           slug: createSlug(data.name),
-          address: {
-            create: {
-              street: data.address.street,
-              number: data.address.number,
-              complement: data.address.complement,
-              neighborhood: data.address.neighborhood,
-              city: data.address.city,
-              state: data.address.state,
-              country: data.address.country,
-              zip_code: data.address.zip_code,
-            },
-          },
+          owner_id: data.owner_id,
+          address_id: address.id,
           photo_url: data.photo_url,
           // Remove owner connection
         },

@@ -1,7 +1,9 @@
 import { ICondominium } from '@treviaz/entities/schemas/ICondominium'
 import { IInvite } from '@treviaz/entities/schemas/IInvite'
+import { IRoleEnum } from '@treviaz/entities/schemas/IRole'
 import { IUser } from '@treviaz/entities/schemas/IUser'
 
+import { BadRequestError } from '@/application/errors/bad-request-error'
 import { NotFoundError } from '@/application/errors/not-found-error'
 
 import { prisma } from '../../libs/prisma'
@@ -49,6 +51,14 @@ export class GetInviteByTokenService {
       throw new NotFoundError('invite', 'Invite has expired')
     }
 
-    return { invite }
+    const role = await prisma.role.findUnique({
+      where: { id: invite.role.id },
+    })
+
+    if (!role) {
+      throw new BadRequestError('role', 'Role not found')
+    }
+
+    return { invite: { ...invite, role: role.name as IRoleEnum } }
   }
 }

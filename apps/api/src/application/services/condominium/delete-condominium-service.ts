@@ -1,6 +1,6 @@
 import { NotFoundError } from '@/application/errors/not-found-error'
+
 import { prisma } from '../../libs/prisma'
-import { ICondominium } from '../../schemas/ICondominium'
 
 export class DeleteCondominiumService {
   async execute(id: string): Promise<void> {

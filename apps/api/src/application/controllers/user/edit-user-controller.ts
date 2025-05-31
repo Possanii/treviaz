@@ -3,10 +3,9 @@ import z from 'zod'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { EditUserService } from '@/application/services/user/edit-user-service'
-
 import { userSchema } from '@/application/schemas/IUser'
 import { userCondominiumSchema } from '@/application/schemas/IUserCondominium'
+import { EditUserService } from '@/application/services/user/edit-user-service'
 
 const editUserSchema = userSchema.omit({ id: true }).extend({
   password: z

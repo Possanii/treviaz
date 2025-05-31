@@ -40,6 +40,14 @@ export class CreateInviteService {
     const now = new Date()
     const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000) // 24 horas
 
+    const roleInfo = await prisma.role.findFirst({
+      where: { name: role },
+    })
+
+    if (!roleInfo) {
+      throw new BadRequestError('role', 'Role not found.')
+    }
+
     await prisma.invite.create({
       data: {
         email,
@@ -49,7 +57,7 @@ export class CreateInviteService {
         expires_at: expiresAt,
         condominium_id: condominium.id,
         authorId: author_id,
-        role,
+        role_id: roleInfo.id,
       },
     })
 

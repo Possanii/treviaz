@@ -1,6 +1,6 @@
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
+
 import { prisma } from '../../libs/prisma'
-import { IInvite } from '../../schemas/IInvite'
 
 export class DeleteInviteService {
   async execute(id: string): Promise<void> {

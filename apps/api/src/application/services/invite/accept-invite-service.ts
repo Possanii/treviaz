@@ -1,5 +1,7 @@
 import { IInvite } from '@treviaz/entities/schemas/IInvite'
+import { IRoleEnum } from '@treviaz/entities/schemas/IRole'
 
+import { BadRequestError } from '@/application/errors/bad-request-error'
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 
 import { prisma } from '../../libs/prisma'
@@ -29,6 +31,14 @@ export class AcceptInviteService {
       },
     })
 
-    return invite
+    const role = await prisma.role.findUnique({
+      where: { id: invite.role_id },
+    })
+
+    if (!role) {
+      throw new BadRequestError('role', 'Role not found')
+    }
+
+    return { ...invite, role: role.name as IRoleEnum }
   }
 }

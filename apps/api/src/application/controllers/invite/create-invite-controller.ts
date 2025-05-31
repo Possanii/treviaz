@@ -1,4 +1,4 @@
-import { roleSchema } from '@treviaz/entities/schemas/IRole'
+import { roleEnum } from '@treviaz/entities/schemas/IRole'
 import z from 'zod'
 
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
@@ -11,7 +11,7 @@ import { SendCreateInviteMailService } from '@/application/services/mail/send-cr
 const createInviteSchema = z.object({
   email: z.string().email(),
   slug: z.string(),
-  role: roleSchema,
+  role: roleEnum,
 })
 
 export class CreateInviteController implements IController {
@@ -28,14 +28,14 @@ export class CreateInviteController implements IController {
       throw new UnprocessableEntityError('zod', 'Invalid invite data.', errors)
     }
 
-    const { uid } = metadata!.user!
+    const { id } = metadata!.user!
     const { email, slug, role } = result.data
 
     const { token } = await this.createInviteService.execute({
       email,
       role,
       condominiumSlug: slug,
-      author_id: uid,
+      author_id: id,
     })
 
     this.sendCreateInviteMailService.execute({ token, emails: [email] })

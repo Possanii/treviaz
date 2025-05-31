@@ -1,17 +1,19 @@
+/* eslint-disable camelcase */
+import { roleEnum } from '@treviaz/entities/schemas/IRole'
+import z from 'zod'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { EditInviteService } from '@/application/services/invite/edit-invite-service'
-import { Role } from '@prisma/client'
-import z from 'zod'
 
 const editInviteSchema = z.object({
   id: z.string(),
   status: z.enum(['PENDING', 'ACCEPTED', 'DENIED', 'REVOKED']),
   expires_at: z.string().optional(),
   condominium_id: z.string().optional(),
-  role: z.nativeEnum(Role).optional(),
+  role: roleEnum.optional(),
 })
 
 export class EditInviteController implements IController {

@@ -1,4 +1,4 @@
-import { prisma } from "@/application/libs/prisma";
+import { prisma } from '@/application/libs/prisma'
 
 export class DeleteLeisureAreaService {
   async execute(id: string) {

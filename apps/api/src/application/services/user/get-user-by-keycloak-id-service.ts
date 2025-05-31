@@ -1,5 +1,5 @@
-import { prisma } from '@/application/libs/prisma'
 import { NotFoundError } from '@/application/errors/not-found-error'
+import { prisma } from '@/application/libs/prisma'
 
 export class GetUserByKeycloakIdService {
   async execute(keycloakId: string) {

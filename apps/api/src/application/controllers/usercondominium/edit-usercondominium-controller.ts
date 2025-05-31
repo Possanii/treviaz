@@ -1,8 +1,8 @@
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { EditUserCondominiumService } from '@/application/services/usercondominium/edit-usercondominium-service'
 import { userCondominiumSchema } from '@/application/schemas/IUserCondominium'
+import { EditUserCondominiumService } from '@/application/services/usercondominium/edit-usercondominium-service'
 
 export class EditUserCondominiumController implements IController {
   constructor(private editUserCondominiumService: EditUserCondominiumService) {}

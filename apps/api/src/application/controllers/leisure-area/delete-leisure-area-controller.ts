@@ -1,9 +1,10 @@
+import z from 'zod'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { DeleteLeisureAreaService } from '@/application/services/leisure-areas/delete-leisure-area-service'
-import z from 'zod'
 
 const deleteLeisureAreaSchema = z.object({
   id: z.string().uuid(),
@@ -32,4 +33,4 @@ export class DeleteLeisureAreaController implements IController {
       body: null,
     }
   }
-} 
+}

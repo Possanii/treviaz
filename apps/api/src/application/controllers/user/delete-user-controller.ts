@@ -1,8 +1,9 @@
+import z from 'zod'
+
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
 import { DeleteUserService } from '@/application/services/user/delete-user-service'
-import z from 'zod'
 
 const deleteUserSchema = z.object({
   id: z.string().uuid(),

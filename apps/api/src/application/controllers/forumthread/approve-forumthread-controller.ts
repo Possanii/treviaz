@@ -24,11 +24,11 @@ export class ApproveForumThreadController implements IController {
 
     const { slug } = result.data
 
-    const { uid } = metadata!.user!
+    const { id } = metadata!.user!
 
     await this.approveForumThreadService.execute({
       slug,
-      id: uid,
+      id,
     })
     return {
       statusCode: 204,
