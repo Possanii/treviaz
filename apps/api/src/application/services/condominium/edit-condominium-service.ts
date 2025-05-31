@@ -1,7 +1,9 @@
+/* eslint-disable camelcase */
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
+
 import { prisma } from '../../libs/prisma'
-import { ICondominium } from '../../schemas/ICondominium'
 import { IAddress } from '../../schemas/IAddress'
+import { ICondominium } from '../../schemas/ICondominium'
 
 export class EditCondominiumService {
   async execute(
@@ -21,7 +23,7 @@ export class EditCondominiumService {
 
     const { address, owner_id, ...condominiumData } = data
 
-    let updateData: any = {
+    const updateData: any = {
       ...condominiumData,
       updated_at: new Date(),
     }

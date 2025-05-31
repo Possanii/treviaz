@@ -1,8 +1,18 @@
 import { z } from 'zod'
 
+export const roleEnum = z.enum([
+  'RESIDENT',
+  'ADMIN',
+  'SYNDIC',
+  'BILLING',
+  'SERVICES',
+])
+
+export type IRoleEnum = z.infer<typeof roleEnum>
+
 export const roleSchema = z.object({
   id: z.string().uuid(),
-  name: z.string(),
+  name: roleEnum,
   description: z.string(),
   created_at: z.date(),
 })

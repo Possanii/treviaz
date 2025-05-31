@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs'
+import { randomUUID } from 'node:crypto'
 
 import { BadRequestError } from '@/application/errors/bad-request-error'
 
@@ -21,16 +21,24 @@ export class CreateUserService {
       throw new BadRequestError('user', 'User with this email already exists')
     }
 
+    const role = await prisma.role.findFirst({
+      where: { name: data.condominium.role },
+    })
+
+    if (!role) {
+      throw new BadRequestError('role', 'Role not found')
+    }
+
     const user = await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
-        document_number: data.document_number,
         avatar_url: data.avatar_url,
+        keycloak_id: randomUUID(),
         condominiums: {
           create: {
             condominium_id: data.condominium.condominium_id,
-            role: data.condominium.role,
+            role_id: role.id,
             joined_at: new Date(),
           },
         },
@@ -41,7 +49,6 @@ export class CreateUserService {
       id: user.id,
       name: user.name,
       email: user.email,
-      document_number: user.document_number,
       avatar_url: user.avatar_url,
     }
   }

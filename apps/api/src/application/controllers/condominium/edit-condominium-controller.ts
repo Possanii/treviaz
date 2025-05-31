@@ -1,11 +1,8 @@
-import z from 'zod'
-
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { EditCondominiumService } from '@/application/services/condominium/edit-condominium-service'
-
 import { condominiumSchema } from '@/application/schemas/ICondominium'
+import { EditCondominiumService } from '@/application/services/condominium/edit-condominium-service'
 
 const editCondominiumSchema = condominiumSchema.omit({ id: true }).partial()
 

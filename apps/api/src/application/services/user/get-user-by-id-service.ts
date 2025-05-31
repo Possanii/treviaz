@@ -22,8 +22,6 @@ export class GetUserByIdService {
     id: string
     slug: string
   }): Promise<IGetUserById> {
-    console.log({ slug })
-
     const user = await prisma.user.findUnique({
       where: {
         id,

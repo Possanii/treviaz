@@ -32,11 +32,11 @@ export class CreateForumThreadController implements IController {
 
     const thread = result.data
 
-    const { uid } = metadata!.user!
+    const { id } = metadata!.user!
 
     await this.createForumThreadService.execute({
       ...thread,
-      id: uid,
+      id,
     })
     return {
       statusCode: 204,

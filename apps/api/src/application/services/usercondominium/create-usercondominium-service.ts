@@ -18,11 +18,19 @@ export class CreateUserCondominiumService {
       )
     }
 
+    const role = await prisma.role.findFirst({
+      where: { name: data.role },
+    })
+
+    if (!role) {
+      throw new BadRequestError('role', 'Role not found')
+    }
+
     await prisma.userCondominium.create({
       data: {
         user_id: data.user_id,
         condominium_id: data.condominium_id,
-        role: data.role,
+        role_id: role.id,
       },
     })
   }

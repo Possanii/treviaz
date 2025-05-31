@@ -24,8 +24,8 @@ async function seed() {
       keycloak_id: faker.string.uuid(),
       condominiums: {
         create: {
-          condominium_id: condominium.id,
-          role_id: role.id,
+          condominium_id: condominium!.id,
+          role_id: role!.id,
         },
       },
     },
@@ -40,8 +40,8 @@ async function seed() {
   await prisma.financialTransaction.create({
     data: {
       id: faker.string.uuid(),
-      categoryId: category.id,
-      condominiumId: condominium.id,
+      categoryId: category!.id,
+      condominiumId: condominium!.id,
       amount: 540,
       status: invoceStatus,
       paymentDate: invoceStatus === 'PAID' ? new Date() : null,

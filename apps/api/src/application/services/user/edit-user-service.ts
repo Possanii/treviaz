@@ -1,5 +1,7 @@
 import { hash } from 'bcryptjs'
+
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
+
 import { prisma } from '../../libs/prisma'
 import { IUser } from '../../schemas/IUser'
 
@@ -16,10 +18,9 @@ export class EditUserService {
       throw new UnprocessableEntityError('user', 'User not found')
     }
 
-    let updateData: any = {
+    const updateData: any = {
       name: data.name,
       email: data.email,
-      document_number: data.document_number,
       avatar_url: data.avatar_url,
     }
 
@@ -36,7 +37,6 @@ export class EditUserService {
       id: updatedUser.id,
       name: updatedUser.name,
       email: updatedUser.email,
-      document_number: updatedUser.document_number,
       avatar_url: updatedUser.avatar_url,
     }
   }

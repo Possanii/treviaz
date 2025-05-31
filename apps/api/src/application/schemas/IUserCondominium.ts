@@ -1,3 +1,4 @@
+import { roleEnum } from '@treviaz/entities/schemas/IRole'
 import z from 'zod'
 
 import { condominiumSchema } from './ICondominium'
@@ -9,7 +10,7 @@ export const userCondominiumSchema = z.object({
   user: userSchema,
   condominium_id: z.string().uuid(),
   condominium: condominiumSchema,
-  role: z.enum(['RESIDENT', 'ADMIN', 'SYNDIC', 'BILLING', 'SERVICES']),
+  role: roleEnum,
   joined_at: z.date(),
 })
 

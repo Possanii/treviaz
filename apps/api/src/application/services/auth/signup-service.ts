@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { ConflictError } from '@/application/errors/conflict-error'
@@ -34,7 +35,7 @@ export class SignUpService {
   async execute(data: SignUpRequest): Promise<SignUpResponse> {
     console.log('SignUpService received data:', JSON.stringify(data, null, 2))
 
-    const { name, email, password, document_number, condominium } = data
+    const { name, email, password, condominium } = data
 
     // Use transaction to ensure both Keycloak and database operations succeed or fail together
     return await prisma.$transaction(async (tx) => {
@@ -108,7 +109,6 @@ export class SignUpService {
           id: user.id,
           name: user.name,
           email: user.email,
-          document_number,
           condominium,
         }
 

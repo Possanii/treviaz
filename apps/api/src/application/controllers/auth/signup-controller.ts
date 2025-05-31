@@ -1,3 +1,4 @@
+import { roleEnum } from '@treviaz/entities/schemas/IRole'
 import z from 'zod'
 
 import { IController } from '@/application/interfaces/IController'
@@ -8,7 +9,7 @@ import { SignUpService } from '@/application/services/auth/signup-service'
 
 // Define a custom schema for the condominium in the signup request
 const signupCondominiumSchema = z.object({
-  role: z.enum(['RESIDENT', 'ADMIN', 'SYNDIC', 'BILLING', 'SERVICES']),
+  role: roleEnum,
   condominium_id: z.string().uuid(),
 })
 

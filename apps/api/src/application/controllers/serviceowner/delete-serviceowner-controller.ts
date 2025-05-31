@@ -3,8 +3,8 @@ import z from 'zod'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { DeleteServiceOwnerService } from '@/application/services/serviceowner/delete-serviceowner-service'
 import { serviceOwnerSchema } from '@/application/schemas/IServiceOwner'
+import { DeleteServiceOwnerService } from '@/application/services/serviceowner/delete-serviceowner-service'
 
 const deleteServiceOwnerSchema = z.object({
   id: serviceOwnerSchema.shape.id,

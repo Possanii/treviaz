@@ -1,6 +1,6 @@
 import z from 'zod'
 
-import { roleSchema } from './IRole'
+import { roleEnum } from './IRole'
 
 export const inviteStatusSchema = z.enum([
   'PENDING',
@@ -17,7 +17,7 @@ export const inviteSchema = z.object({
   sent_at: z.date(),
   expires_at: z.date(),
   condominium_id: z.string().uuid(),
-  role: roleSchema,
+  role: roleEnum,
   authorId: z.string().uuid(),
 })
 

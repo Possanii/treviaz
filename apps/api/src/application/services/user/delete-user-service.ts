@@ -1,4 +1,5 @@
 import { UnprocessableEntityError } from '@/application/errors/unprocessable-entity-error'
+
 import { prisma } from '../../libs/prisma'
 
 export class DeleteUserService {

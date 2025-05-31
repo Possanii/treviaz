@@ -1,3 +1,4 @@
+import { IRoleEnum } from '@treviaz/entities/schemas/IRole'
 import { ICondominiumInvitesTable } from '@treviaz/entities/schemas/tables/ICondominium-invites-table'
 
 import { prisma } from '@/application/libs/prisma'
@@ -42,6 +43,11 @@ export class GetAllInvitesService {
       },
     })
 
-    return invites
+    const invitesWithRole = invites.map((invite) => {
+      const role = invite.role.name as IRoleEnum
+      return { ...invite, role } as ICondominiumInvitesTable
+    })
+
+    return invitesWithRole
   }
 }

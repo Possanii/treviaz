@@ -3,9 +3,8 @@ import z from 'zod'
 import { IController } from '@/application/interfaces/IController'
 import { IRequest } from '@/application/interfaces/IRequest'
 import { IResponse } from '@/application/interfaces/IResponse'
-import { EditServiceOwnerService } from '@/application/services/serviceowner/edit-serviceowner-service'
-
 import { serviceOwnerSchema } from '@/application/schemas/IServiceOwner'
+import { EditServiceOwnerService } from '@/application/services/serviceowner/edit-serviceowner-service'
 
 const editServiceOwnerSchema = serviceOwnerSchema.omit({ id: true }).extend({
   password: z

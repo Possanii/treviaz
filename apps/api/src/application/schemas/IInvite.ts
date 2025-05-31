@@ -1,3 +1,4 @@
+import { roleEnum } from '@treviaz/entities/schemas/IRole'
 import z from 'zod'
 
 export const inviteSchema = z.object({
@@ -8,7 +9,7 @@ export const inviteSchema = z.object({
   sent_at: z.date(),
   expires_at: z.date(),
   condominium_id: z.string().uuid(),
-  role: z.enum(['RESIDENT', 'ADMIN', 'SYNDIC', 'BILLING', 'SERVICES']),
+  role: roleEnum,
   author_id: z.string().uuid(),
 })
 
