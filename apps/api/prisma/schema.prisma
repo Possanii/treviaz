@@ -201,7 +201,6 @@ model ForumThread {
 
   posts ForumPost[]
 
-  @@unique([related_to_category_id, slug])
   @@map("forum_threads")
 }
 
@@ -283,7 +282,6 @@ model Invite {
   condominium    Condominium @relation(fields: [condominium_id], references: [id])
   condominium_id String
 
-  @@unique([email, condominium_id])
   @@map("invites")
 }
 

@@ -421,6 +421,66 @@ async function main() {
     })
   })
 
+  await prisma.delivery.createMany({
+    data: Array.from({ length: 25 }).map(() => ({
+      user_id: faker.helpers.arrayElement(residents).id,
+      condominium_id: condominium.id,
+      status: faker.helpers.arrayElement(['PENDING', 'DELIVERED', 'CANCELLED']),
+    })),
+  })
+
+  const pollLeasureArea = await prisma.leisureArea.create({
+    data: {
+      name: 'Piscina',
+      description: 'Piscina aquecida com área de lazer',
+      photo_url: faker.image.url(),
+      condominiumId: condominium.id,
+    },
+  })
+
+  const barbecueLeasureArea = await prisma.leisureArea.create({
+    data: {
+      name: 'Churrasqueira',
+      description: 'Churrasqueira com área de lazer',
+      photo_url: faker.image.url(),
+      condominiumId: condominium.id,
+    },
+  })
+
+  await prisma.reserve.createMany({
+    data: Array.from({ length: 25 }).map(() => {
+      const startDate = faker.date.future({ years: 0.1 })
+
+      const hoursInDayOfStartDate = startDate.getHours()
+      const maxHoursCanAdd = 23 - hoursInDayOfStartDate
+
+      const hoursToAdd = faker.number.int({
+        min: 1,
+        max: Math.min(4, Math.max(1, maxHoursCanAdd)),
+      })
+
+      const endDate = new Date(startDate.getTime())
+      endDate.setHours(startDate.getHours() + hoursToAdd)
+
+      return {
+        title: faker.lorem.words({ min: 2, max: 4 }),
+        start_date: startDate,
+        end_date: endDate,
+        status: faker.helpers.arrayElement([
+          'PENDING',
+          'APPROVED',
+          'REJECTED',
+          'CANCELLED',
+        ]),
+        user_id: faker.helpers.arrayElement(residents).id,
+        leisureAreaId: faker.helpers.arrayElement([
+          pollLeasureArea.id,
+          barbecueLeasureArea.id,
+        ]),
+      }
+    }),
+  })
+
   console.log('🔥 Database seed completed!')
 }
 
