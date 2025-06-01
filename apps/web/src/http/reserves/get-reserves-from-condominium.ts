@@ -1,6 +1,7 @@
 import { IReserve } from '@treviaz/entities/schemas/IReserve'
 
 import { api } from '@/lib/api-client'
+import { formatStringToDate } from '@/utils/format-string-to-date'
 
 export async function getReservesFromCondominium({
   condominiumSlug,
@@ -9,5 +10,10 @@ export async function getReservesFromCondominium({
 }): Promise<{ reserves: IReserve[] }> {
   const result = await api.get(`/reserves/condominium/${condominiumSlug}`)
 
-  return { ...result.data.body }
+  const reserves = formatStringToDate({
+    data: result.data.body.reserves,
+    fields: ['start_date', 'end_date'],
+  })
+
+  return { reserves } as { reserves: IReserve[] }
 }

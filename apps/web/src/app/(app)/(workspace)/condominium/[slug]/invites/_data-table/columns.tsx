@@ -167,7 +167,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
           <div className="flex flex-col">
             <span className="text-lg">{author.name}</span>
             <span className="text-xs font-light">
-              {author.condominiums[0].role}
+              {author.condominiums[0].role.name}
             </span>
           </div>
         </div>

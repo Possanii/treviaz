@@ -24,7 +24,7 @@ export const columnFilterSchema = z.object({
     .pipe(z.coerce.date().array())
     .optional(),
   role: roleSchema
-    .transform((val) => val.split(ARRAY_DELIMITER))
+    .transform((val) => val.name.split(ARRAY_DELIMITER))
     .pipe(roleSchema)
     .optional(),
   expires_at: z

@@ -76,10 +76,6 @@ export function sidebarData() {
             title: 'Aguardando aprovações',
             url: `/condominium/${currentCondominium}/approvals`,
           },
-          {
-            title: 'Configurações',
-            url: `/condominium/${currentCondominium}/threads/settings`,
-          },
         ],
       },
       {

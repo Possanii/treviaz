@@ -1,5 +1,5 @@
 import { inviteStatusSchema } from '@treviaz/entities/schemas/IInvite'
-import { roleSchema } from '@treviaz/entities/schemas/IRole'
+import { roleEnum } from '@treviaz/entities/schemas/IRole'
 import {
   createParser,
   createSearchParamsCache,
@@ -32,10 +32,7 @@ export const searchParamsParser = {
     ARRAY_DELIMITER
   ),
   sent_at: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
-  role: parseAsArrayOf(
-    parseAsStringLiteral(roleSchema.options),
-    ARRAY_DELIMITER
-  ),
+  role: parseAsArrayOf(parseAsStringLiteral(roleEnum.options), ARRAY_DELIMITER),
   expires_at: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
   author: parseAsString,
 }
